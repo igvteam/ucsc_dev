@@ -1,2 +1,6 @@
 /.idea/
 /browser/updateSandbox.sh
+/package-lock.json
+/src/updateSandbox.sh
+/ucsc_dev.iml
+/notes.md

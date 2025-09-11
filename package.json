@@ -1,0 +1,18 @@
+{
+  "name": "ucsc_dev",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "jshintConfig": "./jshintrc.json",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/igvteam/ucsc_dev.git"
+  },
+  "private": true,
+  "devDependencies": {
+    "jshint": "^2.13.6"
+  }
+}
