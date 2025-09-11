@@ -186,6 +186,7 @@
 
     let filePicker = null;
     let igvBrowser = null;
+    let igvInitialized = false;
 
 
     // Represents the current state of the UCSC browser page.  Its not clear yet how this obtained, this is just a placeholder.
@@ -195,10 +196,15 @@
         return window.open('../admin/filePicker.html', 'filePicker' + Date.now(), 'width=600,height=800');
     }
 
-    // Simulate a page reload restoring the UCSC user session, including the embedded igv sessin if any.  In this mockup we are
-    // storing the session in local storage.
-    // window.addEventListener("DOMContentLoaded", async (event) => {
+    // Initialize the embedded IGV browser, restoring state from local storage.
+    // TODO -- in the future we might want to restore state from the UCSC cart
     initIgvUcsc = async function () {
+
+        console.log("invoking initIgvUcsc");
+
+        if(igvInitialized) {
+            return;
+        }
 
         // We are simulating the UCSC user session (a cookie?) with local storage.
         const sessionString = localStorage.getItem("ucscSession");
@@ -311,6 +317,11 @@
 
         console.log("Creating IGV browser with config: ", config);
 
+        if(document.getElementById('tr_igv')) {
+            console.warn("IGV track row already exists ???");   // TODO -- how can this happen?
+            return;
+        }
+
         // Insert the IGV row into the image table.
         const imgTbl = document.getElementById('imgTbl');
         const tbody = imgTbl.querySelector('tbody');
@@ -389,10 +400,10 @@
 
                 // Create igvBrowser if needed -- i.e. this is the first track being added.  State needs to be obtained
                 // from the UCSC browser for genome and locus.
-                if (!igvBrowser) {
+                if (typeof(window.igvBrowser) === 'undefined' || window.igvBrowser === null) {
                     const defaultConfig = {
                         reference: getMinimalReference(getDb()),
-                        locus: genomePos.getOriginalPos()
+                        locus: genomePos.get()
                     };
                     await createIGVBrowser(defaultConfig);
                 }
