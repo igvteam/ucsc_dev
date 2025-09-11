@@ -30,10 +30,10 @@ var debug = false;
 
 /* IE11 compatibility - IE doesn't have string startsWith and never will */
 if (!String.prototype.startsWith) {
-    String.prototype.startsWith = function(searchString, position) {
-        position = position || 0;
-        return this.indexOf(searchString, position) === position;
-    };
+  String.prototype.startsWith = function(searchString, position) {
+    position = position || 0;
+    return this.indexOf(searchString, position) === position;
+  };
 }
 
 function initVars()
@@ -69,7 +69,7 @@ function initVars()
             // for version had been failing, likely for some time now.
             // (As of 9.0.9, possibly earlier, the 3rd part of the version is included in the
             // user agent string, so must be accounted for in string match)
-            // Consequences were that page refresh was used instead of img update (e.g.
+            // Consequences were that page refresh was used instead of img update (e.g. 
             // for drag-zoom).  And UI dialog was unable to update (e.g. via Apply button).
             imageV2.mapIsUpdateable = false;
             var reg = new RegExp("Version\/([0-9]+.[0-9]+)(.[0-9]+)? Safari");
@@ -85,8 +85,8 @@ function initVars()
     }
 }
 
-/////////////////////////////////////
-////////// Genomic position /////////
+  /////////////////////////////////////
+ ////////// Genomic position /////////
 /////////////////////////////////////
 var genomePos = {
 
@@ -114,22 +114,22 @@ var genomePos = {
 
     getElement: function ()
     {
-        // Return position box object
+    // Return position box object
         var tags = document.getElementsByName("position");
         // There are multiple tags with name === "position" (the visible position text input
         // and a hidden with id='positionHidden'); we return value of visible element.
         for (var i = 0; i < tags.length; i++) {
-            var ele = tags[i];
-            if (ele.id !== "positionHidden") {
-                return ele;
-            }
+                var ele = tags[i];
+                if (ele.id !== "positionHidden") {
+                    return ele;
+                }
         }
         return null;
     },
 
     get: function ()
     {
-        // Return current value of position box
+    // Return current value of position box
         var ele = genomePos.getElement();
         if (ele) {
             return ele.value;
@@ -144,7 +144,7 @@ var genomePos = {
 
     revertToOriginalPos: function ()
     {
-        // undo changes to position (i.e. after user aborts a drag-and-select).
+    // undo changes to position (i.e. after user aborts a drag-and-select).
         this.set(this.original, this.originalSize);
     },
 
@@ -178,7 +178,7 @@ var genomePos = {
                     return position; // return original
                 }
                 // overlap with position?
-                //  if intersection,
+                //  if intersection, 
                 if (w.winEnd > start && end > w.winStart) {
                     var s = Math.max(start, w.winStart);
                     var e = Math.min(end, w.winEnd);
@@ -213,7 +213,7 @@ var genomePos = {
             for (i=0,len=windows.length; i < len; ++i) {
                 var w = windows[i];
                 // overlap with position?
-                //  if intersection,
+                //  if intersection, 
                 if (w.winEnd > start && end > w.winStart) {
                     var s = Math.max(start, w.winStart);
                     var e = Math.min(end, w.winEnd);
@@ -221,7 +221,7 @@ var genomePos = {
                 }
             }
         }
-        //  return real size of the disguised position
+        //  return real size of the disguised position 
         return newSize;
     },
 
@@ -253,7 +253,7 @@ var genomePos = {
                     return position; // return undisguised original
                 }
                 // overlap with position?
-                //  if intersection,
+                //  if intersection, 
                 if (w.virtEnd > start && end > w.virtStart) {
                     var s = Math.max(start, w.virtStart);
                     var e = Math.min(end, w.virtEnd);
@@ -309,7 +309,7 @@ var genomePos = {
             // add commas to positionDisplay
             var commaPosition = position;
             if (pos)
-                commaPosition = pos.chrom+":"+commify(pos.start)+"-"+commify(pos.end);
+                commaPosition = pos.chrom+":"+commify(pos.start)+"-"+commify(pos.end);  
             $('#positionDisplay').text(commaPosition);
         }
         if (size) {
@@ -336,7 +336,7 @@ var genomePos = {
             // https://www.ncbi.nlm.nih.gov/genome/gdv/browser/?id=GCF_000001405.37&chr=4&from=45985744&to=45991655&context=genome
             genomePos.linkFixup(pos, "ncbiLink", new RegExp("(.+from=)[0-9]+"), "to");
 
-            // Example medaka link:
+            // Example medaka link: 
             // http://utgenome.org/medakabrowser_ens_jump.php?revision=version1.0&chr=chromosome18&start=14435198&end=14444829
             genomePos.linkFixup(pos, "medakaLink", new RegExp("(.+start=)[0-9]+"), "end");
 
@@ -352,7 +352,7 @@ var genomePos = {
                     $('#wormbaseLink').attr('href', a[1] + pos.start + "-" + pos.end);
                 }
             }
-            // Fixup DNA link; e.g.:
+            // Fixup DNA link; e.g.: 
             // hgc?hgsid=2999470&o=114385768&g=getDna&i=mixed&c=chr7&l=114385768&r=114651696&db=panTro2&hgsid=2999470
             if ($('#dnaLink').length) {
                 link = $('#dnaLink').attr('href');
@@ -374,9 +374,9 @@ var genomePos = {
         var imgWidth = jQuery(img).width();
         var imgOfs = jQuery(img).offset();
         var leftX = hgTracks.revCmplDisp ?  imgOfs.left - slop :
-            imgOfs.left + hgTracks.insideX - slop;
+                                            imgOfs.left + hgTracks.insideX - slop;
         var rightX = hgTracks.revCmplDisp ? imgOfs.left + imgWidth - hgTracks.insideX + slop :
-            imgOfs.left + imgWidth + slop;
+                                            imgOfs.left + imgWidth + slop;
 
         return [leftX, rightX];
     },
@@ -390,7 +390,7 @@ var genomePos = {
 
         // No need to check the x limits anymore, as imgAreaSelect is doing that now.
         return  (  (selection.event.pageY >= (imgOfs.top - slop))
-            && (selection.event.pageY <  (imgOfs.top + imgHeight + slop)));
+                && (selection.event.pageY <  (imgOfs.top + imgHeight + slop)));
     },
 
     pixelsToBases: function (img, selStart, selEnd, winStart, winEnd, addHalfBp)
@@ -398,7 +398,7 @@ var genomePos = {
         var imgWidth = jQuery(img).width() - hgTracks.insideX;
         var width = hgTracks.winEnd - hgTracks.winStart;
         var mult = width / imgWidth;   // mult is bp/pixel multiplier
-
+ 
         // where does a bp position start on the screen?
         // For things like drag-select, if the user ends just before the nucleotide itself, do not count
         // the nucleotide itself as selected. But for things like clicks onto
@@ -411,9 +411,9 @@ var genomePos = {
         var startDelta;   // startDelta is how many bp's to the right/left
         var x1;
 
-        // The magic number three appear at another place in the code
+        // The magic number three appear at another place in the code 
         // as LEFTADD. It was originally annotated as "borders or cgi item calc
-        // ?" by Larry. It has to be used when going any time when converting
+        // ?" by Larry. It has to be used when going any time when converting 
         // between pixels and coordinates.
         selStart -= 3;
         selEnd -= 3;
@@ -486,13 +486,13 @@ var genomePos = {
     selectionPixelsToBases: function (img, selection)
     {   // Convert selection x1/x2 coordinates to chromStart/chromEnd.
         return genomePos.pixelsToBases(img, selection.x1, selection.x2,
-            hgTracks.winStart, hgTracks.winEnd, true);
+                                        hgTracks.winStart, hgTracks.winEnd, true);
     },
 
     update: function (img, selection, singleClick)
     {
         var pos = genomePos.pixelsToBases(img, selection.x1, selection.x2,
-            hgTracks.winStart, hgTracks.winEnd, true);
+                                            hgTracks.winStart, hgTracks.winEnd, true);
         // singleClick is true when the mouse hasn't moved (or has only moved a small amount).
         if (singleClick) {
             var center = (pos.chromStart + pos.chromEnd)/2;
@@ -510,7 +510,7 @@ var genomePos = {
 
         }
         var newPosition = genomePos.setByCoordinates(hgTracks.chromName,
-            pos.chromStart+1, pos.chromEnd);
+                                                            pos.chromStart+1, pos.chromEnd);
         return newPosition;
     },
 
@@ -523,15 +523,15 @@ var genomePos = {
     changeAssemblies: function (ele)  // UNUSED?  Larry's experimental code
     {   // code to update page when user changes assembly select list.
         $.ajax({
-            type: "GET",
-            url: "../cgi-bin/hgApi",
-            data: cart.varsToUrlData({ 'hgsid': getHgsid(), 'cmd': 'defaultPos', 'db': getDb() }),
-            dataType: "html",
-            trueSuccess: genomePos.handleChange,
-            success: catchErrorOrDispatch,
-            error: errorHandler,
-            cache: true
-        });
+                type: "GET",
+                url: "../cgi-bin/hgApi",
+                data: cart.varsToUrlData({ 'hgsid': getHgsid(), 'cmd': 'defaultPos', 'db': getDb() }),
+                dataType: "html",
+                trueSuccess: genomePos.handleChange,
+                success: catchErrorOrDispatch,
+                error: errorHandler,
+                cache: true
+            });
         return false;
     },
 
@@ -556,22 +556,22 @@ var genomePos = {
         genomePos.convertedVirtCoords = {chromStart : -1, chromEnd : -1};  // reset
         var pos = chrom+":"+(chromStart+1)+"-"+chromEnd; // easier to pass 1 parameter than 3
         $.ajax({
-            type: "GET",
-            async: false, // wait for result
-            url: "../cgi-bin/hgTracks",
-            data: cart.varsToUrlData({ 'hgt.convertChromToVirtChrom': pos, 'hgt.trackImgOnly' : 1, 'hgsid': getHgsid(), 'db': getDb() }),
-            dataType: "html",
-            trueSuccess: genomePos.handleConvertChromPosToVirtCoords,
-            success: catchErrorOrDispatch,
-            error: errorHandler,
-            cache: false
-        });
+                type: "GET",
+                async: false, // wait for result
+                url: "../cgi-bin/hgTracks",
+                data: cart.varsToUrlData({ 'hgt.convertChromToVirtChrom': pos, 'hgt.trackImgOnly' : 1, 'hgsid': getHgsid(), 'db': getDb() }),
+                dataType: "html",
+                trueSuccess: genomePos.handleConvertChromPosToVirtCoords,
+                success: catchErrorOrDispatch,
+                error: errorHandler,
+                cache: false
+            });
         return genomePos.convertedVirtCoords;
     },
 
     positionDisplayDialog: function ()
-        // Show the virtual and real positions of the windows
-    {
+    // Show the virtual and real positions of the windows
+    {   
         var position = genomePos.get();
         position.replace("virt:", "multi:");
         var positionDialog = $("#positionDialog")[0];
@@ -583,10 +583,10 @@ var genomePos = {
             var i, len, end;
             var matches = /^multi:[0-9]+-([0-9]+)/.exec(position);
             var modeType = (hgTracks.virtModeType === "customUrl" ? "Custom regions on virtual chromosome" :
-                (hgTracks.virtModeType === "exonMostly" ? "Exon view of" :
-                    (hgTracks.virtModeType === "geneMostly" ? "Gene view of" :
-                        (hgTracks.virtModeType === "singleAltHaplo" ? "Alternate haplotype as virtual chromosome" :
-                            "Unknown mode"))));
+                            (hgTracks.virtModeType === "exonMostly" ? "Exon view of" :
+                            (hgTracks.virtModeType === "geneMostly" ? "Gene view of" :
+                            (hgTracks.virtModeType === "singleAltHaplo" ? "Alternate haplotype as virtual chromosome" :
+                                        "Unknown mode"))));
             var str = modeType + "&nbsp;" + position;
             if (matches) {
                 end = matches[1];
@@ -600,8 +600,8 @@ var genomePos = {
                     str += "<p><table>\n";
                     for (i=0,len=hgTracks.windows.length; i < len; ++i) {
                         w = hgTracks.windows[i];
-                        str += "<tr><td>" + w.chromName + ":" + (w.winStart+1) + "-" + w.winEnd + "</td><td>" +
-                            (w.winEnd - w.winStart) + " bp" + "</td></tr>\n";
+                        str += "<tr><td>" + w.chromName + ":" + (w.winStart+1) + "-" + w.winEnd + "</td><td>" + 
+                                    (w.winEnd - w.winStart) + " bp" + "</td></tr>\n";
                     }
                     str += "</table></p>\n";
                 } else {
@@ -609,7 +609,7 @@ var genomePos = {
                     for (i=0,len=hgTracks.windows.length; i < len; ++i) {
                         w = hgTracks.windows[i];
                         str += "<li>" + w.chromName + ":" + (w.winStart+1) + "-" + w.winEnd +
-                            "&nbsp;&nbsp;&nbsp;" + (w.winEnd - w.winStart) + " bp" + "</li>\n";
+                                    "&nbsp;&nbsp;&nbsp;" + (w.winEnd - w.winStart) + " bp" + "</li>\n";
                     }
                     str += "</ul>\n";
                 }
@@ -619,28 +619,28 @@ var genomePos = {
             $("#positionDisplayPosition").html(position);
         }
         $(positionDialog).dialog({
-            modal: true,
-            title: "Multi-Region Position Ranges",
-            closeOnEscape: true,
-            resizable: false,
-            autoOpen: false,
-            minWidth: 400,
-            minHeight: 40,
+                modal: true,
+                title: "Multi-Region Position Ranges",
+                closeOnEscape: true,
+                resizable: false,
+                autoOpen: false,
+                minWidth: 400,
+                minHeight: 40,
 
-            close: function() {
-                // All exits to dialog should go through this
-                $(imageV2.imgTbl).imgAreaSelect({hide:true});
-                $(this).hide();
-                $('body').css('cursor', ''); // Occasionally wait cursor got left behind
-            }
+                close: function() {
+                    // All exits to dialog should go through this
+                    $(imageV2.imgTbl).imgAreaSelect({hide:true});
+                    $(this).hide();
+                    $('body').css('cursor', ''); // Occasionally wait cursor got left behind
+                }
         });
         $(positionDialog).dialog('open');
     }
 
 };
 
-/////////////////////////////////////
-//// Creating items by dragging /////
+  /////////////////////////////////////
+ //// Creating items by dragging /////
 /////////////////////////////////////
 var makeItemsByDrag = {
 
@@ -659,13 +659,13 @@ var makeItemsByDrag = {
 
     init: function (trackName)
     {
-        // Set up so that they can drag out to define a new item on a makeItems track.
-        var img = $("#img_data_" + trackName);
-        if (img && img.length !== 0) {
-            var imgHeight = imageV2.imgTbl.height();
-            jQuery(img.imgAreaSelect( { selectionColor: 'green', outerColor: '',
-                minHeight: imgHeight, maxHeight: imgHeight, onSelectEnd: makeItemsByDrag.end,
-                autoHide: true, movable: false}));
+    // Set up so that they can drag out to define a new item on a makeItems track.
+    var img = $("#img_data_" + trackName);
+    if (img && img.length !== 0) {
+        var imgHeight = imageV2.imgTbl.height();
+        jQuery(img.imgAreaSelect( { selectionColor: 'green', outerColor: '',
+            minHeight: imgHeight, maxHeight: imgHeight, onSelectEnd: makeItemsByDrag.end,
+            autoHide: true, movable: false}));
         }
     },
 
@@ -680,30 +680,30 @@ var makeItemsByDrag = {
     }
 };
 
-/////////////////
-//// posting ////
+  /////////////////
+ //// posting ////
 /////////////////
 var posting = {
 
     blockUseMap: false,
 
-    blockMapClicks: function ()
-        // Blocks clicking on map items when in effect. Drag opperations frequently call this.
-    {
-        posting.blockUseMap=true;
+    blockMapClicks: function () 
+    // Blocks clicking on map items when in effect. Drag opperations frequently call this.
+    { 
+        posting.blockUseMap=true;  
     },
-
-    allowMapClicks:function ()
-        // reallows map clicks.  Called after operations that compete with clicks (e.g. dragging)
-    {
+    
+    allowMapClicks:function ()  
+    // reallows map clicks.  Called after operations that compete with clicks (e.g. dragging) 
+    { 
         $('body').css('cursor', ''); // Explicitly remove wait cursor.
-        posting.blockUseMap=false;
+        posting.blockUseMap=false; 
     },
 
-    mapClicksAllowed: function ()
-        // Verify that click-competing operation (e.g. dragging) isn't currently occurring.
-    {
-        return (posting.blockUseMap === false);
+    mapClicksAllowed: function () 
+    // Verify that click-competing operation (e.g. dragging) isn't currently occurring.
+    { 
+        return (posting.blockUseMap === false); 
     },
 
     blockTheMapOnMouseMove: function (ev)
@@ -804,17 +804,17 @@ var posting = {
 ///////////////////////
 var cart = {
     // Controls queuing and ultimately updating cart variables vis ajax or submit. Queued vars
-    // are held in an object with unique keys preventing duplicate updates and ensuring last update
+    // are held in an object with unique keys preventing duplicate updates and ensuring last update 
     // takes precedence.  WARNING: be careful creating an object with variables on the fly:
-    // cart.setVarsObj({track: vis}) is invalid but cart.setVarsObj({'knownGene': vis}) is ok!
+    // cart.setVarsObj({track: vis}) is invalid but cart.setVarsObj({'knownGene': vis}) is ok! 
 
     updateQueue: {},
-
+    
     updatesWaiting: function ()
     {   // returns TRUE if updates are waiting.
         return objNotEmpty(cart.updateQueue);
     },
-
+    
     addUpdatesToUrl: function (url)
     {   // adds any outstanding cart updates to the url, then clears the queue
         if (cart.updatesWaiting()) {
@@ -833,12 +833,12 @@ var cart = {
         }
         return url;
     },
-
+    
     varsToUrlData: function (varsObj)
     {   // creates a url data (var1=val1&var2=val2...) string from vars object and queue
         // The queue will be emptied by this call.
         cart.queueVarsObj(varsObj); // lay ontop of queue, to give new values precedence
-
+        
         // Now convert to url data and clear queue
         var urlData = '';
         if (cart.updatesWaiting()) {
@@ -848,21 +848,21 @@ var cart = {
         }
         return urlData;
     },
-
+    
     setVarsObj: function (varsObj, errFunc, async)
     {   // Set all vars in a var hash, appending any queued updates
         // The default behavior is async = true
-        //console.log('cart.setVarsObj: were:'+objKeyCount(cart.updateQueue) +
+        //console.log('cart.setVarsObj: were:'+objKeyCount(cart.updateQueue) + 
         //            ' new:'+objKeyCount(varsObj);
         cart.queueVarsObj(varsObj); // lay ontop of queue, to give new values precedence
-
+        
         // Now ajax update all in queue and clear queue
         if (cart.updatesWaiting()) {
             setVarsFromHash(cart.updateQueue, errFunc, async);
             cart.updateQueue = {};
         }
     },
-
+    
     setVars: function (names, values, errFunc, async)
     {   // ajax updates the cart, and includes any queued updates.
         cart.updateSessionPanel();      // handles hide from left minibutton
@@ -873,7 +873,7 @@ var cart = {
     {   // Add object worth of cart updates to the 'to be updated' queue, so they can be sent to
         // the server later. Note: hash allows overwriting previous updates to the same variable.
         if (typeof varsObj !== 'undefined' && objNotEmpty(varsObj)) {
-            //console.log('cart.queueVarsObj: were:'+objKeyCount(cart.updateQueue) +
+            //console.log('cart.queueVarsObj: were:'+objKeyCount(cart.updateQueue) + 
             //            ' new:'+objKeyCount(varsObj));
             for (var name in varsObj) {
                 cart.updateQueue[name] = varsObj[name];
@@ -888,31 +888,31 @@ var cart = {
 
     updateSessionPanel: function()
     {
-        if (typeof recTrackSetsDetectChanges === 'undefined' || recTrackSetsDetectChanges === null)
-            return;
+    if (typeof recTrackSetsDetectChanges === 'undefined' || recTrackSetsDetectChanges === null)
+        return;
 
-        // change color of text
-        $('span.gbSessionChangeIndicator').addClass('gbSessionChanged');
+    // change color of text
+    $('span.gbSessionChangeIndicator').addClass('gbSessionChanged');
 
-        // change mouseover on the panel.  A bit fragile here inserting text in the mouseover specified in
-        // hgTracks.js, so depends on match with text there, and should present same message as C code
-        // (Perhaps this could be added as a script tag, so not duplicated)
-        var txt = $('span.gbSessionLabelPanel').attr('title');
-        if (txt && !txt.match(/with changes/)) {
-            $('span.gbSessionLabelPanel').attr('title', txt.replace(
-                "track set",
-                "track set, with changes (added or removed tracks) you have requested"));
+    // change mouseover on the panel.  A bit fragile here inserting text in the mouseover specified in
+    // hgTracks.js, so depends on match with text there, and should present same message as C code
+    // (Perhaps this could be added as a script tag, so not duplicated)
+    var txt = $('span.gbSessionLabelPanel').attr('title');
+    if (txt && !txt.match(/with changes/)) {
+        $('span.gbSessionLabelPanel').attr('title', txt.replace(
+                                   "track set", 
+                                   "track set, with changes (added or removed tracks) you have requested"));
         }
     }
 };
 
-///////////////////////////////////////////////
-//// visibility (mixed with group toggle) /////
+  ///////////////////////////////////////////////
+ //// visibility (mixed with group toggle) /////
 ///////////////////////////////////////////////
 var vis = {
 
     // map cgi enum visibility codes to strings
-    enumOrder: new Array("hide", "dense", "full", "pack", "squish"),
+    enumOrder: new Array("hide", "dense", "full", "pack", "squish"),  
 
     update: function (track, visibility)
     {   // Updates visibility state in hgTracks.trackDb and any visible elements on the page.
@@ -968,13 +968,13 @@ var vis = {
     {   // Set visibility of all track groups to newState (true means expanded).
         // This code also modifies the corresponding hidden fields and the gif's of the +/- img tag.
         imageV2.markAsDirtyPage();
-        $(".toggleButton[id$='_button']").each( function (i) {
+        $(".toggleButton[id$='_button']").each( function (i) {  
             // works for old img type AND new BUTTONS_BY_CSS      // - 7: clip '_button' suffix
             vis.toggleForGroup(this,this.id.substring(0,this.id.length - 7),newState);
         });
         return false;
     },
-
+    
     initForAjax: function()
     {   // To better support the back-button, it is good to eliminate extraneous form puts
         // Towards that end, we support visBoxes making ajax calls to update cart.
@@ -992,7 +992,7 @@ var vis = {
                 $(this).attr('class', 'hiddenText');
             } else
                 $(this).attr('class', 'normalText');
-
+            
             cart.setVars([track], [$(this).val()]);
             imageV2.markAsDirtyPage();
             return false;
@@ -1006,14 +1006,14 @@ var vis = {
     },
 
     restoreFromBackButton: function()
-        // Re-enabling vis dropdowns is necessary because initForAjax() disables them on submit.
+    // Re-enabling vis dropdowns is necessary because initForAjax() disables them on submit.
     {
         $('select.normalText,select.hiddenText').prop('disabled',false);
     }
 };
 
-////////////////////////////////////////////////////////////
-// dragSelect is also known as dragZoom or shift-dragZoom //
+  ////////////////////////////////////////////////////////////
+ // dragSelect is also known as dragZoom or shift-dragZoom //
 ////////////////////////////////////////////////////////////
 var dragSelect = {
 
@@ -1060,12 +1060,12 @@ var dragSelect = {
                 pos = parsePositionWithDb(hlString);
                 imageV2.undisguiseHighlight(pos);
 
-                if (!pos)
+                if (!pos) 
                     continue; // ignore invalid position strings
                 pos.start--;
 
                 if (pos.chrom === hgTracks.chromName && pos.db === currDb
-                    &&  pos.start <= findPos.chromStart && pos.end >= findPos.chromEnd) {
+                &&  pos.start <= findPos.chromStart && pos.end >= findPos.chromEnd) {
                     return i;
                 }
             }
@@ -1073,19 +1073,19 @@ var dragSelect = {
         return null;
     },
 
-    saveHlColor : function (hlColor)
-        // save the current hlColor to the object and also the cart variable hlColor and return it.
-        // hlColor is a 6-character hex string prefixed by #
+    saveHlColor : function (hlColor) 
+    // save the current hlColor to the object and also the cart variable hlColor and return it.
+    // hlColor is a 6-character hex string prefixed by #
     {
-        dragSelect.hlColor = hlColor;
-        cart.setVars(["prevHlColor"], [dragSelect.hlColor], null, false);
-        hgTracks.prevHlColor = hlColor; // cart.setVars does not update the hgTracks-variables. The cart-variable system is a problem.
-        return hlColor;
+            dragSelect.hlColor = hlColor;
+            cart.setVars(["prevHlColor"], [dragSelect.hlColor], null, false);
+            hgTracks.prevHlColor = hlColor; // cart.setVars does not update the hgTracks-variables. The cart-variable system is a problem.
+            return hlColor;
     },
 
-    loadHlColor : function ()
-        // load hlColor from prevHlColor in the cart, or use default color, set and return it
-        // color is a 6-char hex string prefixed by #
+    loadHlColor : function () 
+    // load hlColor from prevHlColor in the cart, or use default color, set and return it
+    // color is a 6-char hex string prefixed by #
     {
         if (hgTracks.prevHlColor)
             dragSelect.hlColor = hgTracks.prevHlColor;
@@ -1095,10 +1095,10 @@ var dragSelect = {
     },
 
     highlightThisRegion: function(newPosition, doAdd, hlColor)
-        // set highlighting newPosition in server-side cart and apply the highlighting in local UI.
-        // hlColor can be undefined, in which case it defaults to the last used color or the default light blue
-        // if hlColor is set, it is also saved into the cart.
-        // if doAdd is true, the highlight is added to the current list. If it is false, all old highlights are deleted.
+    // set highlighting newPosition in server-side cart and apply the highlighting in local UI.
+    // hlColor can be undefined, in which case it defaults to the last used color or the default light blue
+    // if hlColor is set, it is also saved into the cart.
+    // if doAdd is true, the highlight is added to the current list. If it is false, all old highlights are deleted.
     {
         newPosition.replace("virt:", "multi:");
         var hlColorName = null;
@@ -1122,13 +1122,13 @@ var dragSelect = {
             hgTracks.highlight = oldHighlight+"|"+newHighlight;
         }
         // we include enableHighlightingDialog because it may have been changed by the dialog
-        var cartSettings = {             'highlight': hgTracks.highlight,
-            'enableHighlightingDialog': hgTracks.enableHighlightingDialog ? 1 : 0 };
+        var cartSettings = {             'highlight': hgTracks.highlight, 
+                          'enableHighlightingDialog': hgTracks.enableHighlightingDialog ? 1 : 0 };
 
         if (hgTracks.windows && !hgTracks.virtualSingleChrom) {
             var nonVirtChrom = "";
-            var nonVirtStart = -1;
-            var nonVirtEnd   = -1;
+            var nonVirtStart = -1; 
+            var nonVirtEnd   = -1; 
             for (i=0,len=hgTracks.windows.length; i < len; ++i) {
                 var w = hgTracks.windows[i];
                 // overlap with new position?
@@ -1139,7 +1139,7 @@ var dragSelect = {
                     var ce = e - w.virtStart + w.winStart;
                     if (nonVirtChrom === "") {
                         nonVirtChrom = w.chromName;
-                        nonVirtStart = cs;
+                        nonVirtStart = cs; 
                         nonVirtEnd   = ce;
                     } else {
                         if (w.chromName === nonVirtChrom) {
@@ -1153,7 +1153,7 @@ var dragSelect = {
             if (nonVirtChrom !== "")
                 cartSettings.nonVirtHighlight = makeHighlightString(getDb(), nonVirtChrom, nonVirtStart, (nonVirtEnd+1), hlColorName);
         } else if (hgTracks.windows && hgTracks.virtualSingleChrom) {
-            cartSettings.nonVirtHighlight = hgTracks.highlight;
+                cartSettings.nonVirtHighlight = hgTracks.highlight;
         }
         // TODO if not virt, do we need to erase cart nonVirtHighlight ?
         cart.setVarsObj(cartSettings);
@@ -1161,30 +1161,30 @@ var dragSelect = {
     },
 
     selectionEndDialog: function (newPosition)
-        // Let user choose between zoom-in and highlighting.
-    {
+    // Let user choose between zoom-in and highlighting.
+    {   
         newPosition.replace("virt:", "multi:");
         // if the user hit Escape just before, do not show this dialo
         if (dragSelect.startTime===null)
             return;
         var dragSelectDialog = $("#dragSelectDialog")[0];
         if (!dragSelectDialog) {
-            $("body").append("<div id='dragSelectDialog'>" +
-                "<p><ul>"+
-                "<li>Hold <b>Shift+drag</b> to show this dialog" +
-                "<li>Hold <b>Alt+drag</b> (Windows) or <b>Option+drag</b> (Mac) to add a highlight" +
-                "<li>Hold <b>Ctrl+drag</b> (Windows) or <b>Cmd+drag</b> (Mac) to zoom" +
-                "<li>To cancel, press <tt>Esc</tt> anytime during the drag" +
-                "<li>Using the keyboard, highlight the current position with <tt>h then m</tt>" +
-                "<li>Clear all highlights with View - Clear Highlights or <tt>h then c</tt>" +
-                "<li>Clear specific highlights with right click &gt; Remove highlight" +
-                "<li>To merely save the color for the next keyboard or right-click &gt; Highlight operations, click 'Save Color' below" +
-                "</ul></p>");
+            $("body").append("<div id='dragSelectDialog'>" + 
+                             "<p><ul>"+
+                             "<li>Hold <b>Shift+drag</b> to show this dialog" +
+                             "<li>Hold <b>Alt+drag</b> (Windows) or <b>Option+drag</b> (Mac) to add a highlight" +
+                             "<li>Hold <b>Ctrl+drag</b> (Windows) or <b>Cmd+drag</b> (Mac) to zoom" +
+                             "<li>To cancel, press <tt>Esc</tt> anytime during the drag" +
+                             "<li>Using the keyboard, highlight the current position with <tt>h then m</tt>" +
+                             "<li>Clear all highlights with View - Clear Highlights or <tt>h then c</tt>" +
+                             "<li>Clear specific highlights with right click &gt; Remove highlight" +
+                             "<li>To merely save the color for the next keyboard or right-click &gt; Highlight operations, click 'Save Color' below" +
+                             "</ul></p>");
             makeHighlightPicker("hlColor", document.getElementById("dragSelectDialog"), null);
-            $("#dragSelectDialog").append("<div style='padding-top: 4px'><input style='float:left' type='checkbox' id='disableDragHighlight'>" +
-                "<span style='border:solid 1px #DDDDDD; padding:3px;display:inline-block' id='hlNotShowAgainMsg'>Don't show this again and always zoom with shift.<br>" +
-                "Re-enable via 'View - Configure Browser' (<tt>c then f</tt>)</span></div>"+
-                "Selected chromosome position: <span id='dragSelectPosition'></span>");
+            $("#dragSelectDialog").append("<div style='padding-top: 4px'><input style='float:left' type='checkbox' id='disableDragHighlight'>" + 
+                             "<span style='border:solid 1px #DDDDDD; padding:3px;display:inline-block' id='hlNotShowAgainMsg'>Don't show this again and always zoom with shift.<br>" + 
+                             "Re-enable via 'View - Configure Browser' (<tt>c then f</tt>)</span></div>"+ 
+                             "Selected chromosome position: <span id='dragSelectPosition'></span>");
             dragSelectDialog = $("#dragSelectDialog")[0];
             // reset value
             // allow to click checkbox by clicking on the label
@@ -1231,81 +1231,81 @@ var dragSelect = {
             $("#dragSelectPosition").html(newPosition);
         }
         $(dragSelectDialog).dialog({
-            modal: true,
-            title: "Drag-and-select",
-            closeOnEscape: true,
-            resizable: false,
-            autoOpen: false,
-            revertToOriginalPos: true,
-            minWidth: 550,
-            buttons: {
-                "Zoom In": function() {
-                    // Zoom to selection
-                    $(this).dialog("option", "revertToOriginalPos", false);
-                    if ($("#disableDragHighlight").prop('checked'))
-                        hgTracks.enableHighlightingDialog = false;
-                    if (imageV2.inPlaceUpdate) {
-                        if (hgTracks.virtualSingleChrom && (newPosition.search("multi:")===0)) {
-                            newPosition = genomePos.disguisePosition(newPosition); // DISGUISE
+                modal: true,
+                title: "Drag-and-select",
+                closeOnEscape: true,
+                resizable: false,
+                autoOpen: false,
+                revertToOriginalPos: true,
+                minWidth: 550,
+                buttons: {  
+                    "Zoom In": function() {
+                        // Zoom to selection
+                        $(this).dialog("option", "revertToOriginalPos", false);
+                        if ($("#disableDragHighlight").prop('checked'))
+                            hgTracks.enableHighlightingDialog = false;
+                        if (imageV2.inPlaceUpdate) {
+                            if (hgTracks.virtualSingleChrom && (newPosition.search("multi:")===0)) {
+                                newPosition = genomePos.disguisePosition(newPosition); // DISGUISE
+                            }
+                            var params = "db=" + getDb() + "&position=" + newPosition;
+                            if (!hgTracks.enableHighlightingDialog)
+                                params += "&enableHighlightingDialog=0";
+                            imageV2.navigateInPlace(params, null, true);
+                        } else {
+                            $('body').css('cursor', 'wait');
+                            if (!hgTracks.enableHighlightingDialog)
+                                cart.setVarsObj({'enableHighlightingDialog': 0 },null,false); // async=false
+                            document.TrackHeaderForm.submit();
                         }
-                        var params = "db=" + getDb() + "&position=" + newPosition;
-                        if (!hgTracks.enableHighlightingDialog)
-                            params += "&enableHighlightingDialog=0";
-                        imageV2.navigateInPlace(params, null, true);
-                    } else {
-                        $('body').css('cursor', 'wait');
-                        if (!hgTracks.enableHighlightingDialog)
-                            cart.setVarsObj({'enableHighlightingDialog': 0 },null,false); // async=false
-                        document.TrackHeaderForm.submit();
+                        $(this).dialog("close");
+                    },
+                    "Single Highlight": function() {
+                        // Clear old highlight and Highlight selection
+                        $(imageV2.imgTbl).imgAreaSelect({hide:true});
+                        if ($("#disableDragHighlight").prop('checked'))
+                            hgTracks.enableHighlightingDialog = false;
+                        var hlColor = $("#hlColorInput").val();
+                        dragSelect.highlightThisRegion(newPosition, false, hlColor);
+                        $(this).dialog("close");
+                    },
+                    "Add Highlight": function() {
+                        // Highlight selection
+                        if ($("#disableDragHighlight").prop('checked'))
+                            hgTracks.enableHighlightingDialog = false;
+                        var hlColor = $("#hlColorInput").val();
+                        dragSelect.highlightThisRegion(newPosition, true, hlColor);
+                        $(this).dialog("close");
+                    },
+                    "Save Color": function() {
+                        var hlColor = $("#hlColorInput").val();
+                        dragSelect.saveHlColor( hlColor );
+                        $(this).dialog("close");
+                    },
+                    "Cancel": function() {
+                        $(this).dialog("close");
                     }
-                    $(this).dialog("close");
                 },
-                "Single Highlight": function() {
-                    // Clear old highlight and Highlight selection
+
+                open: function () { // Make zoom the focus/default action
+                   $(this).parents('.ui-dialog-buttonpane button:eq(0)').trigger("focus");
+                },
+
+                close: function() {
+                    // All exits to dialog should go through this
                     $(imageV2.imgTbl).imgAreaSelect({hide:true});
+                    if ($(this).dialog("option", "revertToOriginalPos"))
+                        genomePos.revertToOriginalPos();
                     if ($("#disableDragHighlight").prop('checked'))
-                        hgTracks.enableHighlightingDialog = false;
-                    var hlColor = $("#hlColorInput").val();
-                    dragSelect.highlightThisRegion(newPosition, false, hlColor);
-                    $(this).dialog("close");
-                },
-                "Add Highlight": function() {
-                    // Highlight selection
-                    if ($("#disableDragHighlight").prop('checked'))
-                        hgTracks.enableHighlightingDialog = false;
-                    var hlColor = $("#hlColorInput").val();
-                    dragSelect.highlightThisRegion(newPosition, true, hlColor);
-                    $(this).dialog("close");
-                },
-                "Save Color": function() {
-                    var hlColor = $("#hlColorInput").val();
-                    dragSelect.saveHlColor( hlColor );
-                    $(this).dialog("close");
-                },
-                "Cancel": function() {
-                    $(this).dialog("close");
+                        $(this).remove();
+                    else
+                        $(this).hide();
+                    $('body').css('cursor', ''); // Occasionally wait cursor got left behind
+                    $("#hlColorPicker").spectrum("hide");
                 }
-            },
-
-            open: function () { // Make zoom the focus/default action
-                $(this).parents('.ui-dialog-buttonpane button:eq(0)').trigger("focus");
-            },
-
-            close: function() {
-                // All exits to dialog should go through this
-                $(imageV2.imgTbl).imgAreaSelect({hide:true});
-                if ($(this).dialog("option", "revertToOriginalPos"))
-                    genomePos.revertToOriginalPos();
-                if ($("#disableDragHighlight").prop('checked'))
-                    $(this).remove();
-                else
-                    $(this).hide();
-                $('body').css('cursor', ''); // Occasionally wait cursor got left behind
-                $("#hlColorPicker").spectrum("hide");
-            }
         });
         $(dragSelectDialog).dialog('open');
-
+        
     },
 
     selectEnd: function (img, selection, event)
@@ -1328,8 +1328,8 @@ var dragSelect = {
         if (doIt) {
             // dragSelect.startTime is null if mouse has never been moved
             var singleClick = (  (selection.x2 === selection.x1)
-                || dragSelect.startTime === null
-                || (now.getTime() - dragSelect.startTime) < 100);
+                              || dragSelect.startTime === null
+                              || (now.getTime() - dragSelect.startTime) < 100);
             var newPosition = genomePos.update(img, selection, singleClick);
             newPosition.replace("virt:", "multi:");
             if (newPosition) {
@@ -1371,7 +1371,7 @@ var dragSelect = {
         var imgHeight = 0;
         if (imageV2.enabled)
             imgHeight = imageV2.imgTbl.innerHeight() - 1; // last little bit makes border look ok
-
+        
 
         // No longer disable without ruler, because shift-drag still works
         if (typeof(hgTracks) !== "undefined") {
@@ -1416,348 +1416,348 @@ var dragSelect = {
     }
 };
 
-/////////////////////////////////////
-//// Chrom Drag/Zoom/Expand code ////
+  /////////////////////////////////////
+ //// Chrom Drag/Zoom/Expand code ////
 /////////////////////////////////////
 jQuery.fn.chromDrag = function(){
-    this.each(function(){
-        // Plan:
-        // mouseDown: determine where in map: convert to img location: pxDown
-        // mouseMove: flag drag
-        // mouseUp: if no drag, then create href centered on bpDown loc with current span
-        //          if drag, then create href from bpDown to bpUp
-        //          if ctrlKey then expand selection to containing cytoBand(s)
+this.each(function(){
+    // Plan:
+    // mouseDown: determine where in map: convert to img location: pxDown
+    // mouseMove: flag drag
+    // mouseUp: if no drag, then create href centered on bpDown loc with current span
+    //          if drag, then create href from bpDown to bpUp
+    //          if ctrlKey then expand selection to containing cytoBand(s)
 
-        // Image dimensions all in pix
-        var img = { top: -1, scrolledTop: -1, height: -1, left: -1, scrolledLeft: -1, width: -1 };
-        // chrom Dimensions beg,end,size in bases, rest in pix
-        var chr = { name: "", reverse: false, beg: -1, end: -1, size: -1,
-            top: -1, bottom: -1, left: -1, right: -1, width: -1 };
-        var pxDown = 0;     // pix X location of mouseDown
-        var chrImg = $(this);
-        var mouseIsDown   = false;
-        var mouseHasMoved = false;
-        var hilite = null;
+    // Image dimensions all in pix
+    var img = { top: -1, scrolledTop: -1, height: -1, left: -1, scrolledLeft: -1, width: -1 };  
+    // chrom Dimensions beg,end,size in bases, rest in pix
+    var chr = { name: "", reverse: false, beg: -1, end: -1, size: -1,
+                top: -1, bottom: -1, left: -1, right: -1, width: -1 };   
+    var pxDown = 0;     // pix X location of mouseDown
+    var chrImg = $(this);
+    var mouseIsDown   = false;
+    var mouseHasMoved = false;
+    var hilite = null;
 
-        initialize();
+    initialize();
 
-        function initialize(){
+    function initialize(){
 
-            findDimensions();
+        findDimensions();
 
-            if (chr.top === -1)
-                warn("chromIdeo(): failed to register "+this.id);
-            else {
-                hiliteSetup();
+        if (chr.top === -1)
+            warn("chromIdeo(): failed to register "+this.id);
+        else {
+            hiliteSetup();
 
-                $('area.cytoBand').off('mousedown');  // Make sure this is only bound once
-                $('area.cytoBand').on("mousedown", function(e)
-                {   // mousedown on chrom portion of image only (map items)
-                    updateImgOffsets();
-                    pxDown = e.clientX - img.scrolledLeft;
-                    var pxY = e.clientY - img.scrolledTop;
-                    if (mouseIsDown === false
-                        && isWithin(chr.left,pxDown,chr.right) && isWithin(chr.top,pxY,chr.bottom)) {
-                        mouseIsDown = true;
-                        mouseHasMoved = false;
-
-                        $(document).on('mousemove',chromMove);
-                        $(document).on( 'mouseup', chromUp);
-                        hiliteShow(pxDown,pxDown);
-                        return false;
-                    }
-                });
-            }
-        }
-
-        function chromMove(e)
-        {   // If mouse was down, determine if dragged, then show hilite
-            if ( mouseIsDown ) {
-                var pxX = e.clientX - img.scrolledLeft;
-                var relativeX = (pxX - pxDown);
-                if (mouseHasMoved || (mouseHasMoved === false && Math.abs(relativeX) > 2)) {
-                    mouseHasMoved = true;
-                    if (isWithin(chr.left,pxX,chr.right))
-                        hiliteShow(pxDown,pxX);
-                    else if (pxX < chr.left)
-                        hiliteShow(pxDown,chr.left);
-                    else
-                        hiliteShow(pxDown,chr.right);
-                }
-            }
-        }
-        function chromUp(e)
-        {   // If mouse was down, handle final selection
-            $(document).off('mousemove',chromMove);
-            $(document).off('mouseup',chromUp);
-            chromMove(e); // Just in case
-            if (mouseIsDown) {
+            $('area.cytoBand').off('mousedown');  // Make sure this is only bound once
+            $('area.cytoBand').on("mousedown", function(e)
+            {   // mousedown on chrom portion of image only (map items)
                 updateImgOffsets();
-                var bands;
-                var pxUp = e.clientX - img.scrolledLeft;
-                var pxY  = e.clientY - img.scrolledTop;
-                if (isWithin(0,pxY,img.height)) {  // within vertical range or else cancel
-                    var selRange = { beg: -1, end: -1, width: -1 };
-                    var dontAsk = true;
+                pxDown = e.clientX - img.scrolledLeft;
+                var pxY = e.clientY - img.scrolledTop;
+                if (mouseIsDown === false
+                && isWithin(chr.left,pxDown,chr.right) && isWithin(chr.top,pxY,chr.bottom)) {
+                    mouseIsDown = true;
+                    mouseHasMoved = false;
 
-                    if (e.ctrlKey) {
-                        bands = findCytoBand(pxDown,pxUp);
-                        if (bands.end > -1) {
-                            pxDown = bands.left;
-                            pxUp   = bands.right;
-                            mouseHasMoved = true;
+                    $(document).on('mousemove',chromMove);
+                    $(document).on( 'mouseup', chromUp);
+                    hiliteShow(pxDown,pxDown);
+                    return false;
+                }
+            });
+        }
+    }
+
+    function chromMove(e)
+    {   // If mouse was down, determine if dragged, then show hilite
+        if ( mouseIsDown ) {
+            var pxX = e.clientX - img.scrolledLeft;
+            var relativeX = (pxX - pxDown);
+            if (mouseHasMoved || (mouseHasMoved === false && Math.abs(relativeX) > 2)) {
+                mouseHasMoved = true;
+                if (isWithin(chr.left,pxX,chr.right))
+                    hiliteShow(pxDown,pxX);
+                else if (pxX < chr.left)
+                    hiliteShow(pxDown,chr.left);
+                else
+                    hiliteShow(pxDown,chr.right);
+            }
+        }
+    }
+    function chromUp(e)
+    {   // If mouse was down, handle final selection
+        $(document).off('mousemove',chromMove);
+        $(document).off('mouseup',chromUp);
+        chromMove(e); // Just in case
+        if (mouseIsDown) {
+            updateImgOffsets();
+            var bands;
+            var pxUp = e.clientX - img.scrolledLeft;
+            var pxY  = e.clientY - img.scrolledTop;
+            if (isWithin(0,pxY,img.height)) {  // within vertical range or else cancel
+                var selRange = { beg: -1, end: -1, width: -1 };
+                var dontAsk = true;
+
+                if (e.ctrlKey) {
+                    bands = findCytoBand(pxDown,pxUp);
+                    if (bands.end > -1) {
+                        pxDown = bands.left;
+                        pxUp   = bands.right;
+                        mouseHasMoved = true;
+                        dontAsk = false;
+                        selRange.beg = bands.beg;
+                        selRange.end = bands.end;
+                        hiliteShow(pxDown,pxUp);
+                    }
+                }
+                else if (mouseHasMoved) {
+                    // bounded by chrom dimensions: but must remain within image!
+                    if (isWithin(-20,pxUp,chr.left)) 
+                        pxUp = chr.left;
+                    if (isWithin(chr.right,pxUp,img.width + 20))
+                        pxUp = chr.right;
+
+                    if ( isWithin(chr.left,pxUp,chr.right+1) ) {
+
+                        selRange.beg = convertToBases(pxDown);
+                        selRange.end = convertToBases(pxUp);
+
+                        if (Math.abs(selRange.end - selRange.beg) < 20)
+                            mouseHasMoved = false; // Drag so small: treat as simple click
+                        else
                             dontAsk = false;
-                            selRange.beg = bands.beg;
-                            selRange.end = bands.end;
-                            hiliteShow(pxDown,pxUp);
-                        }
                     }
-                    else if (mouseHasMoved) {
-                        // bounded by chrom dimensions: but must remain within image!
-                        if (isWithin(-20,pxUp,chr.left))
-                            pxUp = chr.left;
-                        if (isWithin(chr.right,pxUp,img.width + 20))
-                            pxUp = chr.right;
+                }
+                if (mouseHasMoved === false) { // Not else because small drag turns this off
 
-                        if ( isWithin(chr.left,pxUp,chr.right+1) ) {
-
-                            selRange.beg = convertToBases(pxDown);
-                            selRange.end = convertToBases(pxUp);
-
-                            if (Math.abs(selRange.end - selRange.beg) < 20)
-                                mouseHasMoved = false; // Drag so small: treat as simple click
-                            else
-                                dontAsk = false;
-                        }
+                    hiliteShow(pxUp,pxUp);
+                    var curWidth = hgTracks.winEnd - hgTracks.winStart;
+                    // Notice that beg is based upon up position
+                    selRange.beg = convertToBases(pxUp) - Math.round(curWidth/2); 
+                    selRange.end  = selRange.beg + curWidth;
+                }
+                if (selRange.end > -1) {
+                    // prompt, then submit for new position
+                    selRange = rangeNormalizeToChrom(selRange,chr);
+                    if (mouseHasMoved === false) { // Update highlight by converting bp back to pix
+                        pxDown = convertFromBases(selRange.beg);
+                        pxUp = convertFromBases(selRange.end);
+                        hiliteShow(pxDown,pxUp);
                     }
-                    if (mouseHasMoved === false) { // Not else because small drag turns this off
-
-                        hiliteShow(pxUp,pxUp);
-                        var curWidth = hgTracks.winEnd - hgTracks.winStart;
-                        // Notice that beg is based upon up position
-                        selRange.beg = convertToBases(pxUp) - Math.round(curWidth/2);
-                        selRange.end  = selRange.beg + curWidth;
-                    }
-                    if (selRange.end > -1) {
-                        // prompt, then submit for new position
-                        selRange = rangeNormalizeToChrom(selRange,chr);
-                        if (mouseHasMoved === false) { // Update highlight by converting bp back to pix
-                            pxDown = convertFromBases(selRange.beg);
-                            pxUp = convertFromBases(selRange.end);
-                            hiliteShow(pxDown,pxUp);
-                        }
-                        //if ((selRange.end - selRange.beg) < 50000)
-                        //    dontAsk = true;
-                        if (dontAsk
-                            || confirm("Jump to new position:\n\n"+chr.name+":"+commify(selRange.beg)+
-                                "-"+commify(selRange.end)+" size:"+commify(selRange.width)) ) {
-                            genomePos.setByCoordinates(chr.name, selRange.beg, selRange.end);
-                            // Stop the presses :0)
-                            $('area.cytoBand').on("mousedown",  function(e) { return false; });
-                            if (imageV2.backSupport) {
-                                imageV2.navigateInPlace("db=" + getDb() + "&position=" +
-                                    encodeURIComponent(genomePos.get().replace(/,/g,'')) +
+                    //if ((selRange.end - selRange.beg) < 50000)
+                    //    dontAsk = true;
+                    if (dontAsk
+                    || confirm("Jump to new position:\n\n"+chr.name+":"+commify(selRange.beg)+
+                               "-"+commify(selRange.end)+" size:"+commify(selRange.width)) ) {
+                        genomePos.setByCoordinates(chr.name, selRange.beg, selRange.end);
+                        // Stop the presses :0)
+                        $('area.cytoBand').on("mousedown",  function(e) { return false; });
+                        if (imageV2.backSupport) {
+                            imageV2.navigateInPlace("db=" + getDb() + "&position=" +
+                                    encodeURIComponent(genomePos.get().replace(/,/g,'')) + 
                                     "&findNearest=1",null,true);
-                                hiliteCancel();
-                            } else
-                                document.TrackHeaderForm.submit();
-                            return true; // Make sure the setTimeout below is not called.
-                        }
+                            hiliteCancel();
+                        } else
+                            document.TrackHeaderForm.submit();
+                        return true; // Make sure the setTimeout below is not called.
                     }
                 }
-                hiliteCancel();
-                setTimeout(posting.allowMapClicks,50);
             }
-            mouseIsDown = false;
-            mouseHasMoved = false;
+            hiliteCancel();
+            setTimeout(posting.allowMapClicks,50);
         }
+        mouseIsDown = false;
+        mouseHasMoved = false;
+    }
 
-        function isWithin(beg,here,end)
-        {   // Simple utility
-            return ( beg <= here && here < end );
-        }
-        function convertToBases(pxX)
-        {   // Simple utility to convert pix to bases
-            var offset = (pxX - chr.left)/chr.width;
-            if (chr.reverse)
-                offset = 1 - offset;
-            return Math.round(offset * chr.size);
-        }
-        function convertFromBases(bases)
-        {   // Simple utility to convert bases to pix
-            var offset = bases/chr.size;
-            if (chr.reverse)
-                offset = 1 - offset;
-            return Math.round(offset * chr.width) + chr.left;
-        }
+    function isWithin(beg,here,end)
+    {   // Simple utility
+        return ( beg <= here && here < end );
+    }
+    function convertToBases(pxX)
+    {   // Simple utility to convert pix to bases
+        var offset = (pxX - chr.left)/chr.width;
+        if (chr.reverse)
+            offset = 1 - offset;
+        return Math.round(offset * chr.size);
+    }
+    function convertFromBases(bases)
+    {   // Simple utility to convert bases to pix
+        var offset = bases/chr.size;
+        if (chr.reverse)
+            offset = 1 - offset;
+        return Math.round(offset * chr.width) + chr.left;
+    }
 
-        function findDimensions()
-        {   // Called at init: determine the dimensions of chrom from 'cytoband' map items
-            var lastX = -1;
-            $('area.cytoBand').each(function(ix) {
-                var loc = this.coords.split(",");
-                if (loc.length === 4) {
-                    var myLeft  = parseInt(loc[0]);
-                    var myRight = parseInt(loc[2]);
-                    if (chr.top === -1) {
-                        chr.left   = myLeft;
-                        chr.right  = myRight;
-                        chr.top    = parseInt(loc[1]);
-                        chr.bottom = parseInt(loc[3]);
+    function findDimensions()
+    {   // Called at init: determine the dimensions of chrom from 'cytoband' map items
+        var lastX = -1;
+        $('area.cytoBand').each(function(ix) {
+            var loc = this.coords.split(",");
+            if (loc.length === 4) {
+                var myLeft  = parseInt(loc[0]);
+                var myRight = parseInt(loc[2]);
+                if (chr.top === -1) {
+                    chr.left   = myLeft;
+                    chr.right  = myRight;
+                    chr.top    = parseInt(loc[1]);
+                    chr.bottom = parseInt(loc[3]);
+                } else {
+                    if (chr.left  > myLeft)
+                        chr.left  = myLeft;
+                    if (chr.right < parseInt(loc[2]))
+                        chr.right = parseInt(loc[2]);
+                }
+
+                var range = this.title.substr(this.title.lastIndexOf(':')+1);
+                var pos = range.split('-');
+                if (pos.length === 2) {
+                    if (chr.name.length === 0) {
+                        chr.beg = parseInt(pos[0]);
+                        //chr.end = parseInt(pos[1]);
+                        chr.name = this.title.substring(this.title.lastIndexOf(' ')+1,
+                                                        this.title.lastIndexOf(':'));
                     } else {
-                        if (chr.left  > myLeft)
-                            chr.left  = myLeft;
-                        if (chr.right < parseInt(loc[2]))
-                            chr.right = parseInt(loc[2]);
-                    }
-
-                    var range = this.title.substr(this.title.lastIndexOf(':')+1);
-                    var pos = range.split('-');
-                    if (pos.length === 2) {
-                        if (chr.name.length === 0) {
+                        if (chr.beg > parseInt(pos[0]))
                             chr.beg = parseInt(pos[0]);
-                            //chr.end = parseInt(pos[1]);
-                            chr.name = this.title.substring(this.title.lastIndexOf(' ')+1,
-                                this.title.lastIndexOf(':'));
-                        } else {
-                            if (chr.beg > parseInt(pos[0]))
-                                chr.beg = parseInt(pos[0]);
-                        }
-                        if (chr.end < parseInt(pos[1])) {
-                            chr.end = parseInt(pos[1]);
-                            if (lastX === -1)
-                                lastX = myRight;
-                            else if (lastX > myRight)
-                                chr.reverse = true;  // end is advancing, but X is not, so reverse
-                        } else if (lastX !== -1 && lastX < myRight)
-                            chr.reverse = true;      // end is not advancing, but X is, so reverse
-
                     }
-                    $(this).css( 'cursor', 'text');
-                    $(this).attr("href","");
+                    if (chr.end < parseInt(pos[1])) {
+                        chr.end = parseInt(pos[1]);
+                        if (lastX === -1)
+                            lastX = myRight;
+                        else if (lastX > myRight)
+                            chr.reverse = true;  // end is advancing, but X is not, so reverse
+                    } else if (lastX !== -1 && lastX < myRight)
+                        chr.reverse = true;      // end is not advancing, but X is, so reverse
+
                 }
-            });
-            chr.size  = (chr.end   - chr.beg );
-            chr.width = (chr.right - chr.left);
-        }
+                $(this).css( 'cursor', 'text');
+                $(this).attr("href","");
+            }
+        });
+        chr.size  = (chr.end   - chr.beg );
+        chr.width = (chr.right - chr.left);
+    }
 
-        function findCytoBand(pxDown,pxUp)
-        {   // Called when mouseup and ctrl: Find the bounding cytoband dimensions (in pix and bases)
-            var cyto = { left: -1, right: -1, beg: -1, end: -1 };
-            $('area.cytoBand').each(function(ix) {
-                var loc = this.coords.split(",");
-                if (loc.length === 4) {
-                    var myLeft  = parseInt(loc[0]);
-                    var myRight = parseInt(loc[2]);
-                    var range;
-                    var pos;
-                    if (cyto.left === -1 || cyto.left > myLeft) {
-                        if ( isWithin(myLeft,pxDown,myRight) || isWithin(myLeft,pxUp,myRight) ) {
-                            cyto.left  = myLeft;
-                            range = this.title.substr(this.title.lastIndexOf(':')+1);
-                            pos = range.split('-');
-                            if (pos.length === 2) {
-                                cyto.beg  = (chr.reverse ? parseInt(pos[1]) : parseInt(pos[0]));
-                            }
-                        }
-                    }
-                    if (cyto.right === -1 || cyto.right < myRight) {
-                        if ( isWithin(myLeft,pxDown,myRight) || isWithin(myLeft,pxUp,myRight) ) {
-                            cyto.right = myRight;
-                            range = this.title.substr(this.title.lastIndexOf(':')+1);
-                            pos = range.split('-');
-                            if (pos.length === 2) {
-                                cyto.end  = (chr.reverse ? parseInt(pos[0]) : parseInt(pos[1]));
-                            }
+    function findCytoBand(pxDown,pxUp)
+    {   // Called when mouseup and ctrl: Find the bounding cytoband dimensions (in pix and bases)
+        var cyto = { left: -1, right: -1, beg: -1, end: -1 };
+        $('area.cytoBand').each(function(ix) {
+            var loc = this.coords.split(",");
+            if (loc.length === 4) {
+                var myLeft  = parseInt(loc[0]);
+                var myRight = parseInt(loc[2]);
+                var range;
+                var pos;
+                if (cyto.left === -1 || cyto.left > myLeft) {
+                    if ( isWithin(myLeft,pxDown,myRight) || isWithin(myLeft,pxUp,myRight) ) {
+                        cyto.left  = myLeft;
+                        range = this.title.substr(this.title.lastIndexOf(':')+1);
+                        pos = range.split('-');
+                        if (pos.length === 2) {
+                            cyto.beg  = (chr.reverse ? parseInt(pos[1]) : parseInt(pos[0]));
                         }
                     }
                 }
-            });
-            return cyto;
-        }
-        function rangeNormalizeToChrom(selection,chrom)
-        {   // Called before presenting or using base range: make sure chrom selection
-            // is within chrom range
-            if (selection.end < selection.beg) {
-                var tmp = selection.end;
-                selection.end = selection.beg;
-                selection.beg = tmp;
-            }
-            selection.width = (selection.end - selection.beg);
-            selection.beg += 1;
-            if (selection.beg < chrom.beg) {
-                selection.beg = chrom.beg;
-                selection.end = chrom.beg + selection.width;
-            }
-            if (selection.end > chrom.end) {
-                selection.end = chrom.end;
-                selection.beg = chrom.end - selection.width;
-                if (selection.beg < chrom.beg) { // spans whole chrom
-                    selection.width = (selection.end - chrom.beg);
-                    selection.beg = chrom.beg + 1;
+                if (cyto.right === -1 || cyto.right < myRight) {
+                    if ( isWithin(myLeft,pxDown,myRight) || isWithin(myLeft,pxUp,myRight) ) {
+                        cyto.right = myRight;
+                        range = this.title.substr(this.title.lastIndexOf(':')+1);
+                        pos = range.split('-');
+                        if (pos.length === 2) {
+                            cyto.end  = (chr.reverse ? parseInt(pos[0]) : parseInt(pos[1]));
+                        }
+                    }
                 }
             }
-            return selection;
+        });
+        return cyto;
+    }
+    function rangeNormalizeToChrom(selection,chrom)
+    {   // Called before presenting or using base range: make sure chrom selection
+        // is within chrom range
+        if (selection.end < selection.beg) {
+            var tmp = selection.end;
+            selection.end = selection.beg;
+            selection.beg = tmp;
         }
-
-        function hiliteShow(down,cur)
-        {   // Called on mousemove, mouseup: set drag hilite dimensions
-            var topY = img.top;
-            var high = img.height;
-            var begX = -1;
-            var wide = -1;
-            if (cur < down) {
-                begX = cur + img.left;
-                wide = (down - cur);
-            } else {
-                begX = down + img.left;
-                wide = (cur - down);
+        selection.width = (selection.end - selection.beg);
+        selection.beg += 1;
+        if (selection.beg < chrom.beg) {
+            selection.beg = chrom.beg;
+            selection.end = chrom.beg + selection.width;
+        }
+        if (selection.end > chrom.end) {
+            selection.end = chrom.end;
+            selection.beg = chrom.end - selection.width;
+            if (selection.beg < chrom.beg) { // spans whole chrom
+                selection.width = (selection.end - chrom.beg);
+                selection.beg = chrom.beg + 1;
             }
-            $(hilite).css({ left: begX + 'px', width: wide + 'px', top: topY + 'px',
-                height: high + 'px', display:'' });
-            $(hilite).show();
         }
-        function hiliteCancel(left,width,top,height)
-        {   // Called on mouseup: Make green drag hilite disappear when no longer wanted
-            $(hilite).hide();
-            $(hilite).css({ left: '0px', width: '0px', top: '0px', height: '0px' });
-        }
+        return selection;
+    }
 
-        function hiliteSetup()
-        {   // Called on init: setup of drag region hilite (but don't show yet)
-            if (hilite === null) {  // setup only once
-                hilite = jQuery("<div id='chrHi'></div>");
-                $(hilite).css({ backgroundColor: 'green', opacity: 0.4, borderStyle: 'solid',
-                    borderWidth: '1px', bordercolor: '#0000FF' });
-                $(hilite).css({ display: 'none', position: 'absolute', overflow: 'hidden', zIndex: 1 });
-                jQuery($(chrImg).parents('body')).append($(hilite));
-            }
-            return hilite;
+    function hiliteShow(down,cur)
+    {   // Called on mousemove, mouseup: set drag hilite dimensions
+        var topY = img.top;
+        var high = img.height;
+        var begX = -1;
+        var wide = -1;
+        if (cur < down) {
+            begX = cur + img.left;
+            wide = (down - cur);
+        } else {
+            begX = down + img.left;
+            wide = (cur - down);
         }
+        $(hilite).css({ left: begX + 'px', width: wide + 'px', top: topY + 'px',
+                        height: high + 'px', display:'' });
+        $(hilite).show();
+    }
+    function hiliteCancel(left,width,top,height)
+    {   // Called on mouseup: Make green drag hilite disappear when no longer wanted
+        $(hilite).hide();
+        $(hilite).css({ left: '0px', width: '0px', top: '0px', height: '0px' });
+    }
 
-        function updateImgOffsets()
-        {   // Called on mousedown: Gets the current offsets
-            var offs = $(chrImg).offset();
-            img.top  = Math.round(offs.top );
-            img.left = Math.round(offs.left);
-            img.scrolledTop  = img.top  - $("body").scrollTop();
-            img.scrolledLeft = img.left - $("body").scrollLeft();
-            if (theClient.isIePre11()) {
-                img.height = $(chrImg).outerHeight();
-                img.width  = $(chrImg).outerWidth();
-            } else {
-                img.height = $(chrImg).height();
-                img.width  = $(chrImg).width();
-            }
-            return img;
+    function hiliteSetup()
+    {   // Called on init: setup of drag region hilite (but don't show yet)
+        if (hilite === null) {  // setup only once
+            hilite = jQuery("<div id='chrHi'></div>");
+            $(hilite).css({ backgroundColor: 'green', opacity: 0.4, borderStyle: 'solid',
+                            borderWidth: '1px', bordercolor: '#0000FF' });
+            $(hilite).css({ display: 'none', position: 'absolute', overflow: 'hidden', zIndex: 1 });
+            jQuery($(chrImg).parents('body')).append($(hilite));
         }
-    });
+        return hilite;
+    }
+
+    function updateImgOffsets()
+    {   // Called on mousedown: Gets the current offsets
+        var offs = $(chrImg).offset();
+        img.top  = Math.round(offs.top );
+        img.left = Math.round(offs.left);
+        img.scrolledTop  = img.top  - $("body").scrollTop();
+        img.scrolledLeft = img.left - $("body").scrollLeft();
+        if (theClient.isIePre11()) {
+            img.height = $(chrImg).outerHeight();
+            img.width  = $(chrImg).outerWidth();
+        } else {
+            img.height = $(chrImg).height();
+            img.width  = $(chrImg).width();
+        }
+        return img;
+    }
+});
 };
 
 
 
-//////////////////////////
-//// Drag Scroll code ////
+  //////////////////////////
+ //// Drag Scroll code ////
 //////////////////////////
 jQuery.fn.panImages = function(){
     // globals across all panImages
@@ -1769,172 +1769,172 @@ jQuery.fn.panImages = function(){
     var portalWidth = 0;
     var portalAbsoluteX = 0;
     var savedPosition;
-    var highlightAreas  = null; // Used to ensure dragSelect highlight will scroll.
+    var highlightAreas  = null; // Used to ensure dragSelect highlight will scroll. 
 
     this.each(function(){
 
-        var pic;
-        var pan;
+    var pic;
+    var pan;
 
-        if ( $(this).is("img") ) {
-            pan = $(this).parent("div");
-            pic = $(this);
-        }
-        else if ( $(this).is("div.scroller")  ) {
-            pan = $(this);
-            pic = $(this).children("img#panImg"); // Get the real pic
-        }
+    if ( $(this).is("img") ) {
+        pan = $(this).parent("div");
+        pic = $(this);
+    }
+    else if ( $(this).is("div.scroller")  ) {
+        pan = $(this);
+        pic = $(this).children("img#panImg"); // Get the real pic
+    }
 
-        if (!pan || !pic) {
-            throw "Not a div with child image! 'panImages' can only be used with divs contain images.";
-        }
+    if (!pan || !pic) {
+        throw "Not a div with child image! 'panImages' can only be used with divs contain images.";
+    }
 
-        // globals across all panImages
-        portalWidth     = $(pan).width();
-        portalAbsoluteX = $(pan).offset().left;
-        // globals to one panImage
-        var newX        = 0;
-        var mouseDownX  = 0;
-        var mouseIsDown = false;
-        var beyondImage = false;
-        var atEdge      = false;
+    // globals across all panImages
+    portalWidth     = $(pan).width();
+    portalAbsoluteX = $(pan).offset().left;
+    // globals to one panImage
+    var newX        = 0;
+    var mouseDownX  = 0;
+    var mouseIsDown = false;
+    var beyondImage = false;
+    var atEdge      = false;
 
-        initialize();
+    initialize();
 
-        function initialize(){
+    function initialize(){
 
-            $(pan).parents('td.tdData').on("mousemove", function(e) {
-                if (e.shiftKey)
-                    $(this).css('cursor',"crosshair");  // shift-dragZoom
-                else if ( theClient.isIePre11() )     // IE will override map item cursors if this gets set
-                    $(this).css('cursor',"");  // normal pointer when not over clickable item
-            });
+        $(pan).parents('td.tdData').on("mousemove", function(e) {
+            if (e.shiftKey)
+                $(this).css('cursor',"crosshair");  // shift-dragZoom
+            else if ( theClient.isIePre11() )     // IE will override map item cursors if this gets set
+                $(this).css('cursor',"");  // normal pointer when not over clickable item
+        });
 
-            panAdjustHeight(prevX);
+        panAdjustHeight(prevX);
 
-            pan.on("mousedown", function(e){
-                if (e.which > 1 || e.button > 1 || e.shiftKey || e.metaKey || e.altKey || e.ctrlKey)
-                    return true;
-                if (mouseIsDown === false) {
-                    if (rightClick.menu) {
-                        rightClick.menu.hide();
-                    }
-                    mouseIsDown = true;
-                    mouseDownX = e.clientX;
-                    highlightAreas = $('.highlightItem');
-                    atEdge = (!beyondImage && (prevX >= leftLimit || prevX <= rightLimit));
-                    $(document).on('mousemove',panner);
-                    $(document).on('mouseup', panMouseUp);  // Will exec only once
-                    return false;
+        pan.on("mousedown", function(e){
+             if (e.which > 1 || e.button > 1 || e.shiftKey || e.metaKey || e.altKey || e.ctrlKey)
+                 return true;
+            if (mouseIsDown === false) {
+                if (rightClick.menu) {
+                    rightClick.menu.hide();
                 }
-            });
-        }
+                mouseIsDown = true;
+                mouseDownX = e.clientX;
+                highlightAreas = $('.highlightItem');
+                atEdge = (!beyondImage && (prevX >= leftLimit || prevX <= rightLimit));
+                $(document).on('mousemove',panner);
+                $(document).on('mouseup', panMouseUp);  // Will exec only once
+                return false;
+            }
+        });
+    }
 
-        function panner(e) {
-            //if (!e) e = window.event;
-            if ( mouseIsDown ) {
-                var relativeX = (e.clientX - mouseDownX);
+    function panner(e) {
+        //if (!e) e = window.event;
+        if ( mouseIsDown ) {
+            var relativeX = (e.clientX - mouseDownX);
 
-                if (relativeX !== 0) {
-                    if (posting.mapClicksAllowed()) {
-                        // need to throw up a z-index div.  Wait mask?
-                        savedPosition = genomePos.get();
-                        dragMaskShow();
-                        posting.blockMapClicks();
-                    }
-                    var decelerator = 1;
-                    //var wingSize    = 1000; // 0 stops the scroll at the edges.
-                    // Remeber that offsetX (prevX) is negative
-                    newX = prevX + relativeX;
-                    if ( newX >= leftLimit ) { // scrolled all the way to the left
-                        if (atEdge) {  // Do not drag straight off edge.  Force second drag
-                            beyondImage = true;
-                            newX = leftLimit + (newX - leftLimit)/decelerator;// slower
-                            //if (newX >= leftLimit + wingSize) // Don't go too far over the edge!
-                            //    newX =  leftLimit + wingSize;
-                        } else
-                            newX = leftLimit;
-
-                    } else if ( newX < rightLimit ) { // scrolled all the way to the right
-                        if (atEdge) {  // Do not drag straight off edge.  Force second drag
-                            beyondImage = true;
-                            newX = rightLimit - (rightLimit - newX)/decelerator;// slower
-                            //if (newX < rightLimit - wingSize) // Don't go too far over the edge!
-                            //    newX = rightLimit - wingSize;
-                        } else
-                            newX = rightLimit;
-
-                    } else if (newX >= rightLimit && newX < leftLimit)
-                        beyondImage = false; // could have scrolled back without mouse up
-
-                    posStatus = panUpdatePosition(newX,true);
-                    newX = posStatus.newX;
-                    // do not update highlights if we are at the end of a chromsome
-                    if (!posStatus.isOutsideChrom)
-                        scrollHighlight(relativeX);
-
-                    var nowPos = newX.toString() + "px";
-                    $(".panImg").css( {'left': nowPos });
-                    $('.tdData').css( {'backgroundPosition': nowPos } );
-                    if (!only1xScrolling)
-                        panAdjustHeight(newX);  // Will dynamically resize image while scrolling.
+            if (relativeX !== 0) {
+                if (posting.mapClicksAllowed()) {
+                    // need to throw up a z-index div.  Wait mask?
+                    savedPosition = genomePos.get();
+                    dragMaskShow();
+                    posting.blockMapClicks();
                 }
+                var decelerator = 1;
+                //var wingSize    = 1000; // 0 stops the scroll at the edges.
+                // Remeber that offsetX (prevX) is negative
+                newX = prevX + relativeX;
+                if ( newX >= leftLimit ) { // scrolled all the way to the left
+                    if (atEdge) {  // Do not drag straight off edge.  Force second drag
+                        beyondImage = true;
+                        newX = leftLimit + (newX - leftLimit)/decelerator;// slower
+                        //if (newX >= leftLimit + wingSize) // Don't go too far over the edge!
+                        //    newX =  leftLimit + wingSize;
+                    } else
+                        newX = leftLimit;
+
+                } else if ( newX < rightLimit ) { // scrolled all the way to the right
+                    if (atEdge) {  // Do not drag straight off edge.  Force second drag
+                        beyondImage = true;
+                        newX = rightLimit - (rightLimit - newX)/decelerator;// slower
+                        //if (newX < rightLimit - wingSize) // Don't go too far over the edge!
+                        //    newX = rightLimit - wingSize;
+                    } else
+                        newX = rightLimit;
+
+                } else if (newX >= rightLimit && newX < leftLimit)
+                    beyondImage = false; // could have scrolled back without mouse up
+
+                posStatus = panUpdatePosition(newX,true);
+                newX = posStatus.newX;
+                // do not update highlights if we are at the end of a chromsome
+                if (!posStatus.isOutsideChrom)
+                    scrollHighlight(relativeX);
+
+                var nowPos = newX.toString() + "px";
+                $(".panImg").css( {'left': nowPos });
+                $('.tdData').css( {'backgroundPosition': nowPos } );
+                if (!only1xScrolling)
+                    panAdjustHeight(newX);  // Will dynamically resize image while scrolling.
             }
         }
-        function panMouseUp(e) {  // Must be a separate function instead of pan.mouseup event.
-            //if (!e) e = window.event;
-            if (mouseIsDown) {
+    }
+    function panMouseUp(e) {  // Must be a separate function instead of pan.mouseup event.
+        //if (!e) e = window.event;
+        if (mouseIsDown) {
 
-                dragMaskClear();
-                $(document).off('mousemove',panner);
-                $(document).off('mouseup',panMouseUp);
-                mouseIsDown = false;
-                // timeout incase the dragSelect.selectEnd was over a map item. select takes precedence.
-                setTimeout(posting.allowMapClicks,50);
+            dragMaskClear();
+            $(document).off('mousemove',panner);
+            $(document).off('mouseup',panMouseUp);
+            mouseIsDown = false;
+            // timeout incase the dragSelect.selectEnd was over a map item. select takes precedence.
+            setTimeout(posting.allowMapClicks,50); 
 
-                // Outside image?  Then abandon.
-                var curY = e.pageY;
-                var imgTbl = $('#imgTbl');
-                var north = $(imgTbl).offset().top;
-                var south = north + $(imgTbl).height();
-                if (curY < north || curY > south) {
-                    atEdge = false;
-                    beyondImage = false;
-                    if (savedPosition)
-                        genomePos.set(savedPosition);
-                    var oldPos = prevX.toString() + "px";
-                    $(".panImg").css( {'left': oldPos });
-                    $('.tdData').css( {'backgroundPosition': oldPos } );
-                    if (highlightAreas)
-                        imageV2.drawHighlights();
-                    return true;
-                }
+            // Outside image?  Then abandon.
+            var curY = e.pageY;
+            var imgTbl = $('#imgTbl');
+            var north = $(imgTbl).offset().top;
+            var south = north + $(imgTbl).height();
+            if (curY < north || curY > south) {
+                atEdge = false;
+                beyondImage = false;
+                if (savedPosition)
+                    genomePos.set(savedPosition);
+                var oldPos = prevX.toString() + "px";
+                $(".panImg").css( {'left': oldPos });
+                $('.tdData').css( {'backgroundPosition': oldPos } );
+                if (highlightAreas)
+                    imageV2.drawHighlights();
+                return true;
+            }
 
-                // Do we need to fetch anything?
-                if (beyondImage) {
-                    if (imageV2.inPlaceUpdate) {
-                        var pos = parsePosition(genomePos.get());
-                        imageV2.navigateInPlace("db=" + getDb() + "&position=" +
+            // Do we need to fetch anything?
+            if (beyondImage) {
+                if (imageV2.inPlaceUpdate) {
+                    var pos = parsePosition(genomePos.get());
+                    imageV2.navigateInPlace("db=" + getDb() + "&position=" +
                             encodeURIComponent(pos.chrom + ":" + pos.start + "-" + pos.end),
                             null, true);
-                    } else {
-                        document.TrackHeaderForm.submit();
-                    }
-                    return true; // Make sure the setTimeout below is not called.
+                } else {
+                    document.TrackHeaderForm.submit();
                 }
+                return true; // Make sure the setTimeout below is not called.
+            }
 
-                // Just a normal scroll within a >1X image
-                if (prevX !== newX) {
-                    prevX = newX;
-                    if (!only1xScrolling) {
-                        //panAdjustHeight(newX); // Will resize image AFTER scrolling.
-                        // Important, since AJAX could lead to reinit after this within bounds scroll
-                        hgTracks.imgBoxPortalOffsetX = (prevX * -1) - hgTracks.imgBoxLeftLabel;
-                        hgTracks.imgBoxPortalLeft = newX.toString() + "px";
-                    }
+            // Just a normal scroll within a >1X image
+            if (prevX !== newX) {
+                prevX = newX;
+                if (!only1xScrolling) {
+                    //panAdjustHeight(newX); // Will resize image AFTER scrolling.
+                    // Important, since AJAX could lead to reinit after this within bounds scroll
+                    hgTracks.imgBoxPortalOffsetX = (prevX * -1) - hgTracks.imgBoxLeftLabel;
+                    hgTracks.imgBoxPortalLeft = newX.toString() + "px";
                 }
             }
         }
+    }
     });  // end of this.each(function(){
 
     function panUpdatePosition(newOffsetX,bounded)
@@ -1948,10 +1948,10 @@ jQuery.fn.panImages = function(){
         var newPortalStart = 0;
         if (hgTracks.revCmplDisp)
             newPortalStart = closedPortalStart +     // As offset goes down, so do bases seen.
-                Math.round(portalScrolledX*hgTracks.imgBoxBasesPerPixel);
+                                Math.round(portalScrolledX*hgTracks.imgBoxBasesPerPixel);
         else
             newPortalStart = closedPortalStart -     // As offset goes down, bases seen goes up!
-                Math.round(portalScrolledX*hgTracks.imgBoxBasesPerPixel);
+                                Math.round(portalScrolledX*hgTracks.imgBoxBasesPerPixel);
         if (newPortalStart < hgTracks.chromStart && bounded) {     // Stay within bounds
             newPortalStart = hgTracks.chromStart;
             recalculate = true;
@@ -1966,7 +1966,7 @@ jQuery.fn.panImages = function(){
             var newPos = hgTracks.chromName + ":" + newPortalStart + "-" + newPortalEnd;
             genomePos.set(newPos); // no need to change the size
         }
-        if (recalculate && hgTracks.imgBoxBasesPerPixel > 0) {
+        if (recalculate && hgTracks.imgBoxBasesPerPixel > 0) { 
             // Need to recalculate X for bounding drag
             portalScrolledX = (closedPortalStart - newPortalStart) / hgTracks.imgBoxBasesPerPixel;
             newOffsetX = portalScrolledX - (hgTracks.imgBoxPortalOffsetX+hgTracks.imgBoxLeftLabel);
@@ -1979,7 +1979,7 @@ jQuery.fn.panImages = function(){
     }
     function mapTopAndBottom(mapName,east,west)
     {
-        // Find the top and bottom px given left and right boundaries
+    // Find the top and bottom px given left and right boundaries
         var mapPortal = { top: -10, bottom: -10 };
         var items = $("map[name='"+mapName+"']").children();
         if ($(items).length>0) {
@@ -1994,9 +1994,9 @@ jQuery.fn.panImages = function(){
                         mapPortal.top    = atop;
                         mapPortal.bottom = abottom;
                     } else if (mapPortal.top > atop) {
-                        mapPortal.top = atop;
+                            mapPortal.top = atop;
                     } else if (mapPortal.bottom < abottom) {
-                        mapPortal.bottom = abottom;
+                            mapPortal.bottom = abottom;
                     }
                 }
             });
@@ -2057,7 +2057,7 @@ jQuery.fn.panImages = function(){
         dragMaskResize();  // Resizes the dragMask to match current image size
     }
 
-    function dragMaskShow()
+    function dragMaskShow() 
     {   // Sets up the dragMask to show grabbing cursor within image
         // and not allowed north and south of image
         var imgTbl = $('#imgTbl');
@@ -2071,11 +2071,11 @@ jQuery.fn.panImages = function(){
         $('body').css('cursor','not-allowed');
         $(dragMask).css('cursor',"url(../images/grabbing.cur),w-resize");
         $(dragMask).css({opacity:0.0,display:'block',
-            top: $(imgTbl).position().top.toString() + 'px',
-            height: $(imgTbl).height().toString() + 'px' });
+                        top: $(imgTbl).position().top.toString() + 'px',
+                        height: $(imgTbl).height().toString() + 'px' });
     }
 
-    function dragMaskResize()
+    function dragMaskResize() 
     {   // Resizes dragMask (called when image is dynamically resized in >1x scrolling)
         var imgTbl = $('#imgTbl');
         // Find or create the waitMask (which masks the whole page)
@@ -2092,9 +2092,9 @@ jQuery.fn.panImages = function(){
             $(dragMask).hide();
     }
 
-    function scrollHighlight(relativeX)
+    function scrollHighlight(relativeX) 
     // Scrolls the highlight region if one exists
-    {
+    {        
         if (highlightAreas) {
             for (i=0; i<highlightAreas.length; i++) {
                 highlightArea = highlightAreas[i];
@@ -2103,9 +2103,9 @@ jQuery.fn.panImages = function(){
                 var hiDefinedLeft  = $(highlightArea).data('leftPixels');
                 var hiDefinedWidth = $(highlightArea).data('widthPixels');
                 hiOffset.left = Math.max(hiDefinedLeft + relativeX,
-                    portalAbsoluteX);
+                                         portalAbsoluteX);
                 var right     = Math.min(hiDefinedLeft + hiDefinedWidth + relativeX,
-                    portalAbsoluteX + portalWidth);
+                                         portalAbsoluteX + portalWidth);
                 var newWidth = Math.max(right - hiOffset.left,0);
                 if (hiDefinedWidth !== newWidth)
                     $(highlightArea).width(newWidth);
@@ -2116,8 +2116,8 @@ jQuery.fn.panImages = function(){
 
 };
 
-///////////////////////////////////////
-//// rightClick (aka context menu) ////
+  ///////////////////////////////////////
+ //// rightClick (aka context menu) ////
 ///////////////////////////////////////
 var rightClick = {
 
@@ -2157,7 +2157,7 @@ var rightClick = {
     },
     hideTracks: function (ids)
         /* hide specified list of tracks, take care to hide parents rather than children, whenever possible. This is
-         * addressing a basic problem of how we handle container tracks: if you right-click hide the last child, the container is still
+         * addressing a basic problem of how we handle container tracks: if you right-click hide the last child, the container is still 
          * in the track list on the screen as not-hidden, but there are no
          * tracks shown of this container. This is confusing for the user. The
          * code below analyzes the track hierarchy and finds out if hiding a
@@ -2187,15 +2187,15 @@ var rightClick = {
                 // The problem is that it's not easy to find out if there is an easier way to hide them, the code
                 // would have to go over all possible parents, not just topParents. Maybe one day.
                 //if (tdbIsSubtrack(rec)) {
-                //  cartVars.push(childName+"_sel");
-                //   cartVals.push('0');
+                 //  cartVars.push(childName+"_sel");
+                 //   cartVals.push('0');
                 //}
             }
 
             // and set the lone parent to hide in the cart
             cartVars.push(loneParent);
             cartVals.push('hide');  // need to explicitely set to "hide", not "[]", to hide the default tracks
-
+             
             // update the track list below the image
             vis.update(loneParent, 'hide');
             rightClick.hideLegends();
@@ -2267,8 +2267,8 @@ var rightClick = {
     windowOpenFailedMsg: function ()
     {
         warn("Your web browser prevented us from opening a new window.\n\n" +
-            "Please change your browser settings to allow pop-up windows from " +
-            document.domain + ".");
+             "Please change your browser settings to allow pop-up windows from " +
+             document.domain + ".");
     },
 
     handleZoomCodon: function (response, status)
@@ -2300,7 +2300,7 @@ var rightClick = {
     {   // replacement for prompt; avoids misleading/confusing security warnings which are caused
         // by prompt in IE 7+.   Callback is called if user presses "OK".
         $("body").append("<div id = 'myPrompt'><div id='dialog' title='Basic dialog'><form>" +
-            msg + "<input id='myPromptText' value=''></form>");
+                            msg + "<input id='myPromptText' value=''></form>");
         $('#myPromptText').on('keypress', function(e) {
             if (e.which === 13) {  // listens for return key
                 e.preventDefault();   // prevents return from also submitting whole form
@@ -2309,22 +2309,22 @@ var rightClick = {
             }
         });
         $("#myPrompt").dialog({
-            modal: true,
-            closeOnEscape: true,
-            buttons: { "OK": function() {
-                    var myPromptText = $("#myPromptText").val();
-                    $(this).dialog("close");
-                    callback(myPromptText);
-                }
-            }
-        });
+                                modal: true,
+                                closeOnEscape: true,
+                                buttons: { "OK": function() {
+                                                    var myPromptText = $("#myPromptText").val();
+                                                    $(this).dialog("close");
+                                                    callback(myPromptText);
+                                                }
+                                        }
+                            });
     },
 
     hit: function (menuItemClicked, menuObject, cmd, args)
     {
         setTimeout( function() {
-            rightClick.hitFinish(menuItemClicked, menuObject, cmd, args);
-        }, 1);
+                        rightClick.hitFinish(menuItemClicked, menuObject, cmd, args);
+                    }, 1);
     },
 
     hitFinish: function (menuItemClicked, menuObject, cmd, args)
@@ -2336,126 +2336,126 @@ var rightClick = {
         var row = null;
         var rows = null;
         var selectUpdated = null;
-        function mySuccess() {}
+                function mySuccess() {}
         if (menuObject.shown) {
             // warn("Spinning: menu is still shown");
             setTimeout(function() { rightClick.hitFinish(menuItemClicked, menuObject, cmd); }, 10);
             return;
         }
         if (cmd === 'selectWholeGene' || cmd === 'getDna' || cmd === 'highlightItem') {
-            // bring whole gene into view or redirect to DNA screen.
-            href = rightClick.selectedMenuItem.href;
-            var chrom, chromStart, chromEnd;
-            // Many links leave out the chrom (b/c it's in the server side cart as "c")
-            // var chrom = hgTracks.chromName; // This is no longer acceptable
-            // with multi-window capability drawing multiple positions on multiple chroms.
-            var a = /hgg_chrom=(\w+)&/.exec(href);
-            if (a) {
-                if (a && a[1])
-                    chrom = a[1];
-                a = /hgg_start=(\d+)/.exec(href);
-                if (a && a[1])
-                    chromStart = parseInt(a[1]) + 1;
-                a = /hgg_end=(\d+)/.exec(href);
-                if (a && a[1])
-                    chromEnd = parseInt(a[1]);
-            } else {
-                // a = /hgc.*\W+c=(\w+)/.exec(href);
-                a = /hgc.*\W+c=(\w+)/.exec(href);
-                if (a && a[1])
-                    chrom = a[1];
-                a = /o=(\d+)/.exec(href);
-                if (a && a[1])
-                    chromStart = parseInt(a[1]) + 1;
-                a = /t=(\d+)/.exec(href);
-                if (a && a[1])
-                    chromEnd = parseInt(a[1]);
-            }
-            if (!chrom || chrom.length === 0 || !chromStart || !chromEnd) {// 1-based chromStart
-                warn("couldn't parse out genomic coordinates");
-            } else {
-                if (cmd === 'getDna') {
-                    // NOTE: this should be shared with URL generation for getDna blue bar menu
-                    url = "../cgi-bin/hgc?g=getDna&i=mixed&c=" + chrom;
-                    url += "&l=" + (chromStart - 1) + "&r=" + chromEnd;
-                    url += "&db=" + getDb() + "&hgsid=" + getHgsid();
-                    if ( ! window.open(url) ) {
-                        rightClick.windowOpenFailedMsg();
-                    }
-                } else if (cmd === 'highlightItem') {
-                    if (hgTracks.windows && !hgTracks.virtualSingleChrom) {
-                        // orig way only worked if the entire item was visible in the windows.
-                        //var result = genomePos.chromToVirtChrom(chrom, parseInt(chromStart-1), parseInt(chromEnd));
-
-                        var result = genomePos.convertChromPosToVirtCoords(chrom, parseInt(chromStart-1), parseInt(chromEnd));
-
-                        if (result.chromStart != -1)
-                        {
-                            var newPos2 = hgTracks.chromName+":"+(result.chromStart+1)+"-"+result.chromEnd;
-                            dragSelect.highlightThisRegion(newPos2, true);
-                        }
-
-                    } else {
-                        var newChrom = hgTracks.chromName;
-                        if (hgTracks.windows && hgTracks.virtualSingleChrom) {
-                            newChrom = hgTracks.windows[0].chromName;
-                        }
-                        var newPos3 = newChrom+":"+(parseInt(chromStart))+"-"+parseInt(chromEnd);
-                        dragSelect.highlightThisRegion(newPos3, true);
-                    }
+                // bring whole gene into view or redirect to DNA screen.
+                href = rightClick.selectedMenuItem.href;
+                var chrom, chromStart, chromEnd;
+                // Many links leave out the chrom (b/c it's in the server side cart as "c")
+                // var chrom = hgTracks.chromName; // This is no longer acceptable
+                // with multi-window capability drawing multiple positions on multiple chroms.
+                var a = /hgg_chrom=(\w+)&/.exec(href);
+                if (a) {
+                    if (a && a[1])
+                        chrom = a[1];
+                    a = /hgg_start=(\d+)/.exec(href);
+                    if (a && a[1])
+                        chromStart = parseInt(a[1]) + 1;
+                    a = /hgg_end=(\d+)/.exec(href);
+                    if (a && a[1])
+                        chromEnd = parseInt(a[1]);
                 } else {
-                    var newPosition = genomePos.setByCoordinates(chrom, chromStart, chromEnd);
-                    var reg = new RegExp("hgg_gene=([^&]+)");
-                    var b = reg.exec(href);
-                    var name;
-                    // pull item name out of the url so we can set hgFind.matches (redmine 3062)
-                    if (b && b[1]) {
-                        name = b[1];
+                    // a = /hgc.*\W+c=(\w+)/.exec(href);
+                    a = /hgc.*\W+c=(\w+)/.exec(href);
+                    if (a && a[1])
+                        chrom = a[1];
+                    a = /o=(\d+)/.exec(href);
+                    if (a && a[1])
+                        chromStart = parseInt(a[1]) + 1;
+                    a = /t=(\d+)/.exec(href);
+                    if (a && a[1])
+                        chromEnd = parseInt(a[1]);
+                }
+                if (!chrom || chrom.length === 0 || !chromStart || !chromEnd) {// 1-based chromStart
+                    warn("couldn't parse out genomic coordinates");
+                } else {
+                    if (cmd === 'getDna') {
+                        // NOTE: this should be shared with URL generation for getDna blue bar menu
+                        url = "../cgi-bin/hgc?g=getDna&i=mixed&c=" + chrom;
+                        url += "&l=" + (chromStart - 1) + "&r=" + chromEnd;
+                        url += "&db=" + getDb() + "&hgsid=" + getHgsid();
+                        if ( ! window.open(url) ) {
+                            rightClick.windowOpenFailedMsg();
+                        }
+                    } else if (cmd === 'highlightItem') {
+                        if (hgTracks.windows && !hgTracks.virtualSingleChrom) {
+                            // orig way only worked if the entire item was visible in the windows.
+                            //var result = genomePos.chromToVirtChrom(chrom, parseInt(chromStart-1), parseInt(chromEnd));
+
+                            var result = genomePos.convertChromPosToVirtCoords(chrom, parseInt(chromStart-1), parseInt(chromEnd));
+
+                            if (result.chromStart != -1)
+                                {
+                                var newPos2 = hgTracks.chromName+":"+(result.chromStart+1)+"-"+result.chromEnd;
+                                dragSelect.highlightThisRegion(newPos2, true);
+                                }
+
+                        } else {
+                            var newChrom = hgTracks.chromName;
+                            if (hgTracks.windows && hgTracks.virtualSingleChrom) {
+                                newChrom = hgTracks.windows[0].chromName;
+                            }
+                            var newPos3 = newChrom+":"+(parseInt(chromStart))+"-"+parseInt(chromEnd);
+                            dragSelect.highlightThisRegion(newPos3, true);
+                        }
                     } else {
-                        reg = new RegExp("[&?]i=([^&]+)");
-                        b = reg.exec(href);
+                        var newPosition = genomePos.setByCoordinates(chrom, chromStart, chromEnd);
+                        var reg = new RegExp("hgg_gene=([^&]+)");
+                        var b = reg.exec(href);
+                        var name;
+                        // pull item name out of the url so we can set hgFind.matches (redmine 3062)
                         if (b && b[1]) {
                             name = b[1];
+                        } else {
+                            reg = new RegExp("[&?]i=([^&]+)");
+                            b = reg.exec(href);
+                            if (b && b[1]) {
+                                name = b[1];
+                            }
+                        }
+                        if (imageV2.inPlaceUpdate) {
+                            // XXXX This attempt to "update whole track image in place" didn't work
+                            // for a variety of reasons (e.g. safari doesn't parse map when we
+                            // update on the client side), so this is currently dead code.
+                            // However, this now works in all other browsers, so we may turn this
+                            // on for non-safari browsers (see redmine #4667).
+                            jQuery('body').css('cursor', '');
+                            var data = "hgt.trackImgOnly=1&hgt.ideogramToo=1&position=" +
+                                       newPosition + "&hgsid=" + getHgsid() + "&db=" + getDb();
+                            if (name)
+                                data += "&hgFind.matches=" + name;
+                            $.ajax({
+                                    type: "GET",
+                                    url: "../cgi-bin/hgTracks",
+                                    data: cart.addUpdatesToUrl(data),
+                                    dataType: "html",
+                                    trueSuccess: imageV2.updateImgAndMap,
+                                    success: catchErrorOrDispatch,
+                                    error: errorHandler,
+                                    cmd: cmd,
+                                    loadingId: showLoadingImage("imgTbl"),
+                                    cache: false
+                                });
+                        } else {
+                            // do a full page refresh to update hgTracks image
+                            jQuery('body').css('cursor', 'wait');
+                            var ele;
+                            if (document.TrackForm)
+                                ele = document.TrackForm;
+                            else
+                                ele = document.TrackHeaderForm;
+                            if (name)
+                                // Add or update form input with gene to highlight
+                                suggestBox.updateFindMatches(name);
+                            ele.submit();
                         }
                     }
-                    if (imageV2.inPlaceUpdate) {
-                        // XXXX This attempt to "update whole track image in place" didn't work
-                        // for a variety of reasons (e.g. safari doesn't parse map when we
-                        // update on the client side), so this is currently dead code.
-                        // However, this now works in all other browsers, so we may turn this
-                        // on for non-safari browsers (see redmine #4667).
-                        jQuery('body').css('cursor', '');
-                        var data = "hgt.trackImgOnly=1&hgt.ideogramToo=1&position=" +
-                            newPosition + "&hgsid=" + getHgsid() + "&db=" + getDb();
-                        if (name)
-                            data += "&hgFind.matches=" + name;
-                        $.ajax({
-                            type: "GET",
-                            url: "../cgi-bin/hgTracks",
-                            data: cart.addUpdatesToUrl(data),
-                            dataType: "html",
-                            trueSuccess: imageV2.updateImgAndMap,
-                            success: catchErrorOrDispatch,
-                            error: errorHandler,
-                            cmd: cmd,
-                            loadingId: showLoadingImage("imgTbl"),
-                            cache: false
-                        });
-                    } else {
-                        // do a full page refresh to update hgTracks image
-                        jQuery('body').css('cursor', 'wait');
-                        var ele;
-                        if (document.TrackForm)
-                            ele = document.TrackForm;
-                        else
-                            ele = document.TrackHeaderForm;
-                        if (name)
-                            // Add or update form input with gene to highlight
-                            suggestBox.updateFindMatches(name);
-                        ele.submit();
-                    }
                 }
-            }
         } else if (cmd === 'zoomCodon' || cmd === 'zoomExon') {
             var num, ajaxCmd, msg;
             if (cmd === 'zoomCodon') {
@@ -2467,25 +2467,25 @@ var rightClick = {
             }
             rightClick.myPrompt(msg, function(results) {
                 $.ajax({
-                    type: "GET",
-                    url: "../cgi-bin/hgApi",
-                    data: cart.varsToUrlData({ 'hgsid': getHgsid(), 'db': getDb(), 'cmd': ajaxCmd, 'num': results,
-                        'table': args.table, 'name': args.name, 'chrom': hgTracks.chromName}),
-                    trueSuccess: rightClick.handleZoomCodon,
-                    success: catchErrorOrDispatch,
-                    error: errorHandler,
-                    cache: true
-                });
-            });
+                        type: "GET",
+                        url: "../cgi-bin/hgApi",
+                        data: cart.varsToUrlData({ 'hgsid': getHgsid(), 'db': getDb(), 'cmd': ajaxCmd, 'num': results,
+                              'table': args.table, 'name': args.name, 'chrom': hgTracks.chromName}),
+                        trueSuccess: rightClick.handleZoomCodon,
+                        success: catchErrorOrDispatch,
+                        error: errorHandler,
+                        cache: true
+                    });
+                    });
         } else if (cmd === 'hgTrackUi_popup') {
 
             // Launches the popup but shields the ajax with a waitOnFunction
-            popUp.hgTrackUi( rightClick.selectedMenuItem.id, false );
+            popUp.hgTrackUi( rightClick.selectedMenuItem.id, false );  
 
         } else if (cmd === 'hgTrackUi_popup_description') {
 
             // Launches the popup but shields the ajax with a waitOnFunction
-            popUp.hgTrackUi( rightClick.selectedMenuItem.id, true );
+            popUp.hgTrackUi( rightClick.selectedMenuItem.id, true );  
 
         } else if (cmd === 'hgTrackUi_follow') {
 
@@ -2495,7 +2495,7 @@ var rightClick = {
                 url += rec.parentTrack;
             else {
                 // The button already has the ref
-                var link = normed($( 'td#td_btn_'+ rightClick.selectedMenuItem.id ).children('a'));
+                var link = normed($( 'td#td_btn_'+ rightClick.selectedMenuItem.id ).children('a')); 
                 if (link)
                     url = $(link).attr('href');
                 else
@@ -2516,7 +2516,7 @@ var rightClick = {
 
             imageV2.fullReload();
         } else if (cmd === 'addCollection') {
-            var shortLabel = $(menuItemClicked).text().substring(9).slice(0,-1);
+            var shortLabel = $(menuItemClicked).text().substring(9).slice(0,-1); 
             var ii;
             var collectionName;
             for(ii=0; ii < hgTracks.collections.length; ii++) {
@@ -2550,7 +2550,7 @@ var rightClick = {
                 url += rec.parentTrack;
             else {
                 // The button already has the ref
-                var link2 = normed($( 'td#td_btn_'+ rightClick.selectedMenuItem.id ).children('a'));
+                var link2 = normed($( 'td#td_btn_'+ rightClick.selectedMenuItem.id ).children('a')); 
                 if (link2)
                     url = $(link2).attr('href');
                 else
@@ -2563,17 +2563,17 @@ var rightClick = {
             // assume we have updated remote cart with all relevant chages (e.g. drag-reorder).
             jQuery('body').css('cursor', 'wait');
             $.ajax({
-                type: "GET",
-                url: "../cgi-bin/hgTracks",
-                data: cart.varsToUrlData({ 'hgt.imageV1': '1','hgt.trackImgOnly': '1',
-                    'hgsid': getHgsid(), 'db': getDb() }),
-                dataType: "html",
-                trueSuccess: rightClick.handleViewImg,
-                success: catchErrorOrDispatch,
-                error: errorHandler,
-                cmd: cmd,
-                cache: false
-            });
+                    type: "GET",
+                    url: "../cgi-bin/hgTracks",
+                    data: cart.varsToUrlData({ 'hgt.imageV1': '1','hgt.trackImgOnly': '1', 
+                                               'hgsid': getHgsid(), 'db': getDb() }),
+                    dataType: "html",
+                    trueSuccess: rightClick.handleViewImg,
+                    success: catchErrorOrDispatch,
+                    error: errorHandler,
+                    cmd: cmd,
+                    cache: false
+                });
         } else if (cmd === 'openLink' || cmd === 'followLink') {
             href = rightClick.selectedMenuItem.href;
             var vars = new Array("c", "l", "r", "db");
@@ -2590,9 +2590,9 @@ var rightClick = {
                     val = hgTracks[valNames[i]];
                 }
                 if (val
-                    && id !== "wikiTrack"
-                    && (href.indexOf("?" + v + "=") === -1)
-                    && (href.indexOf("&" + v + "=") === -1)) {
+                && id !== "wikiTrack"
+                && (href.indexOf("?" + v + "=") === -1)
+                && (href.indexOf("&" + v + "=") === -1)) {
                     href = href + "&" + v + "=" + val;
                 }
             }
@@ -2626,7 +2626,7 @@ var rightClick = {
             if (rows && rows.length > 0) {
                 var varsToUpdate = {};
                 // from bottom up, just in case remove screws with us
-                for (var ix=rows.length - 1; ix >= 0; ix--) {
+                for (var ix=rows.length - 1; ix >= 0; ix--) { 
                     var rowId = $(rows[ix]).attr('id').substring('tr_'.length);
                     // Remove subtrack level vis and explicitly uncheck.
                     varsToUpdate[rowId]        = '[]';
@@ -2649,9 +2649,9 @@ var rightClick = {
                     for (var rIx=rows.length - 1; rIx >= 0; rIx--) {
                         $(rows[rIx]).remove();
                     }
-                    selectUpdated = vis.update(rec.parentTrack, 'hide');
-                    cart.setVars( [rec.parentTrack], ['hide']);
-                    imageV2.afterImgChange(true);
+                selectUpdated = vis.update(rec.parentTrack, 'hide');
+                cart.setVars( [rec.parentTrack], ['hide']);
+                imageV2.afterImgChange(true);
                 }
             }
         } else if (cmd === 'jumpToHighlight') { // If highlight exists for this assembly, jump to it
@@ -2718,9 +2718,9 @@ var rightClick = {
                     // assert(document.TrackForm);
                     document.TrackForm.submit();
                 } else {
-                    // Add vis update to queue then submit
-                    cart.setVars([id], [cmd], null, false); // synchronous
-                    document.TrackHeaderForm.submit();
+                        // Add vis update to queue then submit
+                        cart.setVars([id], [cmd], null, false); // synchronous
+                        document.TrackHeaderForm.submit();
                 }
             } else {
                 imageV2.requestImgUpdate(id, id + "=" + cmd, "", cmd);
@@ -2749,7 +2749,7 @@ var rightClick = {
         // seen in FireFox 3.X, which occurred b/c FF doesn't actually fetch the image until
         // the menu is being shown.
         return "<img style='width:16px; height:16px; border-style:none;' src='../images/" +
-            img + "' />";
+                img + "' />";
     },
 
 
@@ -2778,571 +2778,571 @@ var rightClick = {
     load: function (img)
     {
         rightClick.menu = img.contextMenu(function() {
-                popUp.cleanup();   // Popup box is not getting closed properly so must do it here
-                if ( ! rightClick.selectedMenuItem )  // This is literally an edge case so ignore
-                    return;
+            popUp.cleanup();   // Popup box is not getting closed properly so must do it here
+            if ( ! rightClick.selectedMenuItem )  // This is literally an edge case so ignore
+                return;
 
-                var o; // TODO: Break this giant routine with shared vars into some sub-functions
-                var str;
-                var rec = null;
-                var menu = [];
-                var selectedImg = rightClick.makeImgTag("greenChecksm.png");
-                var blankImg    = rightClick.makeImgTag("invisible16.png");
-                var done = false;
-                if (rightClick.selectedMenuItem && rightClick.selectedMenuItem.id) {
-                    var href = rightClick.selectedMenuItem.href;
-                    var isHgc, isGene;
-                    if (href) {
-                        isGene = href.match("hgGene");
-                        isHgc = href.match("hgc");
-                    }
-                    var id = rightClick.selectedMenuItem.id;
-                    rec = hgTracks.trackDb[id];
-                    var offerHideSubset    = false;
-                    var offerHideComposite = false;
-                    var offerSingles       = true;
-                    let trid = id.replaceAll(".","\\.");
-                    var row = $( 'tr#tr_' + trid );
-                    if (row) {
-                        var btn = $(row).find('p.btnBlue'); // btnBlue means cursor over left button
-                        if (btn.length === 1) {
-                            var compositeSet = dragReorder.getCompositeSet(row);
-                            if (compositeSet && compositeSet.length > 0) {  // There is composite set
-                                offerHideComposite = true;
-                                $( compositeSet ).find('p.btn').addClass('blueButtons');// blue persists
+            var o; // TODO: Break this giant routine with shared vars into some sub-functions
+            var str;
+            var rec = null;
+            var menu = [];
+            var selectedImg = rightClick.makeImgTag("greenChecksm.png");
+            var blankImg    = rightClick.makeImgTag("invisible16.png");
+            var done = false;
+            if (rightClick.selectedMenuItem && rightClick.selectedMenuItem.id) {
+                var href = rightClick.selectedMenuItem.href;
+                var isHgc, isGene;
+                if (href) {
+                    isGene = href.match("hgGene");
+                    isHgc = href.match("hgc");
+                }
+                var id = rightClick.selectedMenuItem.id;
+                rec = hgTracks.trackDb[id];
+                var offerHideSubset    = false;
+                var offerHideComposite = false;
+                var offerSingles       = true;
+                let trid = id.replaceAll(".","\\.");
+                var row = $( 'tr#tr_' + trid );
+                if (row) {
+                    var btn = $(row).find('p.btnBlue'); // btnBlue means cursor over left button
+                    if (btn.length === 1) {
+                        var compositeSet = dragReorder.getCompositeSet(row);
+                        if (compositeSet && compositeSet.length > 0) {  // There is composite set
+                            offerHideComposite = true;
+                            $( compositeSet ).find('p.btn').addClass('blueButtons');// blue persists
 
-                                var subSet = dragReorder.getContiguousRowSet(row);
-                                if (subSet && subSet.length > 1) {
-                                    offerSingles = false;
-                                    if (subSet.length < compositeSet.length) {
-                                        offerHideSubset = true;
-                                        $( subSet ).addClass("greenRows"); // green persists
-                                    }
+                            var subSet = dragReorder.getContiguousRowSet(row);
+                            if (subSet && subSet.length > 1) {
+                                offerSingles = false;
+                                if (subSet.length < compositeSet.length) {
+                                    offerHideSubset = true;
+                                    $( subSet ).addClass("greenRows"); // green persists
                                 }
                             }
                         }
                     }
+                }
 
-                    // First option is hide sets
-                    if (offerHideComposite) {
-                        if (offerHideSubset) {
-                            o = {};
-                            o[blankImg + " hide track subset (green)"] = {
-                                onclick: rightClick.makeHitCallback('hideSet')};
-                            menu.push(o);
-                        }
-
+                // First option is hide sets
+                if (offerHideComposite) {
+                    if (offerHideSubset) {
                         o = {};
-                        str = blankImg + " hide track set";
-                        if (offerHideSubset)
-                            str += " (blue)";
-                        o[str] = {onclick: rightClick.makeHitCallback('hideComposite')};
+                        o[blankImg + " hide track subset (green)"] = {
+                                            onclick: rightClick.makeHitCallback('hideSet')};
                         menu.push(o);
                     }
 
-                    // Second set of options: visibility for single track
-                    if (offerSingles) {
-                        if (offerHideComposite)
-                            menu.push($.contextMenu.separator);
+                    o = {};
+                    str = blankImg + " hide track set";
+                    if (offerHideSubset)
+                        str += " (blue)";
+                    o[str] = {onclick: rightClick.makeHitCallback('hideComposite')};
+                    menu.push(o);
+                }
 
-                        // XXXX what if select is not available (b/c trackControlsOnMain is off)?
-                        // Move functionality to a hidden variable?
-                        var select = $("select[name=" + escapeJQuerySelectorChars(id) + "]");
-                        if (select.length > 1)
-                            // Not really needed if $('#hgTrackUiDialog').html(""); has worked
-                            select =  [ $(select)[0] ];
-                        var cur = $(select).val();
-                        if (cur) {
-                            $(select).children().each(function(index, o) {
-                                var title = $(this).val();
-                                str = blankImg + " " + title;
-                                if (title === cur)
-                                    str = selectedImg + " " + title;
-                                o = {};
-                                o[str] = {onclick: function (menuItemClicked, menuObject) {
+                // Second set of options: visibility for single track
+                if (offerSingles) {
+                    if (offerHideComposite)
+                        menu.push($.contextMenu.separator);
+
+                    // XXXX what if select is not available (b/c trackControlsOnMain is off)?
+                    // Move functionality to a hidden variable?
+                    var select = $("select[name=" + escapeJQuerySelectorChars(id) + "]");
+                    if (select.length > 1)  
+                        // Not really needed if $('#hgTrackUiDialog').html(""); has worked
+                        select =  [ $(select)[0] ];
+                    var cur = $(select).val();
+                    if (cur) {
+                        $(select).children().each(function(index, o) {
+                            var title = $(this).val();
+                            str = blankImg + " " + title;
+                            if (title === cur)
+                                str = selectedImg + " " + title;
+                            o = {};
+                            o[str] = {onclick: function (menuItemClicked, menuObject) {
                                         rightClick.hit(menuItemClicked, menuObject, title);
                                         return true;}};
-                                menu.push(o);
-                            });
-                            done = true;
-                        } else {
-                            if (rec) {
-                                // XXXX check current state from a hidden variable.
-                                var visStrings = new Array("hide","dense","squish","pack","full");
-                                for (var i in visStrings) {
-                                    // use maxVisibility and change hgTracks so it can hide subtracks
-                                    o = {};
-                                    str = blankImg + " " + visStrings[i];
-                                    if (rec.canPack
-                                        || (visStrings[i] !== "pack" && visStrings[i] !== "squish")) {
-                                        if (rec.localVisibility) {
-                                            if (visStrings[i] === rec.localVisibility) {
-                                                str = selectedImg + " " + visStrings[i];
-                                            }
-                                        } else if (visStrings[i] === vis.enumOrder[rec.visibility]) {
+                            menu.push(o);
+                        });
+                        done = true;
+                    } else {
+                        if (rec) {
+                            // XXXX check current state from a hidden variable.
+                            var visStrings = new Array("hide","dense","squish","pack","full");
+                            for (var i in visStrings) {
+                                // use maxVisibility and change hgTracks so it can hide subtracks
+                                o = {};
+                                str = blankImg + " " + visStrings[i];
+                                if (rec.canPack
+                                || (visStrings[i] !== "pack" && visStrings[i] !== "squish")) {
+                                    if (rec.localVisibility) {
+                                        if (visStrings[i] === rec.localVisibility) {
                                             str = selectedImg + " " + visStrings[i];
                                         }
-                                        o[str] = { onclick:
-                                                rightClick.makeHitCallback(visStrings[i])
-                                        };
-                                        menu.push(o);
+                                    } else if (visStrings[i] === vis.enumOrder[rec.visibility]) {
+                                        str = selectedImg + " " + visStrings[i];
                                     }
+                                    o[str] = { onclick:
+                                                rightClick.makeHitCallback(visStrings[i])
+                                             };
+                                    menu.push(o);
                                 }
-                                done = true;
                             }
+                            done = true;
                         }
                     }
+                }
 
-                    if (done) {
-                        o = {};
-                        var any = false;
-                        var title = rightClick.selectedMenuItem.title || "feature";
-                        var maxLength = 60;
+                if (done) {
+                    o = {};
+                    var any = false;
+                    var title = rightClick.selectedMenuItem.title || "feature";
+                    var maxLength = 60;
 
-                        if ((isGene || isHgc || id === "wikiTrack") && href.indexOf("i=mergedItem") === -1) {
-                            // Add "Open details..." item
-                            var displayItemFunctions = false;
-                            if (rec) {
-                                if (rec.type.indexOf("wig") === 0
-                                    ||  rec.type.indexOf("bigWig") === 0
-                                    ||  id === "wikiTrack") {
-                                    displayItemFunctions = false;
-                                } else if (rec.type.indexOf("expRatio") === 0) {
-                                    displayItemFunctions = title !== "zoomInMore";
-                                } else {
-                                    displayItemFunctions = true;
-                                }
-                                // For barChart mouseovers, replace title (which may be a category
-                                // name+value) with item name
-                                if (rec.type.indexOf("barChart") === 0
-                                    || rec.type.indexOf("bigBarChart") === 0) {
-                                    let a = /i=([^&]+)/.exec(href);
-                                    if (a && a[1]) {
-                                        title = a[1];
-                                    }
-                                }
+                    if ((isGene || isHgc || id === "wikiTrack") && href.indexOf("i=mergedItem") === -1) {
+                        // Add "Open details..." item
+                        var displayItemFunctions = false;
+                        if (rec) {
+                            if (rec.type.indexOf("wig") === 0
+                            ||  rec.type.indexOf("bigWig") === 0
+                            ||  id === "wikiTrack") {
+                                displayItemFunctions = false;
+                            } else if (rec.type.indexOf("expRatio") === 0) {
+                                displayItemFunctions = title !== "zoomInMore";
+                            } else {
+                                displayItemFunctions = true;
                             }
-
-                            // pick out the exon number from the mouseover text
-                            // Probably should be a data-exonNum tag on the DOM element
-                            var exonNum = rightClick.mouseOverToExon(title);
-
-                            // remove special genePred exon mouseover html text
-                            // CGIs now use HTML tags, e.g. "<b>Transcript:</b> ENST00000297261.7<br><b>Strand:</b>"
-                            title = rightClick.mouseOverToLabel(title);
-
-                            if (title.length > maxLength) {
-                                title = title.substring(0, maxLength) + "...";
-                            }
-
-                            if (isHgc && ( href.indexOf('g=gtexGene')!== -1
-                                || href.indexOf('g=unip') !== -1
-                                || href.indexOf('g=knownGene') !== -1 )) {
-                                // For GTEx gene and UniProt mouseovers, replace title (which may be a tissue name) with
-                                // item (gene) name. Also need to unescape the urlencoded characters and the + sign.
+                            // For barChart mouseovers, replace title (which may be a category 
+                            // name+value) with item name
+                            if (rec.type.indexOf("barChart") === 0
+                            || rec.type.indexOf("bigBarChart") === 0) {
                                 let a = /i=([^&]+)/.exec(href);
                                 if (a && a[1]) {
-                                    title = decodeURIComponent(a[1].replace(/\+/g, " "));
+                                    title = a[1];
                                 }
                             }
+                        }
 
-                            if (displayItemFunctions) {
-                                o[rightClick.makeImgTag("magnify.png") + " Zoom to " +  title] = {
-                                    onclick: function(menuItemClicked, menuObject) {
+                        // pick out the exon number from the mouseover text
+                        // Probably should be a data-exonNum tag on the DOM element
+                        var exonNum = rightClick.mouseOverToExon(title);
+
+                        // remove special genePred exon mouseover html text
+                        // CGIs now use HTML tags, e.g. "<b>Transcript:</b> ENST00000297261.7<br><b>Strand:</b>"
+                        title = rightClick.mouseOverToLabel(title);
+
+                        if (title.length > maxLength) {
+                            title = title.substring(0, maxLength) + "...";
+                        }
+
+                        if (isHgc && ( href.indexOf('g=gtexGene')!== -1 
+                                            || href.indexOf('g=unip') !== -1 
+                                            || href.indexOf('g=knownGene') !== -1 )) {
+                            // For GTEx gene and UniProt mouseovers, replace title (which may be a tissue name) with 
+                            // item (gene) name. Also need to unescape the urlencoded characters and the + sign.
+                            let a = /i=([^&]+)/.exec(href);
+                            if (a && a[1]) {
+                                title = decodeURIComponent(a[1].replace(/\+/g, " "));
+                            }
+                        }
+
+                        if (displayItemFunctions) {
+                            o[rightClick.makeImgTag("magnify.png") + " Zoom to " +  title] = {
+                                onclick: function(menuItemClicked, menuObject) {
+                                            rightClick.hit(menuItemClicked, menuObject,
+                                                    "selectWholeGene"); return true;
+                                          }
+                                };
+                            o[rightClick.makeImgTag("highlight.png") + " Highlight " + title] = 
+                                {   onclick: function(menuItemClicked, menuObject) {
                                         rightClick.hit(menuItemClicked, menuObject,
-                                            "selectWholeGene"); return true;
+                                                       "highlightItem"); 
+                                        return true;
                                     }
                                 };
-                                o[rightClick.makeImgTag("highlight.png") + " Highlight " + title] =
-                                    {   onclick: function(menuItemClicked, menuObject) {
-                                            rightClick.hit(menuItemClicked, menuObject,
-                                                "highlightItem");
-                                            return true;
-                                        }
-                                    };
-                                if (rightClick.supportZoomCodon &&
+                            if (rightClick.supportZoomCodon &&
                                     (rec.type.indexOf("genePred") !== -1 || rec.type.indexOf("bigGenePred") !== -1)) {
-                                    // http://hgwdev-larrym.gi.ucsc.edu/cgi-bin/hgGene?hgg_gene=uc003tqk.2&hgg_prot=P00533&hgg_chrom=chr7&hgg_start=55086724&hgg_end=55275030&hgg_type=knownGene&db=hg19&c=chr7
-                                    var name, table;
-                                    var reg = new RegExp("hgg_gene=([^&]+)");
-                                    let a = reg.exec(href);
+                                // http://hgwdev-larrym.gi.ucsc.edu/cgi-bin/hgGene?hgg_gene=uc003tqk.2&hgg_prot=P00533&hgg_chrom=chr7&hgg_start=55086724&hgg_end=55275030&hgg_type=knownGene&db=hg19&c=chr7
+                                var name, table;
+                                var reg = new RegExp("hgg_gene=([^&]+)");
+                                let a = reg.exec(href);
+                                if (a && a[1]) {
+                                    name = a[1];
+                                    reg = new RegExp("hgg_type=([^&]+)");
+                                    a = reg.exec(href);
+                                    if (a && a[1]) {
+                                        table = a[1];
+                                    }
+                                } else {
+                                    // http://hgwdev-larrym.gi.ucsc.edu/cgi-bin/hgc?o=55086724&t=55275031&g=refGene&i=NM_005228&c=chr7
+                                    // http://hgwdev-larrym.gi.ucsc.edu/cgi-bin/hgc?o=55086713&t=55270769&g=wgEncodeGencodeManualV4&i=ENST00000455089&c=chr7
+                                    reg = new RegExp("i=([^&]+)");
+                                    a = reg.exec(href);
                                     if (a && a[1]) {
                                         name = a[1];
-                                        reg = new RegExp("hgg_type=([^&]+)");
+                                        reg = new RegExp("g=([^&]+)");
                                         a = reg.exec(href);
                                         if (a && a[1]) {
                                             table = a[1];
                                         }
-                                    } else {
-                                        // http://hgwdev-larrym.gi.ucsc.edu/cgi-bin/hgc?o=55086724&t=55275031&g=refGene&i=NM_005228&c=chr7
-                                        // http://hgwdev-larrym.gi.ucsc.edu/cgi-bin/hgc?o=55086713&t=55270769&g=wgEncodeGencodeManualV4&i=ENST00000455089&c=chr7
-                                        reg = new RegExp("i=([^&]+)");
-                                        a = reg.exec(href);
-                                        if (a && a[1]) {
-                                            name = a[1];
-                                            reg = new RegExp("g=([^&]+)");
-                                            a = reg.exec(href);
-                                            if (a && a[1]) {
-                                                table = a[1];
-                                            }
-                                        }
                                     }
-                                    if (name && table) {
-                                        if (exonNum > 0) {
-                                            o[rightClick.makeImgTag("magnify.png")+" Zoom to this exon"] = {
-                                                onclick: function(menuItemClicked, menuObject) {
-                                                    $.ajax({
+                                }
+                                if (name && table) {
+                                    if (exonNum > 0) {
+                                        o[rightClick.makeImgTag("magnify.png")+" Zoom to this exon"] = {
+                                            onclick: function(menuItemClicked, menuObject) {
+                                                $.ajax({
                                                         type: "GET",
                                                         url: "../cgi-bin/hgApi",
                                                         data: cart.varsToUrlData({ 'hgsid': getHgsid(), 'db': getDb(),
-                                                            'cmd': "exonToPos", 'num': exonNum,
-                                                            'table': table, 'name': name, 'chrom': hgTracks.chromName}),
+                                                                'cmd': "exonToPos", 'num': exonNum,
+                                                                'table': table, 'name': name, 'chrom': hgTracks.chromName}),
                                                         trueSuccess: rightClick.handleZoomCodon,
                                                         success: catchErrorOrDispatch,
                                                         error: errorHandler,
                                                         cache: true
                                                     });
-                                                    return true; }
-                                            };
-                                            o[rightClick.makeImgTag("magnify.png")+" Enter codon to zoom to..."] =
-                                                {   onclick: function(menuItemClicked, menuObject) {
-                                                        rightClick.hit(menuItemClicked, menuObject,
-                                                            "zoomCodon",
-                                                            {name: name, table: table, 'chrom': hgTracks.chromName});
-                                                        return true;}
-                                                };
-                                            o[rightClick.makeImgTag("magnify.png")+" Enter exon to zoom to..."] =
-                                                {   onclick: function(menuItemClicked, menuObject) {
-                                                        rightClick.hit(menuItemClicked, menuObject,
+                                                return true; }
+                                        };
+                                    o[rightClick.makeImgTag("magnify.png")+" Enter codon to zoom to..."] =
+                                    {   onclick: function(menuItemClicked, menuObject) {
+                                            rightClick.hit(menuItemClicked, menuObject,
+                                                        "zoomCodon",
+                                                        {name: name, table: table, 'chrom': hgTracks.chromName});
+                                            return true;}
+                                    };
+                                        o[rightClick.makeImgTag("magnify.png")+" Enter exon to zoom to..."] =
+                                        {   onclick: function(menuItemClicked, menuObject) {
+                                                rightClick.hit(menuItemClicked, menuObject,
                                                             "zoomExon",
                                                             {name: name, table: table, 'chrom': hgTracks.chromName});
-                                                        return true;}
-                                                };
-                                        }
+                                                return true;}
+                                        };
                                     }
                                 }
-                                o[rightClick.makeImgTag("dnaIcon.png")+" Get DNA for "+title] = {
-                                    onclick: function(menuItemClicked, menuObject) {
-                                        rightClick.hit(menuItemClicked, menuObject, "getDna");
-                                        return true; }
-                                };
                             }
-                            o[rightClick.makeImgTag("bookOut.png")+
-                            " Open details page in new window..."] = {
+                            o[rightClick.makeImgTag("dnaIcon.png")+" Get DNA for "+title] = {
                                 onclick: function(menuItemClicked, menuObject) {
-                                    rightClick.hit(menuItemClicked, menuObject, "openLink");
+                                    rightClick.hit(menuItemClicked, menuObject, "getDna");
                                     return true; }
+                            };
+                        }
+                        o[rightClick.makeImgTag("bookOut.png")+
+                                                " Open details page in new window..."] = {
+                            onclick: function(menuItemClicked, menuObject) {
+                                rightClick.hit(menuItemClicked, menuObject, "openLink");
+                                return true; }
+                        };
+                        any = true;
+                    }
+                    if (href && href.length  > 0 && href.indexOf("i=mergedItem") === -1) {
+                        // Add "Show details..." item
+                        if (title.indexOf("Click to alter ") === 0) {
+                            // suppress the "Click to alter..." items
+                        } else if (rightClick.selectedMenuItem.href.indexOf("cgi-bin/hgTracks")
+                                                                                        !== -1) {
+                            // suppress menu items for hgTracks links (e.g. Next/Prev map items).
+                        } else {
+                            var item;
+                            if (title === "zoomInMore")
+                                // avoid showing menu item that says
+                                // "Show details for zoomInMore..." (redmine 2447)
+                                item = rightClick.makeImgTag("book.png") + " Show details...";
+                            else
+                                item = rightClick.makeImgTag("book.png")+" Show details for "+
+                                       title + "...";
+                            o[item] = {onclick: function(menuItemClicked, menuObject) {
+                                       rightClick.hit(menuItemClicked,menuObject,"followLink");
+                                       return true; }
                             };
                             any = true;
                         }
-                        if (href && href.length  > 0 && href.indexOf("i=mergedItem") === -1) {
-                            // Add "Show details..." item
-                            if (title.indexOf("Click to alter ") === 0) {
-                                // suppress the "Click to alter..." items
-                            } else if (rightClick.selectedMenuItem.href.indexOf("cgi-bin/hgTracks")
-                                !== -1) {
-                                // suppress menu items for hgTracks links (e.g. Next/Prev map items).
-                            } else {
-                                var item;
-                                if (title === "zoomInMore")
-                                    // avoid showing menu item that says
-                                    // "Show details for zoomInMore..." (redmine 2447)
-                                    item = rightClick.makeImgTag("book.png") + " Show details...";
-                                else
-                                    item = rightClick.makeImgTag("book.png")+" Show details for "+
-                                        title + "...";
-                                o[item] = {onclick: function(menuItemClicked, menuObject) {
-                                        rightClick.hit(menuItemClicked,menuObject,"followLink");
-                                        return true; }
-                                };
-                                any = true;
-                            }
-                        }
-                        if (any) {
-                            menu.push($.contextMenu.separator);
-                            menu.push(o);
-                        }
+                    }
+                    if (any) {
+                        menu.push($.contextMenu.separator);
+                        menu.push(o);
                     }
                 }
+            }
 
 
-                menu.push($.contextMenu.separator);
-                o = {};
-                o[rightClick.makeImgTag("hiddenIcon.png") + " Hide all other tracks "] = {
-                    onclick: function(menuItemClicked, menuObject) {
-                        rightClick.hit(menuItemClicked, menuObject, "hideOthers");
-                        return true; }
-                };
-                menu.push(o);
+            menu.push($.contextMenu.separator);
+            o = {};
+            o[rightClick.makeImgTag("hiddenIcon.png") + " Hide all other tracks "] = {
+                onclick: function(menuItemClicked, menuObject) {
+                    rightClick.hit(menuItemClicked, menuObject, "hideOthers");
+                    return true; }
+            };  
+            menu.push(o);
 
-                //o = {};
-                //o[" Float "] = {
+            //o = {};
+            //o[" Float "] = {
                 //onclick: function(menuItemClicked, menuObject) {
-                //rightClick.hit(menuItemClicked, menuObject, "float");
-                //return true; }
-                //};
-                //menu.push(o);
+                    //rightClick.hit(menuItemClicked, menuObject, "float");
+                    //return true; }
+            //};  
+            //menu.push(o);
 
+            o = {};
+            o[rightClick.makeImgTag("ab_up.gif") + " Move to top "] = {
+                onclick: function(menuItemClicked, menuObject) {
+                    rightClick.hit(menuItemClicked, menuObject, "moveTop");
+                    return true; }
+            };  
+            menu.push(o);
+
+            o = {};
+            o[rightClick.makeImgTag("ab_down.gif") + " Move to bottom "] = {
+                onclick: function(menuItemClicked, menuObject) {
+                    rightClick.hit(menuItemClicked, menuObject, "moveBottom");
+                    return true; }
+            };  
+            menu.push(o);
+
+            if (rightClick.selectedMenuItem && rec) {
+                // Add cfg options at just shy of end...
                 o = {};
-                o[rightClick.makeImgTag("ab_up.gif") + " Move to top "] = {
-                    onclick: function(menuItemClicked, menuObject) {
-                        rightClick.hit(menuItemClicked, menuObject, "moveTop");
-                        return true; }
-                };
-                menu.push(o);
+                if (tdbIsLeaf(rec)) {
 
-                o = {};
-                o[rightClick.makeImgTag("ab_down.gif") + " Move to bottom "] = {
-                    onclick: function(menuItemClicked, menuObject) {
-                        rightClick.hit(menuItemClicked, menuObject, "moveBottom");
-                        return true; }
-                };
-                menu.push(o);
-
-                if (rightClick.selectedMenuItem && rec) {
-                    // Add cfg options at just shy of end...
-                    o = {};
-                    if (tdbIsLeaf(rec)) {
-
-                        if (rec.configureBy !== 'none'
-                            && (!tdbIsCompositeSubtrack(rec) || rec.configureBy !== 'clickThrough')) {
-                            // Note that subtracks never do clickThrough because
-                            // parentTrack cfg is the desired clickThrough
-                            o[rightClick.makeImgTag("wrench.png")+" Configure "+rec.shortLabel] = {
-                                onclick: function(menuItemClicked, menuObject) {
-                                    rightClick.hit(menuItemClicked, menuObject, "hgTrackUi_popup");
-                                    return true; }
-                            };
-
-                        }
-                        if (rec.parentTrack) {
-                            o[rightClick.makeImgTag("folderWrench.png")+" Configure "+
-                            rec.parentLabel + " track set..."] = {
-                                onclick: function(menuItemClicked, menuObject) {
-                                    rightClick.hit(menuItemClicked,menuObject,"hgTrackUi_follow");
-                                    return true; }
-                            };
-                        }
-                    } else {
-
-                        o[rightClick.makeImgTag("folderWrench.png")+" Configure "+rec.shortLabel +
-                        " track set..."] = {
+                    if (rec.configureBy !== 'none'
+                    && (!tdbIsCompositeSubtrack(rec) || rec.configureBy !== 'clickThrough')) {
+                        // Note that subtracks never do clickThrough because
+                        // parentTrack cfg is the desired clickThrough
+                        o[rightClick.makeImgTag("wrench.png")+" Configure "+rec.shortLabel] = {
                             onclick: function(menuItemClicked, menuObject) {
-                                rightClick.hit(menuItemClicked, menuObject, "hgTrackUi_follow");
+                                rightClick.hit(menuItemClicked, menuObject, "hgTrackUi_popup");
                                 return true; }
                         };
-                    }
-                    if (jQuery.floatMgr) {
-                        o[(rightClick.selectedMenuItem.id === rightClick.floatingMenuItem ?
-                            selectedImg : blankImg) + " float"] = {
-                            onclick: function(menuItemClicked, menuObject) {
-                                rightClick.hit(menuItemClicked, menuObject, "float");
-                                return true; }
-                        };
-                    }
-                    // add a toggle to hide/show the merged item(s)
-                    mergeTrack = rightClick.selectedMenuItem.id + ".doMergeItems";
-                    if (rec.hasOwnProperty(mergeTrack)) {
-                        var hasMergedItems = rec[mergeTrack] === 1;
-                        titleStr = rightClick.makeImgTag("wrench.png") + " ";
-                        if (hasMergedItems) {
-                            titleStr += "Show merged items";
-                        } else {
-                            titleStr += "Merge items that span the current region";
-                        }
-                        o[titleStr] = {onclick: function(menuItemClick, menuObject) {
-                                rightClick.hit(menuItemClick, menuObject, "toggleMerge", rec);
-                                return true; }
-                        };
-                    }
 
-                    o[rightClick.makeImgTag("book.png")+" Track Description "+rec.shortLabel] = {
+                    }
+                    if (rec.parentTrack) {
+                        o[rightClick.makeImgTag("folderWrench.png")+" Configure "+
+                          rec.parentLabel + " track set..."] = {
+                            onclick: function(menuItemClicked, menuObject) {
+                                rightClick.hit(menuItemClicked,menuObject,"hgTrackUi_follow");
+                                return true; }
+                          };
+                    }
+                } else {
+
+                    o[rightClick.makeImgTag("folderWrench.png")+" Configure "+rec.shortLabel +
+                      " track set..."] = {
                         onclick: function(menuItemClicked, menuObject) {
-                            rightClick.hit(menuItemClicked, menuObject, "hgTrackUi_popup_description");
+                            rightClick.hit(menuItemClicked, menuObject, "hgTrackUi_follow");
+                            return true; }
+                      };
+                }
+                if (jQuery.floatMgr) {
+                    o[(rightClick.selectedMenuItem.id === rightClick.floatingMenuItem ?
+                            selectedImg : blankImg) + " float"] = {
+                        onclick: function(menuItemClicked, menuObject) {
+                            rightClick.hit(menuItemClicked, menuObject, "float");
                             return true; }
                     };
-
-                    menu.push($.contextMenu.separator);
-                    menu.push(o);
                 }
+                // add a toggle to hide/show the merged item(s)
+                mergeTrack = rightClick.selectedMenuItem.id + ".doMergeItems";
+                if (rec.hasOwnProperty(mergeTrack)) {
+                    var hasMergedItems = rec[mergeTrack] === 1;
+                    titleStr = rightClick.makeImgTag("wrench.png") + " ";
+                    if (hasMergedItems) {
+                        titleStr += "Show merged items";
+                    } else {
+                        titleStr += "Merge items that span the current region";
+                    }
+                    o[titleStr] = {onclick: function(menuItemClick, menuObject) {
+                        rightClick.hit(menuItemClick, menuObject, "toggleMerge", rec);
+                        return true; }
+                    };
+                }
+
+		o[rightClick.makeImgTag("book.png")+" Track Description "+rec.shortLabel] = {
+		    onclick: function(menuItemClicked, menuObject) {
+			rightClick.hit(menuItemClicked, menuObject, "hgTrackUi_popup_description");
+			return true; }
+		    };
 
                 menu.push($.contextMenu.separator);
-                if (hgTracks.highlight && rightClick.clickedHighlightIdx!==null) {
-                    var currentlySeen = ($('#highlightItem').length > 0);
-                    o = {};
-                    // Jumps to highlight when not currently seen in image
-                    var text = (currentlySeen ? " Zoom" : " Jump") + " to highlight";
-                    o[rightClick.makeImgTag("highlightZoom.png") + text] = {
-                        onclick: rightClick.makeHitCallback('jumpToHighlight')
-                    };
+                menu.push(o);
+            }
 
-                    if ( currentlySeen ) {   // Remove only when seen
-                        o[rightClick.makeImgTag("highlightRemove.png") +
-                        " Remove highlight"] = {
-                            onclick: rightClick.makeHitCallback('removeHighlight')
-                        };
-                    }
-                    menu.push(o);
-                }
-
-                if (rec.isCustomComposite)
-                {
-                    // add delete from composite
-                }
-                else if ((!rec.type.startsWith("wigMaf")) &&
-                    (rec.type.startsWith("bigWig") || rec.type.startsWith("multiWig") || rec.type.startsWith("wig") || rec.type.startsWith("bedGraph"))) {
-                    o = {};
-                    o[" Make a New Collection with \"" + rec.shortLabel + "\""] = {
-                        onclick: rightClick.makeHitCallback("newCollection")
-                    };
-                    menu.push(o);
-
-                    if (hgTracks.collections) {
-                        var ii;
-                        for(ii=0; ii < hgTracks.collections.length; ii++) {
-                            o = {};
-                            o[" Add to \"" + hgTracks.collections[ii].shortLabel + "\""] = {
-                                onclick: rightClick.makeHitCallback("addCollection")
-                            };
-                            menu.push(o);
-                        }
-                    }
-                    menu.push($.contextMenu.separator);
-                }
-
-                // add sort options if this is a custom composite
-                if (rec.isCustomComposite && tdbHasParent(rec) && tdbIsLeaf(rec)) {
-
-                    o = {};
-                    o[" Sort by Magnitude "] = {
-                        onclick: function(menuItemClicked, menuObject) {
-                            rightClick.hit(menuItemClicked, menuObject, "sortExp");
-                            return true; }
-                    };
-                    menu.push(o);
-
-                    o = {};
-                    o[" Sort by Similarity "] = {
-                        onclick: function(menuItemClicked, menuObject) {
-                            rightClick.hit(menuItemClicked, menuObject, "sortSim");
-                            return true; }
-                    };
-                    menu.push(o);
-
-                    menu.push($.contextMenu.separator);
-                }
-
-                // Add view image at end
+            menu.push($.contextMenu.separator);
+            if (hgTracks.highlight && rightClick.clickedHighlightIdx!==null) {
+                var currentlySeen = ($('#highlightItem').length > 0); 
                 o = {};
-                o[rightClick.makeImgTag("eye.png") + " View image"] = {
-                    onclick: function(menuItemClicked, menuObject) {
-                        rightClick.hit(menuItemClicked, menuObject, "viewImg");
-                        return true; }
+                // Jumps to highlight when not currently seen in image
+                var text = (currentlySeen ? " Zoom" : " Jump") + " to highlight";
+                o[rightClick.makeImgTag("highlightZoom.png") + text] = {
+                    onclick: rightClick.makeHitCallback('jumpToHighlight')
                 };
+
+                if ( currentlySeen ) {   // Remove only when seen
+                    o[rightClick.makeImgTag("highlightRemove.png") + 
+                                                               " Remove highlight"] = {
+                        onclick: rightClick.makeHitCallback('removeHighlight')
+                    };
+                }
+                menu.push(o);
+            }
+
+            if (rec.isCustomComposite)
+                {
+                // add delete from composite
+                }
+            else if ((!rec.type.startsWith("wigMaf")) &&
+                (rec.type.startsWith("bigWig") || rec.type.startsWith("multiWig") || rec.type.startsWith("wig") || rec.type.startsWith("bedGraph"))) {
+                o = {};
+                o[" Make a New Collection with \"" + rec.shortLabel + "\""] = {
+                    onclick: rightClick.makeHitCallback("newCollection")
+                };  
                 menu.push(o);
 
-                return menu;
-            },
-            {
-                beforeShow: function(e) {
-                    // console.log(mapItems[rightClick.selectedMenuItem]);
-                    rightClick.selectedMenuItem = rightClick.findMapItem(e);
-
-                    // find the highlight that was clicked
-                    var imageX = (imageV2.imgTbl[0].getBoundingClientRect().left) + imageV2.LEFTADD;
-                    var xDiff = (e.clientX) - imageX;
-                    var clickPos = genomePos.pixelsToBases(img, xDiff, xDiff+1, hgTracks.winStart, hgTracks.winEnd, false);
-                    rightClick.clickedHighlightIdx = dragSelect.findHighlightIdxForPos(clickPos);
-
-                    // XXXX? posting.blockUseMap = true;
-                    return true;
-                },
-                hideTransition:'hide', // hideCallback fails if these are not defined.
-                hideSpeed:10,
-                hideCallback: function() {
-                    $('p.btn.blueButtons').removeClass('blueButtons');
-                    $('tr.trDraggable.greenRows').removeClass('greenRows');
+                if (hgTracks.collections) {
+                    var ii;
+                    for(ii=0; ii < hgTracks.collections.length; ii++) {
+                        o = {};
+                        o[" Add to \"" + hgTracks.collections[ii].shortLabel + "\""] = {
+                            onclick: rightClick.makeHitCallback("addCollection")
+                        };  
+                        menu.push(o);
+                    }
                 }
-            });
+                menu.push($.contextMenu.separator);
+            }
+
+            // add sort options if this is a custom composite
+            if (rec.isCustomComposite && tdbHasParent(rec) && tdbIsLeaf(rec)) {
+
+                o = {};
+                o[" Sort by Magnitude "] = {
+                    onclick: function(menuItemClicked, menuObject) {
+                        rightClick.hit(menuItemClicked, menuObject, "sortExp");
+                        return true; }
+                };  
+                menu.push(o);
+
+                o = {};
+                o[" Sort by Similarity "] = {
+                    onclick: function(menuItemClicked, menuObject) {
+                        rightClick.hit(menuItemClicked, menuObject, "sortSim");
+                        return true; }
+                };  
+                menu.push(o);
+
+                menu.push($.contextMenu.separator);
+            }
+
+            // Add view image at end
+            o = {};
+            o[rightClick.makeImgTag("eye.png") + " View image"] = {
+                onclick: function(menuItemClicked, menuObject) {
+                    rightClick.hit(menuItemClicked, menuObject, "viewImg");
+                    return true; }
+            };
+            menu.push(o);
+
+            return menu;
+        },
+        {
+            beforeShow: function(e) {
+                // console.log(mapItems[rightClick.selectedMenuItem]);
+                rightClick.selectedMenuItem = rightClick.findMapItem(e);
+                
+                // find the highlight that was clicked
+                var imageX = (imageV2.imgTbl[0].getBoundingClientRect().left) + imageV2.LEFTADD;
+                var xDiff = (e.clientX) - imageX;
+                var clickPos = genomePos.pixelsToBases(img, xDiff, xDiff+1, hgTracks.winStart, hgTracks.winEnd, false);
+                rightClick.clickedHighlightIdx = dragSelect.findHighlightIdxForPos(clickPos);
+
+                // XXXX? posting.blockUseMap = true;
+                return true;
+            },
+            hideTransition:'hide', // hideCallback fails if these are not defined.
+            hideSpeed:10,
+            hideCallback: function() {
+                $('p.btn.blueButtons').removeClass('blueButtons');
+                $('tr.trDraggable.greenRows').removeClass('greenRows');
+            }
+        });
         return;
     }
 };
 
-//////////////////////////////////
-//// external tools           ////
+  //////////////////////////////////
+ //// external tools           ////
 //////////////////////////////////
 
 function showExtToolDialog() {
-    /* show the 'send to external tool' dialog */
-    // information about external tools is stored in the extTools global list
-    // defined by a <script> at the end of the body
+        /* show the 'send to external tool' dialog */
+        // information about external tools is stored in the extTools global list
+        // defined by a <script> at the end of the body
 
-    // remove an existing dialog box
-    var extToolDialog = $("#extToolDialog").remove();
+        // remove an existing dialog box
+        var extToolDialog = $("#extToolDialog").remove();
 
-    // construct the contents
-    var htmlLines = ["<ul class='indent'>"];
-    var winSize = hgTracks.winEnd - hgTracks.winStart;
-    for (i = 0; i < extTools.length; i++) {
-        var tool = extTools[i];
-        var toolId = tool[0];
-        var shortLabel = tool[1];
-        var longLabel = tool[2];
-        var maxSize = tool[3];
-        if ((maxSize===0) || (winSize < maxSize))
-        {
-            var url = "hgTracks?hgsid="+getHgsid()+"&hgt.redirectTool="+toolId;
-            //var onclick = "$('#extToolDialog').dialog('close');";
-            //htmlLines.push("<li><a onclick="+'"'+onclick+'"'+"id='extToolLink' target='_BLANK' href='"+url+"'>"+shortLabel+"</a>: <small>"+longLabel+"</small></li>");
-            // onclick js code moved to jsInline
-            htmlLines.push("<li><a class='extToolLink2' target='_BLANK' href='"+url+"'>"+shortLabel+"</a>: <small>"+longLabel+"</small></li>");
+        // construct the contents
+        var htmlLines = ["<ul class='indent'>"];
+        var winSize = hgTracks.winEnd - hgTracks.winStart;
+        for (i = 0; i < extTools.length; i++) {
+            var tool = extTools[i];
+            var toolId = tool[0];
+            var shortLabel = tool[1];
+            var longLabel = tool[2];
+            var maxSize = tool[3];
+            if ((maxSize===0) || (winSize < maxSize))
+                {
+                var url = "hgTracks?hgsid="+getHgsid()+"&hgt.redirectTool="+toolId;
+                //var onclick = "$('#extToolDialog').dialog('close');";
+                //htmlLines.push("<li><a onclick="+'"'+onclick+'"'+"id='extToolLink' target='_BLANK' href='"+url+"'>"+shortLabel+"</a>: <small>"+longLabel+"</small></li>");
+		// onclick js code moved to jsInline
+                htmlLines.push("<li><a class='extToolLink2' target='_BLANK' href='"+url+"'>"+shortLabel+"</a>: <small>"+longLabel+"</small></li>");
+                }
+            else
+                {
+                note = "<br><b>Needs zoom to &lt; "+maxSize/1000+" kbp.</b></small></span></li>";
+                htmlLines.push('<li><span style="color:grey">'+shortLabel+": <small>"+longLabel+note);
+                }
         }
-        else
-        {
-            note = "<br><b>Needs zoom to &lt; "+maxSize/1000+" kbp.</b></small></span></li>";
-            htmlLines.push('<li><span style="color:grey">'+shortLabel+": <small>"+longLabel+note);
-        }
-    }
-    htmlLines.push("</ul>");
-    content = htmlLines.join("");
+        htmlLines.push("</ul>");
+        content = htmlLines.join("");
+            
+        var title = hgTracks.chromName + ":" + (hgTracks.winStart+1) + "-" + hgTracks.winEnd;
+        if (hgTracks.nonVirtPosition)
+            title = hgTracks.nonVirtPosition;
+        title += " on another website";
+        $("body").append("<div id='extToolDialog' title='"+title+"'><p>" + content + "</p>");
 
-    var title = hgTracks.chromName + ":" + (hgTracks.winStart+1) + "-" + hgTracks.winEnd;
-    if (hgTracks.nonVirtPosition)
-        title = hgTracks.nonVirtPosition;
-    title += " on another website";
-    $("body").append("<div id='extToolDialog' title='"+title+"'><p>" + content + "</p>");
+	$('a.extToolLink2').on("click", function(){$('#extToolDialog').dialog('close');});
 
-    $('a.extToolLink2').on("click", function(){$('#extToolDialog').dialog('close');});
+        // copied from the hgTrackUi function below
+        var popMaxHeight = ($(window).height() - 40);
+        var popMaxWidth  = ($(window).width() - 40);
+        var popWidth     = 600;
+        if (popWidth > popMaxWidth)
+            popWidth = popMaxWidth;
 
-    // copied from the hgTrackUi function below
-    var popMaxHeight = ($(window).height() - 40);
-    var popMaxWidth  = ($(window).width() - 40);
-    var popWidth     = 600;
-    if (popWidth > popMaxWidth)
-        popWidth = popMaxWidth;
-
-    // also copied from the hgTrackUi code below
-    $('#extToolDialog').dialog({
-        resizable: false,
-        height: popMaxHeight,
-        width: popWidth,
-        minHeight: 200,
-        minWidth: 600,
-        maxHeight: popMaxHeight,
-        maxWidth: popMaxWidth,
-        modal: true,
-        closeOnEscape: true,
-        autoOpen: false,
-        buttons: { "Close": function() {
-                $(this).dialog("close");
+        // also copied from the hgTrackUi code below
+        $('#extToolDialog').dialog({
+            resizable: false,
+            height: popMaxHeight,
+            width: popWidth,
+            minHeight: 200,
+            minWidth: 600,
+            maxHeight: popMaxHeight,
+            maxWidth: popMaxWidth,
+            modal: true,
+            closeOnEscape: true,
+            autoOpen: false,
+            buttons: { "Close": function() {
+                    $(this).dialog("close");
             }},
-    });
-
-    $('#extToolDialog').dialog('open');
+        });
+        
+        $('#extToolDialog').dialog('open');
 }
 
-/////////////////////////////////////////////////////////
-//// popupHgt popup for hgTracks  (aka modal dialog) ////
+  /////////////////////////////////////////////////////////
+ //// popupHgt popup for hgTracks  (aka modal dialog) ////
 /////////////////////////////////////////////////////////
 var popUpHgt = {
 
@@ -3369,14 +3369,14 @@ var popUpHgt = {
         }
 
         $.ajax({
-            type: "GET",
-            url: cart.addUpdatesToUrl(myLink),
-            dataType: "html",
-            trueSuccess: popUpHgt.uiDialog,
-            success: catchErrorOrDispatch,
-            error: errorHandler,
-            cache: false
-        });
+                    type: "GET",
+                    url: cart.addUpdatesToUrl(myLink),
+                    dataType: "html",
+                    trueSuccess: popUpHgt.uiDialog,
+                    success: catchErrorOrDispatch,
+                    error: errorHandler,
+                    cache: false
+                });
     },
 
     hgTracks: function (whichHgTracksMethod)
@@ -3391,7 +3391,7 @@ var popUpHgt = {
 
     uiDialog: function (response, status)
     {
-        // Take html from hgTracks and put it up as a modal dialog.
+    // Take html from hgTracks and put it up as a modal dialog.
 
         // make sure all links (e.g. help links) open up in a new window
         response = response.replace(/<a /ig, "<a target='_blank' ");
@@ -3413,11 +3413,11 @@ var popUpHgt = {
 
         // Strategy for popups with js:
         // - jsFiles and CSS should not be included in html.  Here they are shluped out.
-        // - The resulting files ought to be loadable dynamically (with getScript()),
+        // - The resulting files ought to be loadable dynamically (with getScript()), 
         //   but this was not working nicely with the modal dialog
         //   Therefore include files must be included with hgTracks CGI !
         // - embedded js should not be in the popup box.
-        // - Somethings should be in a popup.ready() function, and this is emulated below,
+        // - Somethings should be in a popup.ready() function, and this is emulated below, 
         //   as soon as the cleanHtml is added
         //   Since there are many possible popup cfg dialogs, the ready should be all inclusive.
 
@@ -3446,7 +3446,7 @@ var popUpHgt = {
             modal: true,
             closeOnEscape: true,
             autoOpen: false,
-            buttons: {
+            buttons: { 
                 /* NOT NOW
                 "OK": function() {
                     popUpHgt.uiDialogOk($('#pop'));
@@ -3456,11 +3456,11 @@ var popUpHgt = {
             },
             // popup.ready() doesn't seem to work in open.
 
-            //create: function () {
-            //$(this).siblings().find(".ui-dialog-title").html('<span style="">Test </span>');
-            //$(this).siblings().find(".ui-dialog-title").html('<span style="       visibility: hidden;"></span>');
+            //create: function () { 
+                //$(this).siblings().find(".ui-dialog-title").html('<span style="">Test </span>'); 
+                //$(this).siblings().find(".ui-dialog-title").html('<span style="       visibility: hidden;"></span>'); 
             //},
-
+            
             open: function () {
                 $('#hgTracksDialog').find('.filterBy,.filterComp').each(
                     function(i) {  // ddcl.js is dropdown checklist lib support
@@ -3477,15 +3477,15 @@ var popUpHgt = {
                 popUpHgt.cleanup();
             }
         });
-
-
+        
+    
         $('#hgTracksDialog').dialog('option' , 'title' , popUpHgt.title);
         $('#hgTracksDialog').dialog('open');
 
         // Initialize autocomplete for alt/fix sequence names
         autocompleteCat.init($('#singleAltHaploId'),
-            { baseUrl: 'hgSuggest?db=' + getDb() + '&type=altOrPatch&prefix=',
-                enterSelectsIdentical: true });
+                             { baseUrl: 'hgSuggest?db=' + getDb() + '&type=altOrPatch&prefix=',
+                               enterSelectsIdentical: true });
         // Make multi-region option inputs select their associated radio buttons
         $('input[name="emPadding"]').on("keyup", function() {
             $('#virtModeType[value="exonMostly"]').prop('checked', true); });
@@ -3509,7 +3509,7 @@ var popUpHgt = {
                 msg += "custom regions";
             } else if (hgTracks.virtModeType == "singleAltHaplo") {
                 msg += "alt haplotype";
-            }
+            } 
             msg += " </b></em> view. &nbsp;&nbsp;"
                 + "<em>Select a different viewing mode, or exit and return to normal view</em>.";
         }
@@ -3564,15 +3564,15 @@ var popUpHgcOrHgGene = {
         }
         loadingId = showLoadingImage("imgTbl");
         $.ajax({
-            type: "GET",
-            url: cart.addUpdatesToUrl(href),
-            dataType: "html",
-            trueSuccess: popUpHgcOrHgGene.uiDialog,
-            success: catchErrorOrDispatch,
-            error: errorHandler,
-            loadingId: loadingId,
-            cache: true
-        });
+                    type: "GET",
+                    url: cart.addUpdatesToUrl(href),
+                    dataType: "html",
+                    trueSuccess: popUpHgcOrHgGene.uiDialog,
+                    success: catchErrorOrDispatch,
+                    error: errorHandler,
+                    loadingId: loadingId,
+                    cache: true
+                });
     },
 
     hgc: function (table, url)
@@ -3595,7 +3595,7 @@ var popUpHgcOrHgGene = {
 
         // special case these hprc tracks that allow you to turn on different tracks
         if (trackName.startsWith("hprcDeletions") || trackName.startsWith("hprcInserts") ||
-            trackName.startsWith("hprcArr") || trackName.startsWith("hprcDouble")) {
+                trackName.startsWith("hprcArr") || trackName.startsWith("hprcDouble")) {
             trackName = "chainHprc";
         }
         var newVis = changedVars[trackName];
@@ -3631,7 +3631,7 @@ var popUpHgcOrHgGene = {
 
     uiDialog: function (response, status)
     {
-        // Take html from hgc/hgGene and put it up as a modal dialog.
+    // Take html from hgc/hgGene and put it up as a modal dialog.
 
         // make sure all links (e.g. help links) open up in a new window
         //response = response.replace(/<a /ig, "<a target='_blank' ");
@@ -3728,7 +3728,7 @@ var popUpHgcOrHgGene = {
             mouseY = e.clientY;
             popUpBox = document.getElementById("hgcDialog").parentElement.getBoundingClientRect();
             if (mouseX < popUpBox.left || mouseX > popUpBox.right ||
-                mouseY < popUpBox.top || mouseY > popUpBox.bottom) {
+                    mouseY < popUpBox.top || mouseY > popUpBox.bottom) {
                 $("#hgcDialog").dialog("close");
             }
         });
@@ -3770,7 +3770,7 @@ function showHotkeyHelp() {
     $("#hotkeyHelp").dialog({width:'600', resizable: false});
 }
 
-// A function to add an entry for the keyboard help dialog box to the menubar
+// A function to add an entry for the keyboard help dialog box to the menubar 
 // and add text that indicates the shortcuts to many static menubar items as suggested by good old IBM CUA/SAA
 function addKeyboardHelpEntries() {
     var html = '<li><a id="keybShorts" title="List all possible keyboard shortcuts" href="#">Keyboard Shortcuts</a><span class="shortcut">?</span></li>';
@@ -3828,6 +3828,42 @@ function gotoGetDnaPage() {
     return false;
 }
 
+function hubQuickConnect() {
+    const dialogHtml = 
+        '<div id="hubQuickDialog" title="Track hub quick connect">'+
+        '<b>Track hub URL:</b><br>'+
+        '<form action="hgTracks" method="GET">'+
+        '<input type="text" name="hubUrl" maxlength="1024" size="60" />'+
+        '<input type="hidden" hgsid="'+getHgsid()+'"/>'+
+        '<input type="submit" value="OK" />'+
+        '</form>'+
+        'To connect to public hubs, more options when connecting via URL or hub development tools, select from the menu My Data &gt; Track Hubs.'+
+        '</div>';
+    $('body').append(dialogHtml);
+
+    // Initialize the dialog
+    $("#hubQuickDialog").dialog({
+        autoOpen: false,
+        width: 600,
+        height: 400,
+        modal: true,
+        //buttons: {
+          //OK: function () {
+            //alert("OK clicked!");
+            //$(this).dialog("close");
+          //},
+          //Cancel: function () {
+            //$(this).dialog("close");
+          //}
+        //}
+    });
+
+    // Show dialog on button click
+    //$("#show-dialog").on("click", function () {
+    $("#hubQuickDialog").dialog("open");
+    //});
+}
+
 // A function for the keyboard shortcuts "zoom to x bp"
 function zoomTo(zoomSize) {
     var flankSize = Math.floor(zoomSize/2);
@@ -3874,8 +3910,8 @@ function onTrackDelIconClick (ev) {
 }
 
 
-//////////////////////////////////
-//// popup (aka modal dialog) ////
+  //////////////////////////////////
+ //// popup (aka modal dialog) ////
 //////////////////////////////////
 var popUp = {
 
@@ -3898,7 +3934,7 @@ var popUp = {
     { // popup cfg dialog
         popUp.trackName = trackName;
         var myLink = "../cgi-bin/hgTrackUi?g=" + trackName + "&hgsid=" + getHgsid() +
-            "&db=" + getDb();
+                     "&db=" + getDb();
         popUp.trackDescriptionOnly = descriptionOnly;
         if (popUp.trackDescriptionOnly)
             myLink += "&descriptionOnly=1";
@@ -3915,20 +3951,20 @@ var popUp = {
         }
         myLink += "&ajax=1";
         $.ajax({
-            type: "GET",
-            url: cart.addUpdatesToUrl(myLink),
-            dataType: "html",
-            trueSuccess: popUp.uiDialog,
-            success: catchErrorOrDispatch,
-            error: errorHandler,
-            cmd: rightClick.selectedMenuItem,
-            cache: false
-        });
+                    type: "GET",
+                    url: cart.addUpdatesToUrl(myLink),
+                    dataType: "html",
+                    trueSuccess: popUp.uiDialog,
+                    success: catchErrorOrDispatch,
+                    error: errorHandler,
+                    cmd: rightClick.selectedMenuItem,
+                    cache: false
+                });
     },
 
     hgTrackUi: function (trackName,descriptionOnly)
     {   // Launches the popup but shields the ajax with a waitOnFunction
-        waitOnFunction( popUp._uiDialogRequest, trackName, descriptionOnly );
+        waitOnFunction( popUp._uiDialogRequest, trackName, descriptionOnly );  
     },
 
     uiDialogOk: function (popObj, trackName)
@@ -3942,22 +3978,22 @@ var popUp = {
         // A few places in the hgTracks C code have been patched to explicitly set the cart vars
         // for some default checkboxes. So now this still means that QA must explicitly test
         // both paths through the code: as a separate full hgTracksUi page, and as a popup config window.
-        // hgTrackUi always sends in its form all variables causing them to be explicitly set in the cart.
+        // hgTrackUi always sends in its form all variables causing them to be explicitly set in the cart.  
         // The popup only sends things that have changed, causing those changes to appear explicitly
         // and even then it skips over disabled form items.
-        // There is some C code that was written before the popup config,
+        // There is some C code that was written before the popup config, 
         // and it expects all the variables are set or none are.
         // If just some are set, and not the default ones, it gets confused.
         // I fixed just such a bug in the code that handles refSeq.
         // See commit daf92c0f9eb331ea60740e6802aabd241d4be363.
         var changedVars = varHashChanges(allVars,popUp.saveAllVars);
-        // DEBUG Examples:
+         // DEBUG Examples:
         //debugDumpFormCollection("saveAllVars", popUp.saveAllVars);
         //debugDumpFormCollection("allVars", allVars);
         //debugDumpFormCollection("changedVars", changedVars);
         var newVis = changedVars[trackName];
         // subtracks do not have "hide", thus '[]'
-        var hide = (newVis && (newVis === 'hide' || newVis === '[]'));
+        var hide = (newVis && (newVis === 'hide' || newVis === '[]'));  
         if ( ! normed($('#imgTbl')) ) { // On findTracks or config page
             if (objNotEmpty(changedVars))
                 cart.setVarsObj(changedVars);
@@ -3988,7 +4024,7 @@ var popUp = {
 
     uiDialog: function (response, status)
     {
-        // Take html from hgTrackUi and put it up as a modal dialog.
+    // Take html from hgTrackUi and put it up as a modal dialog.
 
         // make sure all links (e.g. help links) open up in a new window
         response = response.replace(/<a /ig, "<a target='_blank' ");
@@ -3997,29 +4033,29 @@ var popUp = {
         cleanHtml = stripJsFiles(cleanHtml,false);   // DEBUG msg with true
         cleanHtml = stripCssFiles(cleanHtml,false);  // DEBUG msg with true
         //cleanHtml = stripJsEmbedded(cleanHtml,false);// DEBUG msg with true // OBSOLETE BY CSP2?
-        var nonceJs = {};
-        cleanHtml = stripCSPAndNonceJs(cleanHtml, false, nonceJs); // DEBUG msg with true
+	var nonceJs = {};
+	cleanHtml = stripCSPAndNonceJs(cleanHtml, false, nonceJs); // DEBUG msg with true
 
-        //alert(cleanHtml);  // DEBUG REMOVE
+	//alert(cleanHtml);  // DEBUG REMOVE
         $('#hgTrackUiDialog').html("<div id='pop' style='font-size:.9em;'>"+ cleanHtml +"</div>");
 
-        appendNonceJsToPage(nonceJs);
+	appendNonceJsToPage(nonceJs);
 
         // Strategy for popups with js:
         // - jsFiles and CSS should not be included in html.  Here they are shluped out.
-        // - The resulting files ought to be loadable dynamically (with getScript()),
+        // - The resulting files ought to be loadable dynamically (with getScript()), 
         //   but this was not working nicely with the modal dialog
         //   Therefore include files must be included with hgTracks CGI !
         // - embedded js should not be in the popup box.
-        // - Somethings should be in a popup.ready() function, and this is emulated below,
+        // - Somethings should be in a popup.ready() function, and this is emulated below, 
         //   as soon as the cleanHtml is added
         //   Since there are many possible popup cfg dialogs, the ready should be all inclusive.
 
         if ( ! popUp.trackDescriptionOnly ) {
             // If subtrack then vis rules differ
-            var subtrack = tdbIsSubtrack(hgTracks.trackDb[popUp.trackName]) ? popUp.trackName :"";
+            var subtrack = tdbIsSubtrack(hgTracks.trackDb[popUp.trackName]) ? popUp.trackName :"";  
             // Saves the original vars (and vals) that may get changed by the popup cfg.
-            popUp.saveAllVars = getAllVars( $('#hgTrackUiDialog'), subtrack );
+            popUp.saveAllVars = getAllVars( $('#hgTrackUiDialog'), subtrack ); 
 
             // -- popup.ready() -- Here is the place to do things that might otherwise go
             //                     into a $('#pop').ready() routine!
@@ -4040,10 +4076,10 @@ var popUp = {
             };
         } else {
             uiDialogButtons.Apply = function() {
-                popUp.uiDialogOk($('#pop'), popUp.trackName);
-                // thanks to JAT for this cleverness to keep button functioning
-                popUp.saveAllVars = getAllVars( $('#hgTrackUiDialog'), popUp.trackName);
-                if (popUp.saveAllVars[popUp.trackName+"_sel"] === 0) {       // hide
+                 popUp.uiDialogOk($('#pop'), popUp.trackName);
+                 // thanks to JAT for this cleverness to keep button functioning
+                 popUp.saveAllVars = getAllVars( $('#hgTrackUiDialog'), popUp.trackName);
+                 if (popUp.saveAllVars[popUp.trackName+"_sel"] === 0) {       // hide
                     // NOTE: once hidden, can't be unhidden by popup, so shut it down
                     $(this).dialog("close");
                 }
@@ -4105,9 +4141,9 @@ var popUp = {
                 popUp.cleanup();
             }
         });
-
+        
         $(".ui-dialog").on("keypress", function(e) {
-            var key = e.charCode || e.keyCode || 0;
+            var key = e.charCode || e.keyCode || 0;     
             if (key == 13) {
                 e.preventDefault();
                 $(".ui-button:contains('OK')").click();
@@ -4122,11 +4158,11 @@ var popUp = {
             $('#hgTrackUiDialog').dialog("option", "maxWidth", myWidth);
             $('#hgTrackUiDialog').dialog("option", "width", myWidth);
             $('#hgTrackUiDialog').dialog('option' , 'title' ,
-                hgTracks.trackDb[popUp.trackName].shortLabel+" Track Description");
+                               hgTracks.trackDb[popUp.trackName].shortLabel+" Track Description");
             $('#hgTrackUiDialog').dialog('open');
         } else {
             $('#hgTrackUiDialog').dialog('option' , 'title' ,
-                hgTracks.trackDb[popUp.trackName].shortLabel+" Track Settings");
+                                  hgTracks.trackDb[popUp.trackName].shortLabel+" Track Settings");
             $('#hgTrackUiDialog').dialog('open');
         }
         var buttOk = $('button.ui-state-default');
@@ -4134,8 +4170,8 @@ var popUp = {
     }
 };
 
-///////////////////////////////
-//// imageV2  (aka imgTbl) ////
+  ///////////////////////////////
+ //// imageV2  (aka imgTbl) ////
 ///////////////////////////////
 var imageV2 = {
 
@@ -4166,14 +4202,14 @@ var imageV2 = {
 
     isDirtyPage: function ()
     { // returns true if page was marked as dirty
-        // This will allow the backbutton to be overridden
+    // This will allow the backbutton to be overridden
 
         var dirty = normed($('#dirty'));
         if (dirty && $(dirty).val() === 'true')
             return true;
         return false;
     },
-
+    
     manyTracks: function ()
     {   // image-reload is slower than whole page reload when there are too many tracks
         if (!hgTracks || !hgTracks.trackDb || objKeyCount(hgTracks.trackDb) > 50)
@@ -4181,7 +4217,7 @@ var imageV2 = {
         return false;
     },
 
-    moveTiming: function()
+    moveTiming: function() 
     {    // move measure timing messages to the end of the page
         if ($(".timing").length > 0) {
             $("body").append("<div id='timingDiv'></div>");
@@ -4214,38 +4250,38 @@ var imageV2 = {
         if ($('#positionInput').length) {
             if (!suggestBox.initialized) { // only call init once
                 suggestBox.init(getDb(),
-                    $("#suggestTrack").length > 0,
-                    function (item) {
-                        if (["helpDocs", "publicHubs", "trackDb"].includes(item.type) ||
-                            item.id.startsWith("hgc")) {
-                            if (item.geneSymbol) {
-                                selectedGene = item.geneSymbol;
-                                // Overwrite item's long value with symbol after the autocomplete plugin is done:
-                                window.setTimeout($('#positionInput').val(item.geneSymbol), 0);
-                            } else {
-                                selectedGene = item.value;
+                            $("#suggestTrack").length > 0,
+                            function (item) {
+                                if (["helpDocs", "publicHubs", "trackDb"].includes(item.type) ||
+                                        item.id.startsWith("hgc")) {
+                                    if (item.geneSymbol) {
+                                        selectedGene = item.geneSymbol;
+                                        // Overwrite item's long value with symbol after the autocomplete plugin is done:
+                                        window.setTimeout($('#positionInput').val(item.geneSymbol), 0);
+                                    } else {
+                                        selectedGene = item.value;
+                                    }
+                                    window.location.assign(item.id);
+                                } else {
+                                    genomePos.set(item.id, getSizeFromCoordinates(item.id));
+                                    if ($("#suggestTrack").length && $('#hgFindMatches').length) {
+                                        // Set cart variables to open the hgSuggest gene track and highlight
+                                        // the chosen transcript.  These variables will be submittted by the goButton
+                                        // click handler.
+                                        vis.makeTrackVisible($("#suggestTrack").val());
+                                        cart.addVarsToQueue(["hgFind.matches"],[$('#hgFindMatches').val()]);
+                                    }
+                                    $("#goButton").trigger("click");
+                                }
+                            },
+                            function (position) {
+                                genomePos.set(position, getSizeFromCoordinates(position));
                             }
-                            window.location.assign(item.id);
-                        } else {
-                            genomePos.set(item.id, getSizeFromCoordinates(item.id));
-                            if ($("#suggestTrack").length && $('#hgFindMatches').length) {
-                                // Set cart variables to open the hgSuggest gene track and highlight
-                                // the chosen transcript.  These variables will be submittted by the goButton
-                                // click handler.
-                                vis.makeTrackVisible($("#suggestTrack").val());
-                                cart.addVarsToQueue(["hgFind.matches"],[$('#hgFindMatches').val()]);
-                            }
-                            $("#goButton").trigger("click");
-                        }
-                    },
-                    function (position) {
-                        genomePos.set(position, getSizeFromCoordinates(position));
-                    }
                 );
             }
         }
     },
-
+    
     afterImgChange: function (dirty)
     {   // Standard things to do when manipulations change image without ajax update.
         dragReorder.init();
@@ -4254,7 +4290,7 @@ var imageV2 = {
         if (dirty)
             imageV2.markAsDirtyPage();
     },
-
+    
     afterReload: function (id)
     {   // Reload various UI widgets after updating imgTbl map.
         dragReorder.init();
@@ -4278,7 +4314,7 @@ var imageV2 = {
                 return;
             }
         }
-
+        
         imageV2.loadRemoteTracks();
         makeItemsByDrag.load();
         imageV2.loadSuggestBox();
@@ -4318,10 +4354,10 @@ var imageV2 = {
                 // >1x dragScrolling needs some extra care.
                 if (hgTracks.imgBoxPortal && (hgTracks.imgBoxWidth > hgTracks.imgBoxPortalWidth)) {
                     if (hgTracks.imgBoxPortalLeft !== undefined
-                        &&  hgTracks.imgBoxPortalLeft !== null) {
+                    &&  hgTracks.imgBoxPortalLeft !== null) {
                         $(tr).find('.panImg').css({'left': hgTracks.imgBoxPortalLeft });
                         $(tr).find('.tdData').css(
-                            {'backgroundPosition': hgTracks.imgBoxPortalLeft});
+                                {'backgroundPosition': hgTracks.imgBoxPortalLeft});
                     }
                 }
 
@@ -4349,13 +4385,13 @@ var imageV2 = {
     {   // update all rows in imgTbl based upon navigateInPlace response.
         var imgTbl = $('#imgTbl');
 
-        // We update rows one at a time
+        // We update rows one at a time 
         // (b/c updating the whole imgTbl at one time doesn't work in IE).
         var id;
         for (id in newJson.trackDb) {
             var newJsonRec = newJson.trackDb[id];
             var oldJsonRec = oldJson.trackDb[id];
-
+            
             // use limitedVis as visibility if set
             if (newJsonRec.limitedVis !== undefined)
                 newJsonRec.visibility = newJsonRec.limitedVis;
@@ -4372,7 +4408,7 @@ var imageV2 = {
                 // New track seen for the first time
                 if (imageV2.backSupport) {
                     $(imgTbl).append("<tr id='tr_" + id + "' abbr='0'" + // abbr gets filled in
-                        " class='imgOrd trDraggable'></tr>");
+                                        " class='imgOrd trDraggable'></tr>");
                     if (!imageV2.updateImgForId(response, id, true, newJsonRec)) {
                         warn("Couldn't insert new image for id: " + id);
                     } else {
@@ -4387,12 +4423,12 @@ var imageV2 = {
                 if ( ! newJson.trackDb[id] )
                     $(document.getElementById('tr_' + id)).remove();
             }
-
+            
             // Need to reorder the rows based upon abbr
             dragReorder.sort($(imgTbl));
         }
     },
-
+    
     updateChromImg: function (response)
     {   // Parse out new chrom 'ideoGram' (if available)
         // e.g.: <IMG SRC = "../trash/hgtIdeo/hgtIdeo_hgwdev_larrym_61d1_8b4a80.gif"
@@ -4448,7 +4484,7 @@ var imageV2 = {
 
     },
 
-
+        
     requestImgUpdate: function (trackName,extraData,loadingId,newVisibility)
     {
         // extraData, loadingId and newVisibility are optional
@@ -4461,19 +4497,19 @@ var imageV2 = {
         if ((data.length) > 2000) // extraData could contain a bunch of changes from the cfg dialog
             getOrPost = "POST";
         $.ajax({
-            type: getOrPost,
-            url: "../cgi-bin/hgTracks",
-            data: cart.addUpdatesToUrl(data),
-            dataType: "html",
-            trueSuccess: imageV2.updateImgAndMap,
-            success: catchErrorOrDispatch,
-            error: errorHandler,
-            cmd: 'refresh',
-            loadingId: loadingId,
-            id: trackName,
-            newVisibility: newVisibility,
-            cache: false
-        });
+                    type: getOrPost,
+                    url: "../cgi-bin/hgTracks",
+                    data: cart.addUpdatesToUrl(data),
+                    dataType: "html",
+                    trueSuccess: imageV2.updateImgAndMap,
+                    success: catchErrorOrDispatch,
+                    error: errorHandler,
+                    cmd: 'refresh',
+                    loadingId: loadingId,
+                    id: trackName,
+                    newVisibility: newVisibility,
+                    cache: false
+                });
     },
 
     fullReload: function(extraData)
@@ -4497,7 +4533,7 @@ var imageV2 = {
     },
 
     updateImgAndMap: function (response, status)
-    {   // Handle ajax response with an updated trackMap image, map and optional ideogram.
+    {   // Handle ajax response with an updated trackMap image, map and optional ideogram. 
         //    and maybe the redLines background too.
         // this.cmd can be used to figure out which menu item triggered this.
         // this.id === appropriate track if we are retrieving just a single track.
@@ -4515,10 +4551,10 @@ var imageV2 = {
             stripJsEmbedded(response, true, stripped);
             if ( ! stripped.warnMsg )
                 warn("An unexpected error has occurred. Please consider letting us know " +
-                    "by emailing genome-www@soe.ucsc.edu with the steps that resulted in " +
-                    "this state and any info on how we could reproduce it. Using the " +
-                    "sessions (My Data > My Sessions) tool can simplify the process by " +
-                    "saving all configuration settings.");
+                     "by emailing genome-www@soe.ucsc.edu with the steps that resulted in " +
+                     "this state and any info on how we could reproduce it. Using the " +
+                     "sessions (My Data > My Sessions) tool can simplify the process by " +
+                     "saving all configuration settings.");
         } else {
             if (this.id) {
                 if (newJson.trackDb[this.id]) {
@@ -4529,7 +4565,7 @@ var imageV2 = {
                     if (this.newVisibility && limitedVis && this.newVisibility !== limitedVis)
                         // see redmine 1333#note-9
                         alert("There are too many items to display the track in " +
-                            this.newVisibility + " mode.");
+                                this.newVisibility + " mode.");
                     var rec = oldJson.trackDb[this.id];
                     rec.limitedVis = newJson.trackDb[this.id].limitedVis;
                     rec.imgOffsetY = newJson.trackDb[this.id].imgOffsetY;
@@ -4554,11 +4590,11 @@ var imageV2 = {
         }
         if (valid) {
             if (imageV2.enabled
-                && this.id
-                && this.cmd
-                && this.cmd !== 'wholeImage'
-                && this.cmd !== 'selectWholeGene'
-                && !newJson.virtChromChanged) {
+            && this.id
+            && this.cmd
+            && this.cmd !== 'wholeImage'
+            && this.cmd !== 'selectWholeGene'
+            && !newJson.virtChromChanged) {
                 // Extract <TR id='tr_ID'>...</TR> and update appropriate row in imgTbl;
                 // this updates src in img_left_ID, img_center_ID and img_data_ID
                 // and map in map_data_ID
@@ -4582,7 +4618,7 @@ var imageV2 = {
 
                     if (newJson.cgiVersion !== oldJson.cgiVersion || newJson.virtChromChanged) {
                         // Must reload whole page because of a new version on the server;
-                        // this should happen very rarely. Note that we have already updated
+                        // this should happen very rarely. Note that we have already updated 
                         // position based on the user's action.
                         imageV2.fullReload();
                     } else {
@@ -4630,10 +4666,10 @@ var imageV2 = {
                         var pos = parsePosition(genomePos.get());
                         var name = rec.remoteTrack || id;
                         script.setAttribute('src',
-                            rec.url + "?track=" + name +
-                            "&jsonp=imageV2.remoteTrackCallback&position=" +
-                            encodeURIComponent(pos.chrom + ":" + pos.start + "-" + pos.end) +
-                            "&pix=" + $('#imgTbl').width()
+                                rec.url + "?track=" + name +
+                                "&jsonp=imageV2.remoteTrackCallback&position=" +
+                                encodeURIComponent(pos.chrom + ":" + pos.start + "-" + pos.end) +
+                                "&pix=" + $('#imgTbl').width()
                         );
                         document.getElementsByTagName('head')[0].appendChild(script);
                     }
@@ -4643,7 +4679,7 @@ var imageV2 = {
     },
 
     remoteTrackCallback: function (rec)
-        // jsonp callback to load a remote track.
+    // jsonp callback to load a remote track.
     {
         if (rec.error) {
             alert("retrieval from remote site failed with error: " + rec.error);
@@ -4654,10 +4690,10 @@ var imageV2 = {
                     $('#img_data_' + track).attr('style', "left:-116px; top: -23px;");
                     $('#img_data_' + track).attr('height', rec.height);
                     // XXXX use width in some way?
-                    //       $('#img_data_' + track).attr('width', rec.width);
+           //       $('#img_data_' + track).attr('width', rec.width);
                     $('#img_data_' + track).attr('width', $('#img_data_ruler').width());
                     $('#img_data_' + track).attr('src', rec.img);
-                    /* jshint loopfunc: true */// function inside loop works and replacement is awkward.
+          /* jshint loopfunc: true */// function inside loop works and replacement is awkward.
                     $('#td_data_' + track + ' > div').each(function(index) {
                         if (index === 1) {
                             var style = $(this).attr('style');
@@ -4710,13 +4746,13 @@ var imageV2 = {
                     }
                 } else {
                     if ( ! hgTracks.trackDb[this.name]
-                        ||  cmd !== vis.enumOrder[hgTracks.trackDb[this.name].visibility]) {
+                    ||  cmd !== vis.enumOrder[hgTracks.trackDb[this.name].visibility]) {
                         if (data.length > 0) {
                             data = data + "&";
                         }
                         data = data + this.name + "=" + cmd;
                     }
-                }
+            }
             });
             if (data.length > 0) {
                 imageV2.navigateInPlace("db=" + getDb() + "&" + data, null, false);
@@ -4734,13 +4770,13 @@ var imageV2 = {
         // under the mouse after the in-place update.
         // Tim thinks we should consider disabling all UI input while we are doing in-place update.
         // TODO: waitOnFuction?
-
+    
         // No ajax image update if there are too many tracks!
         if (imageV2.manyTracks()) {
             imageV2.fullReload(params);
             return false;  // Shouldn't return from fullReload but I have seen it in FF
         }
-
+    
         jQuery('body').css('cursor', 'wait');
         var currentId, currentIdYOffset;
         if (keepCurrentTrackVisible) {
@@ -4748,7 +4784,7 @@ var imageV2 = {
             if (item) {
                 var top = $(document.getElementById("tr_" + item.id)).position().top;
                 if (top >= $(window).scrollTop()
-                    || top < $(window).scrollTop() + $(window).height()) {
+                || top < $(window).scrollTop() + $(window).height()) {
                     // don't bother if the item is not currently visible.
                     currentId = item.id;
                     currentIdYOffset = top - $(window).scrollTop();
@@ -4756,25 +4792,25 @@ var imageV2 = {
             }
         }
         $.ajax({
-            type: "GET",
-            url: "../cgi-bin/hgTracks",
-            data: cart.addUpdatesToUrl(params +
-                "&hgt.trackImgOnly=1&hgt.ideogramToo=1&hgsid=" + getHgsid() + "&db=" + getDb()),
-            dataType: "html",
-            trueSuccess: imageV2.updateImgAndMap,
-            success: catchErrorOrDispatch,
-            error: errorHandler,
-            cmd: 'wholeImage',
-            loadingId: showLoadingImage("imgTbl"),
-            disabledEle: disabledEle,
-            currentId: currentId,
-            currentIdYOffset: currentIdYOffset,
-            cache: false
-        });
+                type: "GET",
+                url: "../cgi-bin/hgTracks",
+                data: cart.addUpdatesToUrl(params + 
+                                      "&hgt.trackImgOnly=1&hgt.ideogramToo=1&hgsid=" + getHgsid() + "&db=" + getDb()),
+                dataType: "html",
+                trueSuccess: imageV2.updateImgAndMap,
+                success: catchErrorOrDispatch,
+                error: errorHandler,
+                cmd: 'wholeImage',
+                loadingId: showLoadingImage("imgTbl"),
+                disabledEle: disabledEle,
+                currentId: currentId,
+                currentIdYOffset: currentIdYOffset,
+                cache: false
+            });
     },
 
     disguiseHighlight: function(position)
-        // disguise highlight position
+    // disguise highlight position
     {
         pos = parsePositionWithDb(position);
         // DISGUISE
@@ -4790,7 +4826,7 @@ var imageV2 = {
     },
 
     undisguiseHighlight: function(pos)
-        // undisguise highlight pos
+    // undisguise highlight pos
     {
         // UN-DISGUISE
         if (hgTracks.virtualSingleChrom && (pos.chrom.search("multi") !== 0)) {
@@ -4806,8 +4842,8 @@ var imageV2 = {
     },
 
     drawHighlights: function()
-        // highlight vertical region in imgTbl based on hgTracks.highlight (#709).
-        // For PDF/hgRenderTracks output, the highlights are drawn by hgTracks.c:drawHighlights()
+    // highlight vertical region in imgTbl based on hgTracks.highlight (#709).
+    // For PDF/hgRenderTracks output, the highlights are drawn by hgTracks.c:drawHighlights()
     {
         var pos;
         var hexColor = dragSelect.hlColorDefault;
@@ -4828,7 +4864,7 @@ var imageV2 = {
                 imageV2.undisguiseHighlight(pos);
 
                 if (pos && pos.db===db && pos.chrom === hgTracks.chromName
-                    &&  (pos.start-1) <= hgTracks.imgBoxPortalEnd && pos.end >= hgTracks.imgBoxPortalStart) {
+                &&  (pos.start-1) <= hgTracks.imgBoxPortalEnd && pos.end >= hgTracks.imgBoxPortalStart) {
                     pos.start--;  // make start 0-based to match hgTracks.winStart
                     var portalWidthBases = hgTracks.imgBoxPortalEnd - hgTracks.imgBoxPortalStart;
                     var portal = $('#imgTbl td.tdData')[0];
@@ -4848,7 +4884,7 @@ var imageV2 = {
                         widthPixels = 3;
                         leftPixels -= 1;
                     }
-
+    
                     var area = jQuery("<div id='highlightItem' class='highlightItem'></div>");
                     if (pos.color)
                         hexColor = pos.color;
@@ -4856,45 +4892,45 @@ var imageV2 = {
                         hexColor = defHexColor;
 
                     $(area).css({ backgroundColor: hexColor,
-                        left: leftPixels + 'px', top: $('#imgTbl').offset().top + 1 + 'px',
-                        width: widthPixels + 'px',
-                        height: $('#imgTbl').css('height') });
+                                left: leftPixels + 'px', top: $('#imgTbl').offset().top + 1 + 'px',
+                                width: widthPixels + 'px',
+                                height: $('#imgTbl').css('height') });
                     $(area).data({leftPixels: leftPixels, widthPixels: widthPixels});// needed by dragScroll
-
+    
                     // Larry originally appended to imgTbl, but discovered that doesn't work on IE 8 and 9.
-                    $('body').append($(area));
+                    $('body').append($(area)); 
                     // z-index is done in css class, so highlight is beneath transparent data images.
-                    // NOTE: ideally highlight would be below transparent blue-lines, but THAT is a
+                    // NOTE: ideally highlight would be below transparent blue-lines, but THAT is a  
                     // background-image so z-index can't get below it!  PS/PDF looks better for blue-lines!
                 }
             }
         }
     },
 
-    backSupport: (window.History.enabled !== undefined), // support of our back button via:
+    backSupport: (window.History.enabled !== undefined), // support of our back button via: 
     history: null,                                     //  jquery.history.js and HTML5 history API
-
+    
     setupHistory: function ()
     {   // Support for back-button using jquery.history.js.
         // Sets up the history and initializes a state.
-
-        // Since ajax updates leave the browser cached pages different from the server state,
+    
+        // Since ajax updates leave the browser cached pages different from the server state, 
         // simple back-button fails.  Using a 'dirty flag' we had forced an update from server,
         // whenever the back button was hit, meaning there was no going back from server-state!
-        // NOW using the history API, the back-button triggers a 'statechange' event which can
+        // NOW using the history API, the back-button triggers a 'statechange' event which can 
         // contain data.  We save the position in the data and ajax update the image when the
         // back-button is pressed.  This works great for going back through ajax-updated position
         // changes, but is a bit messier when going back past a full-page retrieved state (as
         // described below).
-
+    
         // NOTE: many things besides position could be ajax updated (e.g. track visibility). We are
         // using the back-button to keep track of position only.  Since the image should be updated
         // every-time the back button is pressed, all track settings should persist (not go back).
         // What will occasionally fail is vis box state and group expansion state. This is because
         // the back-button goes to a browser cached page and then the image alone is updated.
-
+    
         imageV2.history = window.History;
-
+        
         // The 'statechange' function triggerd by the back-button.
         // Whenever the position changes, then use ajax-update to refetch the position
         imageV2.history.Adapter._bind(window, 'statechange',function(){
@@ -4907,15 +4943,15 @@ var imageV2 = {
                 imageV2.navigateInPlace("db=" + getDb() + "&" + prevDbPos, null, false);
             }
         });
-
+        
         // With history support it is best that most position changes will ajax-update the image
         // This ensures that the 'go' and 'refresh' button will do so unless the chrom changes.
         $("#goButton,input[value='refresh']").on("click", function () {
             var newPos = genomePos.get().replace(/,/g,'');
             if (newPos.length > 2000) {
-                alert("Sorry, you cannot paste identifiers or sequences with more than 2000 characters into this box.");
-                $('input[name="hgt.positionInput"]').val("");
-                return false;
+               alert("Sorry, you cannot paste identifiers or sequences with more than 2000 characters into this box.");
+               $('input[name="hgt.positionInput"]').val("");
+               return false;
             }
 
             var newDbPos = hgTracks.lastDbPos;
@@ -4929,7 +4965,7 @@ var imageV2 = {
                     return false;
                 }
             }
-
+            
             // If not just image update AND there are vis updates waiting...
             if (cart.updatesWaiting()) {
                 var url = "../cgi-bin/hgTracks?position=" + newPos + "&" + cart.varsToUrlData({ 'db': getDb(), 'hgsid': getHgsid() });
@@ -4938,7 +4974,7 @@ var imageV2 = {
             }
 
             // redirect to hgBlat if the input looks like a DNA sequence
-            // minimum length=19 so we do not accidentally redirect to hgBlat for a gene identifier
+            // minimum length=19 so we do not accidentally redirect to hgBlat for a gene identifier 
             // like ATG5
             var dnaRe = new RegExp("^(>[^\n\r ]+[\n\r ]+)?(\\s*[actgnACTGN \n\r]{19,}\\s*)$");
             if (dnaRe.test(newPos)) {
@@ -4984,7 +5020,7 @@ var imageV2 = {
                 });
                 return false;
             }
-
+                
             return true;
         });
         // Have vis box changes update cart through ajax.  This helps keep page/cart in sync.
@@ -4994,7 +5030,7 @@ var imageV2 = {
         // A) Forward: Full page retrieval: hgTracks is first navigated to (or chrom change)
         // B) Back-button past a full retrieval (B in: ->A,->b,->c(full page),->d,<-c,<-B(again))
         //    B1) Dirty page: at least one non-position change (e.g. 1 track vis changed in b)
-        //    B2) Clean page: only position changes from A->b->|
+        //    B2) Clean page: only position changes from A->b->| 
         var curPos = encodeURIComponent(genomePos.get().replace(/,/g,''));
         var curDbPos = hgTracks.lastDbPos;
         var cachedPos = imageV2.history.getState().data.position;
@@ -5005,7 +5041,7 @@ var imageV2 = {
             imageV2.setInHistory(true);
         } else { // B) Back-button past a full retrieval
             genomePos.set(decodeURIComponent(cachedPos));
-            // B1) Dirty page: at least one non-position change
+            // B1) Dirty page: at least one non-position change 
             if (imageV2.isDirtyPage()) {
                 imageV2.markAsCleanPage();
                 // Only forcing a full page refresh if chrom changes
@@ -5017,7 +5053,7 @@ var imageV2 = {
                     imageV2.fullReload();
                 }
             } else {
-                // B2) Clean page: only position changes from a->b
+                // B2) Clean page: only position changes from a->b 
                 if (cachedDbPos !== curDbPos) {
                     imageV2.navigateInPlace("db="+getDb()+"&"+cachedDbPos, null, false);
                 }
@@ -5026,7 +5062,7 @@ var imageV2 = {
             vis.restoreFromBackButton();
         }
     },
-
+    
     setInHistory: function (fullPageLoad)
     {   // Keep a position history and allow the back-button to work (sort of)
         // replaceState on initial page load, pushState on each advance
@@ -5034,7 +5070,7 @@ var imageV2 = {
         var lastDbPos = imageV2.history.getState().data.lastDbPos;
         var newPos  = encodeURIComponent(genomePos.get().replace(/,/g,''));  // no commas
         var newDbPos  = hgTracks.lastDbPos;
-
+        
         // A full page load could be triggered by back-button, but then there will be a lastPos
         // if this is the case then don't set the position in history again!
         if (fullPageLoad && lastDbPos)
@@ -5055,21 +5091,21 @@ var imageV2 = {
                 title = genomePos.get();
 
             var sid = getHgsid();
-            if (fullPageLoad) {
+            if (fullPageLoad) { 
                 // Should only be on initial set-up: first navigation to page
                 imageV2.history.replaceState({lastDbPos: newDbPos, position: newPos, hgsid: + sid },title,
-                    "hgTracks?db="+getDb()+"&"+newDbPos+"&hgsid="+sid);
-            } else {
+                                 "hgTracks?db="+getDb()+"&"+newDbPos+"&hgsid="+sid);
+            } else {  
                 // Should be when advancing (not-back-button)
                 imageV2.history.pushState({lastDbPos: newDbPos, position: newPos, hgsid: + sid },title,
-                    "hgTracks?db="+getDb()+"&"+newDbPos+"&hgsid="+sid);
+                                 "hgTracks?db="+getDb()+"&"+newDbPos+"&hgsid="+sid);
             }
         }
     }
 };
 
-///////////////////////////////////////
-//// mouseOver data display 2020-10 ///
+  ///////////////////////////////////////
+ //// mouseOver data display 2020-10 ///
 ///////////////////////////////////////
 var mouseOver = {
 
@@ -5109,57 +5145,57 @@ var mouseOver = {
     // given hgt_....png file name, change to hgt_....json file name
     jsonFileName: function(imgDataId)
     {
-        var jsonFile=imgDataId.src.replace(".png", ".json");
-        return jsonFile;
+      var jsonFile=imgDataId.src.replace(".png", ".json");
+      return jsonFile;
     },
 
     // called from: updateImgForId when it has updated a track in place
     // need to refresh the event handlers and json data
     updateMouseOver: function (trackName, newJson)
     {
-        if (! newJson ) { return; }
-        // this newJson object appears to be a single trackDb, not
-        //  an array of them
-        var trackDb = null;
-        // so, if the type attribute exists, then it is the trackDb
-        if (newJson.type) {
-            trackDb = newJson;
-        } else {	// otherwise, search through the array
-            for ( var id in newJson.trackDb ) {
-                if (id === trackName) {
-                    trackDb = newJson.trackDb[id];
-                    break;
-                }
-            }
+      if (! newJson ) { return; }
+      // this newJson object appears to be a single trackDb, not
+      //  an array of them
+      var trackDb = null;
+      // so, if the type attribute exists, then it is the trackDb
+      if (newJson.type) {
+         trackDb = newJson;
+      } else {	// otherwise, search through the array
+        for ( var id in newJson.trackDb ) {
+           if (id === trackName) {
+              trackDb = newJson.trackDb[id];
+              break;
+           }
         }
-        var trackType = null;
-        var hasChildren = null;
-        if (trackDb) {
-            trackType = trackDb.type;
-            hasChildren = trackDb.hasChildren;
-        } else if (hgTracks.trackDb && hgTracks.trackDb[trackName]) {
-            trackType = hgTracks.trackDb[trackName].type;
-        } else if (mouseOver.trackType[trackName]) {
-            trackType = mouseOver.trackType[trackName];
-        }
-        var validType = false;
-        if (trackType) {
-            if (trackType.indexOf("wig") === 0) { validType = true; }
-            if (trackType.indexOf("bigWig") === 0) { validType = true; }
-            if (trackType.indexOf("wigMaf") === 0) { validType = false; }
-            if (hasChildren) { validType = false; }
-        }
-        if (! validType ) { return; }
-        var tdData = "td_data_" + trackName;
-        var tdDataId  = document.getElementById(tdData);
-        var imgData = "img_data_" + trackName;
-        var imgDataId  = document.getElementById(imgData);
-        if (imgDataId && tdDataId) {
-            var url = mouseOver.jsonFileName(imgDataId);
-            $( tdDataId ).on("mousemove", mouseOver.mouseMoveDelay);
-            $( tdDataId ).on("mouseout", mouseOver.popUpDisappear);
-            mouseOver.fetchJsonData(url);  // may be a refresh, don't know
-        }
+      }
+      var trackType = null;
+      var hasChildren = null;
+      if (trackDb) {
+	trackType = trackDb.type;
+	hasChildren = trackDb.hasChildren;
+      } else if (hgTracks.trackDb && hgTracks.trackDb[trackName]) {
+	trackType = hgTracks.trackDb[trackName].type;
+      } else if (mouseOver.trackType[trackName]) {
+	trackType = mouseOver.trackType[trackName];
+      }
+      var validType = false;
+      if (trackType) {
+	if (trackType.indexOf("wig") === 0) { validType = true; }
+	if (trackType.indexOf("bigWig") === 0) { validType = true; }
+	if (trackType.indexOf("wigMaf") === 0) { validType = false; }
+	if (hasChildren) { validType = false; }
+      }
+      if (! validType ) { return; }
+      var tdData = "td_data_" + trackName;
+      var tdDataId  = document.getElementById(tdData);
+      var imgData = "img_data_" + trackName;
+      var imgDataId  = document.getElementById(imgData);
+      if (imgDataId && tdDataId) {
+	var url = mouseOver.jsonFileName(imgDataId);
+        $( tdDataId ).on("mousemove", mouseOver.mouseMoveDelay);
+        $( tdDataId ).on("mouseout", mouseOver.popUpDisappear);
+        mouseOver.fetchJsonData(url);  // may be a refresh, don't know
+      }
     },
 
     // given an X coordinate: x, find the index idx
@@ -5173,188 +5209,188 @@ var mouseOver = {
     //       items in the display.
     findRange: function (x, rects)
     {
-        var answer = -1;  // assmume not found
-        var idx = 0;
-        if (hgTracks.revCmplDisp) {
-            var rectsLen = rects.length - 1;
-            for ( idx in rects ) {
-                if ((rects[rectsLen-idx].x1 <= x) && (x < rects[rectsLen-idx].x2)) {
-                    answer = rectsLen-idx;
-                    break;
-                }
-            }
-        } else {
-            for ( idx in rects ) {
-                if ((rects[idx].x1 <= x) && (x < rects[idx].x2)) {
-                    answer = idx;
-                    break;
-                }
-            }
+      var answer = -1;  // assmume not found
+      var idx = 0;
+      if (hgTracks.revCmplDisp) {
+        var rectsLen = rects.length - 1;
+        for ( idx in rects ) {
+           if ((rects[rectsLen-idx].x1 <= x) && (x < rects[rectsLen-idx].x2)) {
+             answer = rectsLen-idx;
+             break;
+           }
         }
-        return answer;
+      } else {
+        for ( idx in rects ) {
+           if ((rects[idx].x1 <= x) && (x < rects[idx].x2)) {
+             answer = idx;
+             break;
+           }
+        }
+      }
+      return answer;
     },
 
     popUpDisappear: function () {
-        if (mouseOver.visible) {        // should *NOT* have to keep track !*!
-            mouseOver.visible = false;
-            $('#mouseOverText').css('display','none');
-            $('#mouseOverVerticalLine').css('display','none');
-        }
-        if (mouseOver.popUpTimer) {
-            clearTimeout(mouseOver.popUpTimer);
-            mouseOver.popUpTimer = null;
-        }
-        mouseOver.delayDone = true;
-        mouseOver.delayInProgress = false;
+      if (mouseOver.visible) {        // should *NOT* have to keep track !*!
+        mouseOver.visible = false;
+        $('#mouseOverText').css('display','none');
+        $('#mouseOverVerticalLine').css('display','none');
+      }
+      if (mouseOver.popUpTimer) {
+         clearTimeout(mouseOver.popUpTimer);
+         mouseOver.popUpTimer = null;
+      }
+      mouseOver.delayDone = true;
+      mouseOver.delayInProgress = false;
     },
 
     popUpVisible: function () {
-        if (! mouseOver.visible) {        // should *NOT* have to keep track !*!
-            mouseOver.visible = true;
-            $('#mouseOverText').css('display','block');
-            $('#mouseOverVerticalLine').css('display','block');
-        }
+      if (! mouseOver.visible) {        // should *NOT* have to keep track !*!
+        mouseOver.visible = true;
+        $('#mouseOverText').css('display','block');
+        $('#mouseOverVerticalLine').css('display','block');
+      }
     },
 
     //  the evt.currentTarget.id is the td_data_<trackName> element of
     //     the track graphic.  There doesn't seem to be a evt.target.id ?
     mouseInTrackImage: function (evt)
     {
-        // the center label also events here, can't use that
-        //  plus there is a one pixel line under the center label that has no
-        //   id name at all, so verify we are getting the event from the correct
-        //   element.
-        if (! evt.currentTarget.id.includes("td_data_")) { return; }
-        var trackName = evt.currentTarget.id.replace("td_data_", "");
-        if (trackName.length < 1) { return; }	// verify valid trackName
+    // the center label also events here, can't use that
+    //  plus there is a one pixel line under the center label that has no
+    //   id name at all, so verify we are getting the event from the correct
+    //   element.
+    if (! evt.currentTarget.id.includes("td_data_")) { return; }
+    var trackName = evt.currentTarget.id.replace("td_data_", "");
+    if (trackName.length < 1) { return; }	// verify valid trackName
 
-        // location of mouse relative to the whole page
-        //     even when the top of page has scolled off
-        var evtX = Math.floor(evt.pageX);
+    // location of mouse relative to the whole page
+    //     even when the top of page has scolled off
+    var evtX = Math.floor(evt.pageX);
 //  var evtY = Math.floor(evt.pageY);
 //  var offX = Math.floor(evt.offsetX);       // no need for evtY or offX
 
-        // find location of this <td> slice in the image, this is the track
-        //   image in the graphic, including left margin and center label
-        //   This location follows the window scrolling, could go negative
-        var tdId  = document.getElementById(evt.currentTarget.id);
-        var tdRect = tdId.getBoundingClientRect();
-        var tdLeft = Math.floor(tdRect.left);
-        var tdTop = Math.floor(tdRect.top);
+    // find location of this <td> slice in the image, this is the track
+    //   image in the graphic, including left margin and center label
+    //   This location follows the window scrolling, could go negative
+    var tdId  = document.getElementById(evt.currentTarget.id);
+    var tdRect = tdId.getBoundingClientRect();
+    var tdLeft = Math.floor(tdRect.left);
+    var tdTop = Math.floor(tdRect.top);
 //    if (tdTop < 0) { return; }  // track is scrolled off top of screen
-        var tdWidth = Math.floor(tdRect.width);
-        var tdHeight = Math.floor(tdRect.height);
-        var tdRight = tdLeft + tdWidth;
-        // clientX is the X coordinate of the mouse hot spot
-        var clientX = Math.floor(evt.clientX);
-        var clientY = Math.floor(evt.clientY);
-        // the graphOffset is the index (x coordinate) into the 'items' definitions
-        //  of the data value boxes for the graph.  The magic number three
-        //   is used elsewhere in this code, note the comment on the constant
-        //   LEFTADD.
-        var graphOffset = Math.max(0, clientX - tdLeft - 3);
-        if (hgTracks.revCmplDisp) {
-            graphOffset = Math.max(0, tdRight - clientX);
-        }
+    var tdWidth = Math.floor(tdRect.width);
+    var tdHeight = Math.floor(tdRect.height);
+    var tdRight = tdLeft + tdWidth;
+    // clientX is the X coordinate of the mouse hot spot
+    var clientX = Math.floor(evt.clientX);
+    var clientY = Math.floor(evt.clientY);
+    // the graphOffset is the index (x coordinate) into the 'items' definitions
+    //  of the data value boxes for the graph.  The magic number three
+    //   is used elsewhere in this code, note the comment on the constant
+    //   LEFTADD.
+    var graphOffset = Math.max(0, clientX - tdLeft - 3);
+    if (hgTracks.revCmplDisp) {
+       graphOffset = Math.max(0, tdRight - clientX);
+    }
 
-        var windowUp = false;     // see if window is supposed to become visible
-        var foundIdx = -1;
-        if (mouseOver.items[trackName]) {
-            foundIdx = mouseOver.findRange(graphOffset, mouseOver.items[trackName]);
-        }
-        // can show 'no data' when not found
-        var mouseOverValue = mouseOver.noDataString;
-        if (mouseOver.mouseOverFunction[trackName] === "noAverage") {
-            mouseOverValue = mouseOver.noAverageString;
-        }
-        if (foundIdx > -1) { // value to display
-            mouseOverValue = "&nbsp;" + mouseOver.items[trackName][foundIdx].v + "&nbsp;";
-        }
-        $('#mouseOverText').html(mouseOverValue);
-        var msgWidth = mouseOver.maximumWidth[trackName];
-        $('#mouseOverText').width(msgWidth);
-        var msgHeight = Math.ceil($('#mouseOverText').height());
-        var lineHeight = Math.max(0, tdHeight - msgHeight);
-        if (tdTop < 0) {
-            lineHeight = Math.max(0, tdHeight + tdTop - msgHeight);
-        }
-        var msgLeft = Math.max(tdLeft, clientX - (msgWidth/2) - 3); // with magic 3
-        var msgTop = Math.max(0, tdTop);
-        var lineTop = Math.max(0, msgTop + msgHeight);
-        var lineLeft = Math.max(0, clientX - 1);  // magic 3 +  2 for width of indicator box
-        if (clientY < msgTop + msgHeight) {	// cursor overlaps with the msg box
-            msgLeft = clientX - msgWidth - 6;     // to the left of the cursor
-            if (msgLeft < tdLeft || msgLeft < 0) {   // hits left edge, switch
-                msgLeft = clientX;         // to right of cursor
-            }
-        } else {	// apply limits to left and right edges, window or image
-            msgLeft = Math.min(msgLeft, tdRight - msgWidth);  // image right limit
-            msgLeft = Math.min(msgLeft, $(window).width() - msgWidth); // window right
-            msgLeft = Math.max(0, msgLeft);  // left window edge limit
-        }
-        $('#mouseOverText').css('top',msgTop + "px");
-        $('#mouseOverText').css('left',msgLeft + "px");
-        $('#mouseOverVerticalLine').css('left',lineLeft + "px");
-        $('#mouseOverVerticalLine').css('top',lineTop + "px");
-        $('#mouseOverVerticalLine').css('height',lineHeight + "px");
-        windowUp = true;      // yes, window is to become visible
+    var windowUp = false;     // see if window is supposed to become visible
+    var foundIdx = -1;
+    if (mouseOver.items[trackName]) {
+       foundIdx = mouseOver.findRange(graphOffset, mouseOver.items[trackName]);
+    }
+    // can show 'no data' when not found
+    var mouseOverValue = mouseOver.noDataString;
+    if (mouseOver.mouseOverFunction[trackName] === "noAverage") {
+       mouseOverValue = mouseOver.noAverageString;
+    }
+    if (foundIdx > -1) { // value to display
+        mouseOverValue = "&nbsp;" + mouseOver.items[trackName][foundIdx].v + "&nbsp;";
+    }
+    $('#mouseOverText').html(mouseOverValue);
+    var msgWidth = mouseOver.maximumWidth[trackName];
+    $('#mouseOverText').width(msgWidth);
+    var msgHeight = Math.ceil($('#mouseOverText').height());
+    var lineHeight = Math.max(0, tdHeight - msgHeight);
+    if (tdTop < 0) {
+       lineHeight = Math.max(0, tdHeight + tdTop - msgHeight);
+    }
+    var msgLeft = Math.max(tdLeft, clientX - (msgWidth/2) - 3); // with magic 3
+    var msgTop = Math.max(0, tdTop);
+    var lineTop = Math.max(0, msgTop + msgHeight);
+    var lineLeft = Math.max(0, clientX - 1);  // magic 3 +  2 for width of indicator box
+    if (clientY < msgTop + msgHeight) {	// cursor overlaps with the msg box
+      msgLeft = clientX - msgWidth - 6;     // to the left of the cursor
+      if (msgLeft < tdLeft || msgLeft < 0) {   // hits left edge, switch
+        msgLeft = clientX;         // to right of cursor
+      }
+    } else {	// apply limits to left and right edges, window or image
+      msgLeft = Math.min(msgLeft, tdRight - msgWidth);  // image right limit
+      msgLeft = Math.min(msgLeft, $(window).width() - msgWidth); // window right
+      msgLeft = Math.max(0, msgLeft);  // left window edge limit
+    }
+    $('#mouseOverText').css('top',msgTop + "px");
+    $('#mouseOverText').css('left',msgLeft + "px");
+    $('#mouseOverVerticalLine').css('left',lineLeft + "px");
+    $('#mouseOverVerticalLine').css('top',lineTop + "px");
+    $('#mouseOverVerticalLine').css('height',lineHeight + "px");
+    windowUp = true;      // yes, window is to become visible
 
-        if (windowUp) {     // the window should become visible
-            mouseOver.popUpVisible();
-        } else {    // the window should disappear
-            mouseOver.popUpDisappear();
-        } //      window visible/not visible
+    if (windowUp) {     // the window should become visible
+      mouseOver.popUpVisible();
+    } else {    // the window should disappear
+      mouseOver.popUpDisappear();
+    } //      window visible/not visible
     },  //      mouseInTrackImage function (evt)
 
     // timeout calls here upon completion
     delayCompleted: function()
     {
-        mouseOver.delayDone = true;
-        // mouse could just be sitting there with no events, if there
-        // have been events during the timer, the evt has been recorded
-        // so the popUp appears where the mouse is while it moved during the
-        // time delay since mostRecentMouseEvt is up to date to now
-        // If mouse has moved out of element during timeout, the
-        // delayInProgress will be false and nothing happens.
-        if (mouseOver.delayInProgress) {
-            mouseOver.mouseInTrackImage(mouseOver.mostRecentMouseEvt);
-        }
+       mouseOver.delayDone = true;
+       // mouse could just be sitting there with no events, if there
+       // have been events during the timer, the evt has been recorded
+       // so the popUp appears where the mouse is while it moved during the
+       // time delay since mostRecentMouseEvt is up to date to now
+       // If mouse has moved out of element during timeout, the
+       // delayInProgress will be false and nothing happens.
+       if (mouseOver.delayInProgress) {
+          mouseOver.mouseInTrackImage(mouseOver.mostRecentMouseEvt);
+       }
     },
 
     // all mouse move events come here even during timeout
     mouseMoveDelay: function (evt)
     {
-        mouseOver.mostRecentMouseEvt = evt;   // record evt for delayCompleted
+      mouseOver.mostRecentMouseEvt = evt;   // record evt for delayCompleted
 
-        if (mouseOver.delayInProgress) {
-            if (mouseOver.delayDone) {
-                mouseOver.mouseInTrackImage(evt);	// OK to trigger event now
-                return;
-            } else {
-                return; // wait for delay to be done
-            }
+      if (mouseOver.delayInProgress) {
+        if (mouseOver.delayDone) {
+          mouseOver.mouseInTrackImage(evt);	// OK to trigger event now
+          return;
+        } else {
+          return; // wait for delay to be done
         }
-        mouseOver.delayDone = false;
-        mouseOver.delayInProgress = true;
-        if (mouseOver.popUpTimer) {
-            clearTimeout(mouseOver.popUpTimer);
-            mouseOver.popUpTimer = null;
-        }
-        mouseOver.popUpTimer = setTimeout(mouseOver.delayCompleted, mouseOver.popUpDelay);
+      }
+      mouseOver.delayDone = false;
+      mouseOver.delayInProgress = true;
+      if (mouseOver.popUpTimer) {
+         clearTimeout(mouseOver.popUpTimer);
+         mouseOver.popUpTimer = null;
+      }
+      mouseOver.popUpTimer = setTimeout(mouseOver.delayCompleted, mouseOver.popUpDelay);
     },
 
     // given a string of text, return width of rendered text size
     // using an off-screen span element that is created here first time through
     getWidthOfText: function (measureThis)
     {
-        if(mouseOver.measureTextBox === null){  // set up first time only
-            mouseOver.measureTextBox = document.createElement('span');
-            var cssText = "position: fixed; width: auto; display: block; text-align: right; left:-999px; top:-999px; font-style:normal; font-size:" + mouseOver.browserTextSize + "px; font-family:" + jQuery('body').css('font-family');
-            mouseOver.measureTextBox.style.cssText = cssText;
-            document.body.appendChild(mouseOver.measureTextBox);
-        }
-        mouseOver.measureTextBox.innerHTML = measureThis;
-        return Math.ceil(mouseOver.measureTextBox.clientWidth);
+    if(mouseOver.measureTextBox === null){  // set up first time only
+        mouseOver.measureTextBox = document.createElement('span');
+        var cssText = "position: fixed; width: auto; display: block; text-align: right; left:-999px; top:-999px; font-style:normal; font-size:" + mouseOver.browserTextSize + "px; font-family:" + jQuery('body').css('font-family');
+        mouseOver.measureTextBox.style.cssText = cssText;
+        document.body.appendChild(mouseOver.measureTextBox);
+    }
+    mouseOver.measureTextBox.innerHTML = measureThis;
+    return Math.ceil(mouseOver.measureTextBox.clientWidth);
     },
 
     // =======================================================================
@@ -5379,71 +5415,71 @@ var mouseOver = {
     // =======================================================================
     receiveData: function (arr)
     {
-        mouseOver.popUpDisappear();
-        for (var trackName in arr) {
-            // clear these variables if they existed before
-            if (mouseOver.trackType[trackName]) {mouseOver.trackType[trackName] = undefined;}
-            if (mouseOver.items[trackName]) {mouseOver.items[trackName] = undefined;}
-            if (mouseOver.tracks[trackName]) {mouseOver.tracks[trackName] = 0;}
-            mouseOver.items[trackName] = [];      // start array
-            mouseOver.trackType[trackName] = arr[trackName].t;
-            if (arr[trackName].hasOwnProperty('mo')) {
-                mouseOver.mouseOverFunction[trackName] = arr[trackName].mo;
-            } else {
-                delete mouseOver.mouseOverFunction[trackName];
-            }
-            // add a 'mousemove' and 'mouseout' event listener to each track
-            //     display object
-            var tdData = "td_data_" + trackName;
-            var tdDataId  = document.getElementById(tdData);
+      mouseOver.popUpDisappear();
+      for (var trackName in arr) {
+	// clear these variables if they existed before
+      if (mouseOver.trackType[trackName]) {mouseOver.trackType[trackName] = undefined;}
+      if (mouseOver.items[trackName]) {mouseOver.items[trackName] = undefined;}
+      if (mouseOver.tracks[trackName]) {mouseOver.tracks[trackName] = 0;}
+      mouseOver.items[trackName] = [];      // start array
+      mouseOver.trackType[trackName] = arr[trackName].t;
+      if (arr[trackName].hasOwnProperty('mo')) {
+         mouseOver.mouseOverFunction[trackName] = arr[trackName].mo;
+      } else {
+         delete mouseOver.mouseOverFunction[trackName];
+      }
+      // add a 'mousemove' and 'mouseout' event listener to each track
+      //     display object
+      var tdData = "td_data_" + trackName;
+      var tdDataId  = document.getElementById(tdData);
 // from jQuery doc:
 //  As the .mousemove() method is just a shorthand
 //    for .on( "mousemove", handler ), detaching is possible
 //      using .off( "mousemove" ).
-            $( tdDataId ).on("mousemove", mouseOver.mouseMoveDelay);
-            $( tdDataId ).on("mouseout", mouseOver.popUpDisappear);
-            var itemCount = 0;	// just for monitoring purposes
-            // save incoming x1,x2,v data into the mouseOver.items[trackName][] array
-            var lengthLongestNumberString = 0;
-            var longestNumber = 0;
-            var hasMean = false;
-            for (var datum in arr[trackName].d) {      // .d is the data array
-                if (arr[trackName].d[datum].c > 1) { hasMean = true; }
-                var lenV = arr[trackName].d[datum].v.toString().length;
-                if (lenV > lengthLongestNumberString) {
-                    lengthLongestNumberString = lenV;
-                    longestNumber = arr[trackName].d[datum].v;
-                }
-                mouseOver.items[trackName].push(arr[trackName].d[datum]);
-                ++itemCount;
-            }
-            mouseOver.tracks[trackName] = itemCount;	// != 0 -> indicates valid track
-            var mouseOverValue = "";
-            if (hasMean) {
-                mouseOverValue = "&nbsp;~&nbsp;" + longestNumber + "&nbsp;";
-            } else {
-                mouseOverValue = "&nbsp;" + longestNumber + "&nbsp;";
-            }
-            if (mouseOver.mouseOverFunction[trackName] === "noAverage") {
-                mouseOverValue = mouseOver.noAverageString;
-            }
-            $('#mouseOverText').css('fontSize',mouseOver.browserTextSize + "px");
-            var maximumWidth = mouseOver.getWidthOfText(mouseOverValue);
-            if ( 0 === mouseOver.noDataSize) {  // only need to do this once
-                mouseOver.noDataSize = mouseOver.getWidthOfText(mouseOver.noDataString);
-            }
-            if (mouseOver.noDataSize > maximumWidth) {
-                maximumWidth = mouseOver.noDataSize;
-            }
-            mouseOver.maximumWidth[trackName] = maximumWidth;
-        }
+      $( tdDataId ).on("mousemove", mouseOver.mouseMoveDelay);
+      $( tdDataId ).on("mouseout", mouseOver.popUpDisappear);
+      var itemCount = 0;	// just for monitoring purposes
+      // save incoming x1,x2,v data into the mouseOver.items[trackName][] array
+      var lengthLongestNumberString = 0;
+      var longestNumber = 0;
+      var hasMean = false;
+      for (var datum in arr[trackName].d) {      // .d is the data array
+         if (arr[trackName].d[datum].c > 1) { hasMean = true; }
+         var lenV = arr[trackName].d[datum].v.toString().length;
+         if (lenV > lengthLongestNumberString) {
+	   lengthLongestNumberString = lenV;
+	   longestNumber = arr[trackName].d[datum].v;
+         }
+        mouseOver.items[trackName].push(arr[trackName].d[datum]);
+       ++itemCount;
+      }
+      mouseOver.tracks[trackName] = itemCount;	// != 0 -> indicates valid track
+      var mouseOverValue = "";
+      if (hasMean) {
+         mouseOverValue = "&nbsp;~&nbsp;" + longestNumber + "&nbsp;";
+      } else {
+         mouseOverValue = "&nbsp;" + longestNumber + "&nbsp;";
+      }
+      if (mouseOver.mouseOverFunction[trackName] === "noAverage") {
+         mouseOverValue = mouseOver.noAverageString;
+      }
+      $('#mouseOverText').css('fontSize',mouseOver.browserTextSize + "px");
+      var maximumWidth = mouseOver.getWidthOfText(mouseOverValue);
+      if ( 0 === mouseOver.noDataSize) {  // only need to do this once
+        mouseOver.noDataSize = mouseOver.getWidthOfText(mouseOver.noDataString);
+      }
+      if (mouseOver.noDataSize > maximumWidth) {
+          maximumWidth = mouseOver.noDataSize;
+      }
+      mouseOver.maximumWidth[trackName] = maximumWidth;
+      }
     },  //      receiveData: function (arr)
 
     failedRequest: function(url)
     {   // failed request to get json data, remove it from the URL list
-        if (mouseOver.jsonUrl[url]) {
-            delete mouseOver.jsonUrl[url];
-        }
+      if (mouseOver.jsonUrl[url]) {
+        delete mouseOver.jsonUrl[url];
+      }
     },
 
     // =========================================================================
@@ -5451,61 +5487,61 @@ var mouseOver = {
     // =========================================================================
     fetchJsonData: function (url)
     {
-        // avoid fetching the same URL multiple times.  Multiple track data
-        // can be in a single json file
-        if (mouseOver.jsonUrl[url]) {
-            mouseOver.jsonUrl[url] += 1;
-            return;
-        }
-        mouseOver.jsonUrl[url] = 1;     // remember already done this one
-        var xmlhttp = new XMLHttpRequest();
-        xmlhttp.onreadystatechange = function() {
-            if (4 === this.readyState && 200 === this.status) {
-                var mapData = JSON.parse(this.responseText);
-                mouseOver.receiveData(mapData);
-            } else {
-                if (4 === this.readyState && 404 === this.status) {
-                    mouseOver.failedRequest(url);
-                }
+       // avoid fetching the same URL multiple times.  Multiple track data
+       // can be in a single json file
+       if (mouseOver.jsonUrl[url]) {
+          mouseOver.jsonUrl[url] += 1;
+          return;
+       }
+       mouseOver.jsonUrl[url] = 1;     // remember already done this one
+       var xmlhttp = new XMLHttpRequest();
+       xmlhttp.onreadystatechange = function() {
+         if (4 === this.readyState && 200 === this.status) {
+            var mapData = JSON.parse(this.responseText);
+            mouseOver.receiveData(mapData);
+         } else {
+            if (4 === this.readyState && 404 === this.status) {
+               mouseOver.failedRequest(url);
             }
-        };
-        xmlhttp.open("GET", url, true);
-        xmlhttp.send();  // sends request and exits this function
-                         // the onreadystatechange callback above will trigger
-                         // when the data has safely arrived
+         }
+       };
+    xmlhttp.open("GET", url, true);
+    xmlhttp.send();  // sends request and exits this function
+                     // the onreadystatechange callback above will trigger
+                     // when the data has safely arrived
     },
 
     getData: function ()
     {
-        // check for the hidden div elements for mouseOverData
-        // single file version can find many trackNames, but will all
-        // be the same URL
-        var trackList = document.getElementsByClassName("mouseOverData");
-        for (var i = 0; i < trackList.length; i++) {
-            var trackName = trackList[i].getAttribute('name');
-            var jsonFileUrl = trackList[i].getAttribute('jsonUrl');
-            if (jsonFileUrl) { mouseOver.fetchJsonData(jsonFileUrl); }
-        }
+      // check for the hidden div elements for mouseOverData
+      // single file version can find many trackNames, but will all
+      // be the same URL
+      var trackList = document.getElementsByClassName("mouseOverData");
+      for (var i = 0; i < trackList.length; i++) {
+        var trackName = trackList[i].getAttribute('name');
+        var jsonFileUrl = trackList[i].getAttribute('jsonUrl');
+        if (jsonFileUrl) { mouseOver.fetchJsonData(jsonFileUrl); }
+      }
     },
 
     // any scrolling turns the popUp message off
     scroll: function()
     {
-        if (mouseOver.visible) { mouseOver.popUpDisappear(); }
+    if (mouseOver.visible) { mouseOver.popUpDisappear(); }
     },
 
     addListener: function () {
         mouseOver.visible = false;
         if (window.browserTextSize) {
-            mouseOver.browserTextSize = window.browserTextSize;
+           mouseOver.browserTextSize = window.browserTextSize;
         }
         window.addEventListener('scroll', mouseOver.scroll, false);
         window.addEventListener('load', mouseOver.getData, false);
     }
 };	//	var mouseOver
 
-//////////////////////
-//// track search ////
+  //////////////////////
+ //// track search ////
 //////////////////////
 var trackSearch = {
 
@@ -5515,7 +5551,7 @@ var trackSearch = {
             // Required to fix problem on IE and Safari where value of hgt_tSearch is "-"
             //    (i.e. not "Search").
             // NOTE: must match TRACK_SEARCH_PAGER in hg/inc/searchTracks.h
-            $("input[name=hgt_tsPage]").val(0);
+            $("input[name=hgt_tsPage]").val(0);  
             $('#trackSearch').submit();
             // This doesn't work with IE or Safari.
             // $('#searchSubmit').trigger("click");
@@ -5530,11 +5566,11 @@ var trackSearch = {
 
             var val = $('#currentTab').val();
             $("#tabs").tabs({
-                show: function(event, ui) {
-                    $('#currentTab').val(ui.newPanel[0].id);
-                },
-                activate: function(event, ui) { findTracks.switchTabs(ui); }
-            });
+                                show: function(event, ui) {
+                                    $('#currentTab').val(ui.newPanel[0].id);
+                                },
+                                activate: function(event, ui) { findTracks.switchTabs(ui); }
+                            });
             $('#tabs').show();
             if (val === 'simpleTab' && $('div#found').length < 1) {
                 $('input#simpleSearch').trigger("focus");
@@ -5726,7 +5762,7 @@ var downloadCurrentTrackData = {
             if (!trackName.includes("Squish") && trackName !== "ruler" && track.visibility > 0) {
                 htmlStr += "<input type=checkbox class='downloadTrackName' id='" + trackName + "'";
                 if (trackName.startsWith("ct_") || trackName === "hgPcrResult" ||
-                    track.type === "mathWig" || !tdbIsLeaf(track)) {
+                        track.type === "mathWig" || !tdbIsLeaf(track)) {
                     showDisabledMsg = true;
                     htmlStr += " disabled ";
                 } else {
@@ -5770,8 +5806,8 @@ var downloadCurrentTrackData = {
     }
 };
 
-///////////////
-//// READY ////
+  ///////////////
+ //// READY ////
 ///////////////
 $(document).ready(function()
 {
@@ -5787,7 +5823,7 @@ $(document).ready(function()
     // the back button was pressed.
     $(window).on("pageshow", function(event) {
         if (event.originalEvent.persisted) {
-            window.location.reload() ;
+                window.location.reload() ;
         }
     });
 
@@ -5847,11 +5883,11 @@ $(document).ready(function()
                     var compositeSet = dragReorder.getCompositeSet(row);
                     if (compositeSet && compositeSet.length > 0)
                         $( compositeSet ).find('p.btn').removeClass('blueButtons');// blue persists
-                    // NOTE: As of jquery 1.6, attr() can no longer be used to get/set values
-                    // that are not explicitly attributes, instead prop() should be used instead.
-                    // However this can cause problems in our legacy code because prop() returns
-                    // undefined if the property was not set! rowIndex is a property set by
-                    // tableDnd so we must use prop() to check for it's value, not attr()
+                     // NOTE: As of jquery 1.6, attr() can no longer be used to get/set values
+                     // that are not explicitly attributes, instead prop() should be used instead.
+                     // However this can cause problems in our legacy code because prop() returns
+                     // undefined if the property was not set! rowIndex is a property set by
+                     // tableDnd so we must use prop() to check for it's value, not attr()
                     let rowIndex = $(row).prop('rowIndex');
                     if (typeof rowIndex !== "undefined" && rowIndex !== dragStartIndex) {
                         // NOTE Even if dragging a contiguous set of rows,
@@ -5933,7 +5969,7 @@ $(document).ready(function()
                 $("#tutorialContainer").dialog("open");
             }
         });
-
+        
         // Any highlighted region must be shown and warnBox must play nice with it.
         imageV2.drawHighlights();
         // When warnBox is dismissed, any image highlight needs to be redrawn.
@@ -6026,7 +6062,7 @@ function hgtWarnTiming(maxSeconds) {
 
     var skipNotification = localStorage.getItem("hgTracks.hideSpeedNotification");
     dumpCart(loadSeconds, skipNotification);
-
+        
     if (skipNotification)
         return;
 
@@ -6217,8 +6253,8 @@ function hgtWarnTiming(maxSeconds) {
         igvBrowser.on('locuschange', referenceFrameList => {
                 // We are currently not supporting multi-locus view, so there is a single reference frame.
                 const locusString = referenceFrameList[0].getLocusString();
-                // XX TODO I cannot run navigateInPlace(), because locuschange is triggered by
-                // createIgvBrowser(), and there is no need for yet another navigateInPlace() in then
+                // XX TODO I cannot run navigateInPlace(), because this function is called by
+                // createIgvBrowser(), and there is no need for navigateInPlace()
                 alert(getDb()+"-"+encodeURIComponent(locusString));
                 //imageV2.navigateInPlace("db=" + getDb() + "&position=" + encodeURIComponent(locusString), null, false);
                 ucscState.locus = locusString;

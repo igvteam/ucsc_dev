@@ -41,7 +41,7 @@
 
 <section class="section-group">
     <div id="message" style="color: red; font-weight: bold; display: none;">
-        You can open files from your local harddisk using the 'Choose Files' button. The Genome Browser does not have access to
+        You can open files from your local harddisk using the 'Choose Files' button. The Genome Browser does not have access to 
         any other files on your harddisk, since it is a website. Data of these files is not sent to UCSC, but it
         remains on your local computer. As far as we know, the files can include identifying health information,
         since the data does not leave your computer. If you make a session shortlink on the Genome Browser, then these
@@ -51,7 +51,7 @@
         <ul id="restoreList"></ul>
         </p>
     </div>
-    <h3>Local Files</h3>
+    <h3>Files</h3>
     <p>Click 'Chose Files' to open files from your local harddisk. For indexed formats both data and index files must be selected.</p>
     <p>
         The Genome Browser webserver does not have access to any files on your
@@ -62,22 +62,19 @@
         Genome Browser, then these files cannot be loaded by the person that
         opens the session link.
         As soon as the window is closed, file access is lost and you must re-open the files in this window again.
-    </p>
+     </p>
 
     <input type="file" id="fileInput" multiple>
     <p>
-    <h4>Selected local files:</h4>
+    <h4>Selected Files:</h4>
     <ul id="fileList"></ul>
     </p>
 </section>
 
 <section class="section-group">
-    <h3>Local URL</h3>
-    Enter a local URL on your intranet to a track file to load. For indexed
-    formats the index file is assumed to be at the same location with an added
-    extension if not specified. It is OK if the UCSC webserver cannot access this file,
-    as all display is handled on your local computer. If this is a publicly accessible
-    URL and public data, it is usually easier to load the file as a 'custom track' or 'track hub'.
+    <h3>URL</h3>
+    Enter a URL to a track file to load. For indexed formats the index file is assumed to be at the same location
+    with an added extension if not specified.
 
     <div class="input-row">
         <label for="urlInput">URL</label>
