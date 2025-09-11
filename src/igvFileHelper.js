@@ -476,7 +476,7 @@
                     reference: getMinimalReference(getDb()),
                     locus: genomePos.get()
                 };
-                await createIGVBrowser(defaultConfig);
+                igvBrowser = await createIGVBrowser(defaultConfig);
             }
 
             // First search for existing tracks referencing the same files.  This is to handle the situation
