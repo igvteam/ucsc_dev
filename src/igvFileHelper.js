@@ -9,6 +9,17 @@
 
     const channel = new BroadcastChannel('igv_file_channel');
 
+    // Message types for communication between browser page and file picker page
+    const MSG = {
+        SELECTED_FILES: 'selectedFiles',
+        RESTORE_FILES: 'restoreFiles',
+        REMOVED_TRACK: 'removedTrack',
+        LOAD_URL: 'loadURL',
+        FILE_PICKER_READY: 'filePickerReady',
+        PING: 'ping',
+        PONG: 'pong'
+    };
+
     /**
      * Given a list of files, return a list of track configurations.  Each configuration contains a url (MockFile) and
      * optionally an indexURL (MockFile).
@@ -157,6 +168,14 @@
     }
 
 
+    /**
+     *  Update the igv.js browser to reflect a change in the UCSC browser start position.  This is called
+     *  when the user drags a track image to a new position.  It is intended for small changes, and
+     *  works by shifting the igv.js predrawn track image.  This will not work for large position
+     *  changes.
+     *
+     * @param newPortalStart
+     */
     function updateIgvStartPosition(newPortalStart) {
         // TODO -- this is hacky, ad new function to igv.js
         if (igvBrowser) {
@@ -185,15 +204,24 @@
         }
 
         slice(start, end) {
+            this.checkFile()
             return this.file.slice(start, end);
         }
 
         async text() {
+            this.checkFile()
             return this.file.text();
         }
 
         async arrayBuffer() {
+            this.checkFile()
             return this.file.arrayBuffer();
+        }
+
+        checkFile() {
+            if (!this.file) {
+                throw new Error(`Connection to file ${this.name} is not available.  Please re-select the file.`)
+            }
         }
     }
 
@@ -211,16 +239,17 @@
     }
 
     // Initialize the embedded IGV browser, restoring state from local storage.
-    // TODO -- in the future we might want to restore state from the UCSC cart
     initIgvUcsc = async function () {
 
         console.log("invoking initIgvUcsc");
 
         if (igvInitialized) {
+            // Already initialized, do nothing
             return;
         }
 
-        // We are simulating the UCSC user session (a cookie?) with local storage.
+        // Retrieve igv session string from local storage.
+        // TODO -- in the future this might come from the UCSC session (cart)
         const sessionString = localStorage.getItem("ucscSession");
         //const sessionString = setCartVar;
         if (sessionString) {
@@ -241,21 +270,28 @@
 
                 // Reconnect any file-based tracks to the actual File objects.
                 if (igvSession.tracks) {
+
                     const failed = await restoreTrackConfigurations(igvSession.tracks);
+
                     if (failed.length > 0) {
+
+                        const sendRestoreRequest = () => channel.postMessage({type: "restoreFiles", files: failed});
+
                         if (filePicker && !filePicker.closed) {
-                            channel.postMessage({type: "restoreFiles", files: failed});
-                            filePicker.focus();
+                            sendRestoreRequest();
                             return;
                         }
                         if (filePicker) {
-                            // File picker is already open, this is not expected.
+                            // Unexpected: filePicker reference exists but window is closed.
                             alert(
                                 `The following file connections could not be restored:\n<ul>${
                                     failed.map(f => `<li>${f}</li>`).join('')
-                                }</ul>\nTo restore the connection open the file manager by selecting 'Add IGV Tracks' followed by 'Choose Files' and select the files.`
+                                }</ul>\nTo restore the connection select the files in the file picker window.`
                             );
+                            sendRestoreRequest();
                         } else {
+
+                            // No filePicker, open one
                             filePicker = openFilePicker();
                             filePicker.onload = () => {
                                 channel.postMessage({type: "restoreFiles", files: failed});
@@ -359,7 +395,7 @@
             showNavigation: false,
             showIdeogram: false,
             showRuler: false,
-            showSequence: false,
+            //showSequence: false,
             showAxis: false
             //TODO discuss if we want IGV track drag handles.  It allows users to rearrange IGV tracks within the IGV area
             //showTrackDragHandles: false
@@ -402,53 +438,70 @@
     // Respond to messages from the filePicker window.
     channel.onmessage = async function (event) {
         const msg = event.data;
+        if (!msg || !msg.type) return;
 
-        if (msg.type === 'selectedFiles') {
+        switch (msg.type) {
 
-            console.log("Received selected files: ", event.data.files);
+            case MSG.SELECTED_FILES:
 
-            // Convert file descriptor objects to igv.js track configuration objects.
-            const configs = getTrackConfigurations(event.data.files);
+                console.log("Received selected files: ", event.data.files);
+                const configs = getTrackConfigurations(files);
+                loadIGVTracks(configs);
+                // Convert file descriptor objects to igv.js track configuration objects.
 
-            if (configs.length > 0) {
+                break;
+            case MSG.LOAD_URL:
+                loadIGVTracks([event.data.config]);
+                break;
 
-                // Create igvBrowser if needed -- i.e. this is the first track being added.  State needs to be obtained
-                // from the UCSC browser for genome and locus.
-                if (typeof (window.igvBrowser) === 'undefined' || window.igvBrowser === null) {
-                    const defaultConfig = {
-                        reference: getMinimalReference(getDb()),
-                        locus: genomePos.get()
-                    };
-                    await createIGVBrowser(defaultConfig);
+            case MSG.FILE_PICKER_READY:
+                const filesToRestore = JSON.parse(sessionStorage.getItem('filesToRestore'));
+                if (filesToRestore) {
+                    channel.postMessage({type: MSG.RESTORE_FILES, files: filesToRestore});
+                    sessionStorage.removeItem('filesToRestore');
                 }
-
-                // First search for existing tracks referencing the same files.  This is to handle the situation
-                // of a user closing the file picker window, thus loosing file references, then reopening the file picker
-                // to restore them.
-                const newConfigs = [];
-
-                for (let config of configs) {
-                    const id = config.url.id;
-                    const matchingTracks = igvBrowser.findTracks(t => t.url && id === t.url.id);
-                    if (matchingTracks.length > 0) {
-                        // Just select the first matching track, there should only be one.  Restore its file reference(s).
-                        matchingTracks[0].config.url.file = config.url.file;
-                        if (config.indexURL) {
-                            matchingTracks[0].config.indexURL.file = config.indexURL.file;
-                        }
-                    } else {
-                        // This is a new track
-                        newConfigs.push(config);
-                    }
-                }
-
-                igvBrowser.loadTrackList(newConfigs);
-            }
-        }
-        if (msg.type === 'loadURL') {
-            igvBrowser.loadTrack(config);
+                break;
         }
     };
+
+    async function loadIGVTracks(configs) {
+
+
+        if (configs.length > 0) {
+
+            // Create igvBrowser if needed -- i.e. this is the first track being added.  State needs to be obtained
+            // from the UCSC browser for genome and locus.
+            if (typeof (window.igvBrowser) === 'undefined' || window.igvBrowser === null) {
+                const defaultConfig = {
+                    reference: getMinimalReference(getDb()),
+                    locus: genomePos.get()
+                };
+                await createIGVBrowser(defaultConfig);
+            }
+
+            // First search for existing tracks referencing the same files.  This is to handle the situation
+            // of a user closing the file picker window, thus loosing file references, then reopening the file picker
+            // to restore them.
+            const newConfigs = [];
+
+            for (let config of configs) {
+                const id = config.url.id;
+                const matchingTracks = igvBrowser.findTracks(t => t.url && id === t.url.id);
+                if (matchingTracks.length > 0) {
+                    // Just select the first matching track, there should only be one.  Restore its file reference(s).
+                    matchingTracks[0].config.url.file = config.url.file;
+                    if (config.indexURL) {
+                        matchingTracks[0].config.indexURL.file = config.indexURL.file;
+                    }
+                } else {
+                    // This is a new track
+                    newConfigs.push(config);
+                }
+            }
+
+            igvBrowser.loadTrackList(newConfigs);
+        }
+    }
 
     /**
      * Send a "ping" message to the file picker window and wait up to 100 msec for a "pong" response.  Used to

@@ -93,6 +93,7 @@
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         const channel = new BroadcastChannel('igv_file_channel')
+        channel.postMessage({type: 'filePickerReady'})
         const fileCache = new Map()
         const restoreCache = new Map()
 
