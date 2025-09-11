@@ -4328,7 +4328,7 @@ var imageV2 = {
         if (typeof showMouseovers !== 'undefined' && showMouseovers) {
             convertTitleTagsToMouseovers();
         }
-        window.igvBrowser.updateLoci([genomePos.get()]);
+        window.igvBrowser.search(genomePos.get());
     },
 
     updateImgForId: function (html, id, fullImageReload, newJsonRec)
@@ -6204,6 +6204,8 @@ function hgtWarnTiming(maxSeconds) {
      */
     async function createIGVBrowser(config) {
 
+        console.log("Creating IGV browser with config: ", config);
+
         // Insert the IGV row into the image table.
         const imgTbl = document.getElementById('imgTbl');
         const tbody = imgTbl.querySelector('tbody');
@@ -6255,7 +6257,7 @@ function hgtWarnTiming(maxSeconds) {
                 const locusString = referenceFrameList[0].getLocusString();
                 // XX TODO I cannot run navigateInPlace(), because this function is called by
                 // createIgvBrowser(), and there is no need for navigateInPlace()
-                alert(getDb()+"-"+encodeURIComponent(locusString));
+                // alert(getDb()+"-"+encodeURIComponent(locusString));
                 //imageV2.navigateInPlace("db=" + getDb() + "&position=" + encodeURIComponent(locusString), null, false);
                 ucscState.locus = locusString;
                 //document.getElementById("positionDisplay").innerText = locusString;
@@ -6272,6 +6274,8 @@ function hgtWarnTiming(maxSeconds) {
         const msg = event.data;
 
         if (msg.type === 'selectedFiles') {
+
+            console.log("Received selected files: ", event.data.files);
 
             // Convert file descriptor objects to igv.js track configuration objects.
             const configs = igvHelper.getTrackConfigurations(event.data.files);
