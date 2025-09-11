@@ -1974,6 +1974,10 @@ jQuery.fn.panImages = function(){
             newOffsetX = portalScrolledX - (hgTracks.imgBoxPortalOffsetX+hgTracks.imgBoxLeftLabel);
         }
 
+        if(typeof(igv) !== "undefined") {
+            igv.updateIgvStartPosition(newPortalStart);
+        }
+
         ret = {};
         ret.newX = newOffsetX;
         ret.isOutsideChrom = recalculate;

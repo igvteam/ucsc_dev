@@ -156,6 +156,20 @@
         });
     }
 
+
+    function updateIgvStartPosition(newPortalStart) {
+        // TODO -- this is hacky, ad new function to igv.js
+        if (igvBrowser) {
+            const rf = igvBrowser.referenceFrameList[0];
+            const d = newPortalStart - rf.start;
+            const pixelShift = d / rf.bpPerPixel;
+            if (pixelShift > 1 || pixelShift < -1) {
+                rf.shift(d);
+                rf.viewport.shift();
+            }
+        }
+    }
+
     /**
      * A mock File object that wraps a real File object.  The purpose of this class is to provide a stable
      * identifier (id) for the file that can be used to restore the File object on page refresh. The object
@@ -202,7 +216,7 @@
 
         console.log("invoking initIgvUcsc");
 
-        if(igvInitialized) {
+        if (igvInitialized) {
             return;
         }
 
@@ -317,7 +331,7 @@
 
         console.log("Creating IGV browser with config: ", config);
 
-        if(document.getElementById('tr_igv')) {
+        if (document.getElementById('tr_igv')) {
             console.warn("IGV track row already exists ???");   // TODO -- how can this happen?
             return;
         }
@@ -400,7 +414,7 @@
 
                 // Create igvBrowser if needed -- i.e. this is the first track being added.  State needs to be obtained
                 // from the UCSC browser for genome and locus.
-                if (typeof(window.igvBrowser) === 'undefined' || window.igvBrowser === null) {
+                if (typeof (window.igvBrowser) === 'undefined' || window.igvBrowser === null) {
                     const defaultConfig = {
                         reference: getMinimalReference(getDb()),
                         locus: genomePos.get()
@@ -503,5 +517,6 @@
 
     // Attach helper functions to the igv object
     igv.initIgvUcsc = initIgvUcsc;
+    igv.updateIgvStartPosition = updateIgvStartPosition;
 
 })();
