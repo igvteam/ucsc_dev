@@ -358,8 +358,11 @@
      */
     async function createIGVBrowser(config) {
 
-        // Override locus  in the IGV config with the UCSC locus
-        config.locus = hgTracks.chromName + ":" + (hgTracks.winStart + 1) + "-" + hgTracks.winEnd;
+        // Override locus  in the IGV session with the UCSC locus
+        // TODO -- should we use genomePos here?
+        const ucscImageWidth = document.getElementById("td_data_ruler").clientWidth;
+        const resolution = (hgTracks.winEnd - hgTracks.winStart) / ucscImageWidth;
+        config.locus = {chr: hgTracks.chromName, start: hgTracks.winStart, bpPerPixel: resolution};
 
         console.log("Creating IGV browser with config: ", config);
 
