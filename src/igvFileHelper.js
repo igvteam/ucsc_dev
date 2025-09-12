@@ -177,14 +177,17 @@
      * @param newPortalStart
      */
     function updateIgvStartPosition(newPortalStart) {
-        // TODO -- this is hacky, ad new function to igv.js
+        // TODO -- this is hacky, add new function to igv.js
         if (igvBrowser) {
             const rf = igvBrowser.referenceFrameList[0];
-            const d = newPortalStart - rf.start;
-            const pixelShift = d / rf.bpPerPixel;
-            if (pixelShift > 1 || pixelShift < -1) {
-                rf.shift(d);
-                rf.viewport.shift();
+            const d = newPortalStart - 1 - rf.start;
+            rf.shift(d);
+            const allTracks = igvBrowser.findTracks(t => true);
+            for (let track of allTracks) {
+                const viewports = track.trackView.viewports;
+                for (let vp of viewports) {
+                    vp.shift();
+                }
             }
         }
     }
@@ -204,23 +207,23 @@
         }
 
         slice(start, end) {
-            this.checkFile()
+            this.checkFile();
             return this.file.slice(start, end);
         }
 
         async text() {
-            this.checkFile()
+            this.checkFile();
             return this.file.text();
         }
 
         async arrayBuffer() {
-            this.checkFile()
+            this.checkFile();
             return this.file.arrayBuffer();
         }
 
         checkFile() {
             if (!this.file) {
-                throw new Error(`Connection to file ${this.name} is not available.  Please re-select the file.`)
+                throw new Error(`Connection to file ${this.name} is not available.  Please re-select the file.`);
             }
         }
     }
@@ -253,15 +256,8 @@
         const sessionString = localStorage.getItem("ucscSession");
         //const sessionString = setCartVar;
         if (sessionString) {
-            const ucscSession = JSON.parse(sessionString);
-            if (ucscSession.locus) {
-                ucscState.locus = ucscSession.locus;
-            }
-            ucscSession.genomeID = getDb();
-            ucscSession.locus = genomePos.get();
 
-            //const posEl = document.getElementById("positionDisplay");
-            //if (posEl) posEl.innerText = ucscState.locus;
+            const ucscSession = JSON.parse(sessionString);
 
             // Restore the previously saved igv session, if any.
             if (ucscSession.igvSession) {
@@ -305,9 +301,6 @@
                     }
                 }
 
-                // Override locus  in the IGV session with the UCSC locus
-                // igvSession.locus = ucscState.locus;
-                igvSession.locus = hgTracks.chromName + ":" + hgTracks.winStart + "-" + hgTracks.winEnd;
                 await createIGVBrowser(igvSession);
             }
         }
@@ -365,6 +358,9 @@
      */
     async function createIGVBrowser(config) {
 
+        // Override locus  in the IGV config with the UCSC locus
+        config.locus = hgTracks.chromName + ":" + (hgTracks.winStart + 1) + "-" + hgTracks.winEnd;
+
         console.log("Creating IGV browser with config: ", config);
 
         if (document.getElementById('tr_igv')) {
@@ -396,9 +392,9 @@
             showIdeogram: false,
             showRuler: false,
             //showSequence: false,
-            showAxis: false
-            //TODO discuss if we want IGV track drag handles.  It allows users to rearrange IGV tracks within the IGV area
-            //showTrackDragHandles: false
+            showAxis: false,
+            showTrackDragHandles: false,
+            showGearColumn: false
         });
 
         const div = document.getElementById("igv_div");
@@ -409,7 +405,7 @@
 
             channel.postMessage({type: "removedTrack", config: track.config});
 
-            const allTracks = igvBrowser.findTracks(t => true);
+            const allTracks = igvBrowser.findTracks(t => "sequence" !== t.type);   // ignore sequence track
             if (allTracks.length === 0) {
                 igvRow.remove();
                 igvBrowser = null;
@@ -445,7 +441,7 @@
             case MSG.SELECTED_FILES:
 
                 console.log("Received selected files: ", event.data.files);
-                const configs = getTrackConfigurations(files);
+                const configs = getTrackConfigurations(event.data.files);
                 loadIGVTracks(configs);
                 // Convert file descriptor objects to igv.js track configuration objects.
 
@@ -474,7 +470,7 @@
             if (typeof (window.igvBrowser) === 'undefined' || window.igvBrowser === null) {
                 const defaultConfig = {
                     reference: getMinimalReference(getDb()),
-                    locus: genomePos.get()
+                   // locus: genomePos.get()
                 };
                 igvBrowser = await createIGVBrowser(defaultConfig);
             }
