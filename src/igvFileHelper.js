@@ -6,7 +6,7 @@
 (function () {
         const indexExtensions = new Set(['bai', 'csi', 'tbi', 'idx', 'crai']);
         const requireIndex = new Set(['bam', 'cram']);
-
+        let isDragging = false;
         const channel = new BroadcastChannel('igv_file_channel');
 
         // Message types for communication between browser page and file picker page
@@ -179,7 +179,7 @@
          */
         function updateIgvStartPosition(newPortalStart) {
             // TODO -- this is hacky, add new function to igv.js
-            if (igvBrowser) {
+            if (igvBrowser && !isDragging) {
                 const rf = igvBrowser.referenceFrameList[0];
                 const d = newPortalStart - 1 - rf.start;
                 rf.shift(d);
@@ -446,7 +446,10 @@
                 showTrackDragHandles: false,
                 showAxisColumn: false,
                 gearColumnPosition: 'left',
-                showGearColumn: false
+                showGearColumn: false,
+                showTrackLabels: false,
+                disableZoom: true,
+                minimumBases: 0
             });
 
             const div = document.getElementById("igv_div");
@@ -466,19 +469,32 @@
                 updateTrackNames();
             });
 
-            // Add event handler to track igv.js track dragging (locus change).  On the UCSC side this should be treated
+            // Add event handler to track igv.js track panning.  On the UCSC side this should be treated
             // as if the user had dragged a track image
-            igvBrowser.on('locuschange', referenceFrameList => {
-                    // We are currently not supporting multi-locus view, so there is a single reference frame.
-                    const locusString = referenceFrameList[0].getLocusString();
-                    // XX TODO I cannot run navigateInPlace(), because this function is called by
-                    // createIgvBrowser(), and there is no need for navigateInPlace()
-                    // alert(getDb()+"-"+encodeURIComponent(locusString));
-                    //imageV2.navigateInPlace("db=" + getDb() + "&position=" + encodeURIComponent(locusString), null, false);
-                    ucscState.locus = locusString;
-                    //document.getElementById("positionDisplay").innerText = locusString;
+            igvBrowser.on('trackdrag', e => {
+                    isDragging = true;
+                    const newStart = igvBrowser.referenceFrameList[0].start;
+                    igv.ucscTrackpan(newStart);
                 }
             );
+
+            // Notify UCSC browser that igv.js track panning has ended.
+            igvBrowser.on('trackdragend', () => {
+                    isDragging = false;
+                    igv.ucscTrackpanEnd();
+                }
+            );
+
+            igvBrowser.on('zoom', (referenceFrameList) => {
+                // multi-locus not supported in UCSC browser, just use first which should be the only one.
+                const referenceFrame = referenceFrameList[0];
+                const position = {
+                    chr: referenceFrame.chr,
+                    start: Math.round(referenceFrame.start + 1),
+                    end: Math.round(referenceFrame.end)
+                }
+                igv.ucscUpdatePosition(position);
+            });
 
             window.igvBrowser = igvBrowser;
             return igvBrowser;
