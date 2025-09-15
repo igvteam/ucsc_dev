@@ -6,7 +6,15 @@
 (function () {
         const indexExtensions = new Set(['bai', 'csi', 'tbi', 'idx', 'crai']);
         const requireIndex = new Set(['bam', 'cram']);
+
+        // File scope variables
+        const IGV_STORAGE_KEY = "igvSession";
+        let filePicker = null;
+        let igvBrowser = null;
+        let igvInitialized = false;
         let isDragging = false;
+
+        // Create a BroadcastChannel for communication between the UCSC browser page and the file picker page.
         const channel = new BroadcastChannel('igv_file_channel');
 
         // Message types for communication between browser page and file picker page
@@ -19,6 +27,43 @@
             PING: 'ping',
             PONG: 'pong'
         };
+
+        /**
+         * A mock File object that wraps a real File object.  The purpose of this class is to provide a stable
+         * identifier (id) for the file that can be used to restore the File object on page refresh. The object
+         * looks like a File object to igv.js but has an extra "id" attribute.
+         */
+        class MockFile {
+
+            constructor(id, file, name) {
+                this.id = id;
+                this.file = file;
+                this.name = name || (file ? file.name : undefined);
+                this.type = 'MockFile';
+            }
+
+            slice(start, end) {
+                this.checkFile();
+                return this.file.slice(start, end);
+            }
+
+            async text() {
+                this.checkFile();
+                return this.file.text();
+            }
+
+            async arrayBuffer() {
+                this.checkFile();
+                return this.file.arrayBuffer();
+            }
+
+            checkFile() {
+                if (!this.file) {
+                    throw new Error(`Connection to file ${this.name} is not available.  Please re-select the file.`);
+                }
+            }
+        }
+
 
         /**
          * Given a list of files, return a list of track configurations.  Each configuration contains a url (MockFile) and
@@ -193,51 +238,6 @@
             }
         }
 
-        /**
-         * A mock File object that wraps a real File object.  The purpose of this class is to provide a stable
-         * identifier (id) for the file that can be used to restore the File object on page refresh. The object
-         * looks like a File object to igv.js but has an extra "id" attribute.
-         */
-        class MockFile {
-
-            constructor(id, file, name) {
-                this.id = id;
-                this.file = file;
-                this.name = name || (file ? file.name : undefined);
-                this.type = 'MockFile';
-            }
-
-            slice(start, end) {
-                this.checkFile();
-                return this.file.slice(start, end);
-            }
-
-            async text() {
-                this.checkFile();
-                return this.file.text();
-            }
-
-            async arrayBuffer() {
-                this.checkFile();
-                return this.file.arrayBuffer();
-            }
-
-            checkFile() {
-                if (!this.file) {
-                    throw new Error(`Connection to file ${this.name} is not available.  Please re-select the file.`);
-                }
-            }
-        }
-
-
-        let filePicker = null;
-        let igvBrowser = null;
-        let igvInitialized = false;
-
-
-        // Represents the current state of the UCSC browser page.  Its not clear yet how this obtained, this is just a placeholder.
-        const ucscState = {};
-
         function openFilePicker() {
             return window.open('../admin/filePicker.html', 'filePicker' + Date.now(), 'width=600,height=1000');
         }
@@ -259,72 +259,96 @@
 
             // Retrieve igv session string from local storage.
             // TODO -- in the future this might come from the UCSC session (cart)
-            const sessionString = localStorage.getItem("ucscSession");
-            //const sessionString = setCartVar;
+
+
+            const db = getDb();
+            let sessionString = getSessionStorage()[db];
+
             if (sessionString) {
 
-                const ucscSession = JSON.parse(sessionString);
-
                 // Restore the previously saved igv session, if any.
-                if (ucscSession.igvSession) {
-                    const igvSessionString = igv.uncompressSession(`blob:${ucscSession.igvSession}`);
-                    const igvSession = JSON.parse(igvSessionString);
+                const igvSession = JSON.parse(igv.uncompressSession(`blob:${sessionString}`));
 
-                    // Reconnect any file-based tracks to the actual File objects.
-                    if (igvSession.tracks) {
+                // Reconnect any file-based tracks to the actual File objects.
+                if (igvSession.tracks) {
 
-                        const failed = await restoreTrackConfigurations(igvSession.tracks);
+                    const failed = await restoreTrackConfigurations(igvSession.tracks);
 
-                        if (failed.length > 0) {
+                    if (failed.length > 0) {
 
-                            const sendRestoreRequest = () => channel.postMessage({type: "restoreFiles", files: failed});
+                        const sendRestoreRequest = () => channel.postMessage({type: "restoreFiles", files: failed});
 
-                            if (filePicker && !filePicker.closed) {
-                                sendRestoreRequest();
-                                return;
-                            }
-                            if (filePicker) {
-                                // Unexpected: filePicker reference exists but window is closed.
-                                alert(
-                                    `The following file connections could not be restored:\n<ul>${
-                                        failed.map(f => `<li>${f.name}</li>`).join('')
-                                    }</ul>\nTo restore the connection select 'Choose Files' and select the files.`
-                                );
-                                sendRestoreRequest();
-                            } else {
+                        if (filePicker && !filePicker.closed) {
+                            sendRestoreRequest();
+                            return;
+                        }
+                        if (filePicker) {
+                            // Unexpected: filePicker reference exists but window is closed.
+                            alert(
+                                `The following file connections could not be restored:\n<ul>${
+                                    failed.map(f => `<li>${f.name}</li>`).join('')
+                                }</ul>\nTo restore the connection select 'Choose Files' and select the files.`
+                            );
+                            sendRestoreRequest();
+                        } else {
 
-                                // No filePicker, open one
-                                filePicker = openFilePicker();
-                                filePicker.onload = () => {
-                                    channel.postMessage({type: "restoreFiles", files: failed});
-                                    //alert(
-                                    //    `The following file connections could not be restored:\n<ul>${
-                                    //        failed.map(f => `<li>${f}</li>`).join('')
-                                    //    }</ul>\nTo restore the connection select 'Choose Files' and select the files.`
-                                    //)
-                                };
-                            }
+                            // No filePicker, open one
+                            filePicker = openFilePicker();
+                            filePicker.onload = () => {
+                                channel.postMessage({type: "restoreFiles", files: failed});
+                                //alert(
+                                //    `The following file connections could not be restored:\n<ul>${
+                                //        failed.map(f => `<li>${f}</li>`).join('')
+                                //    }</ul>\nTo restore the connection select 'Choose Files' and select the files.`
+                                //)
+                            };
                         }
                     }
-
-                    await createIGVBrowser(igvSession);
                 }
+                await createIGVBrowser(igvSession);
             }
         };
+
+        /**
+         * Return the session storage object, which is a dictionary of {genomeID: sessionString}
+         * @returns {any|{}}
+         */
+        function getSessionStorage() {
+            // Retrieve igv session string from local storage.
+            // TODO -- in the future this might come from the UCSC session (cart)
+            const localStorageString = localStorage.getItem(IGV_STORAGE_KEY);
+            return localStorageString ? JSON.parse(localStorageString) : {};
+        }
+
+        /**
+         * Update the igv session in local storage.  This is called periodically and on adding tracks.  Ideally this
+         * would be called on IGV state change, but we don't have a means to capture all state changes.
+         */
+        function updateSessionStorage() {
+            if (igvBrowser) {
+                //setCartVar("igvState", igvSession, null, false);
+                const sessionDict = getSessionStorage();
+                const db = getDb();
+                sessionDict[db] = igvBrowser.compressedSession();
+                localStorage.setItem(IGV_STORAGE_KEY, JSON.stringify(sessionDict));
+            }
+        }
+
+        // Periodically update the igv session in local storage.
+        setInterval(updateSessionStorage, 1);
 
         // Detect a page refresh (visibility change to hidden) and save the session to local storage.  This is meant to
         // simulate  UCSC browser session handling.
         // XX TODO - not enough time for sending an HTTP request to update cart - need a better system!
-        document.onvisibilitychange = () => {
-            if (document.visibilityState === "hidden") {
-                const ucscSession = Object.assign({}, ucscState); // Obviously a gross simplification here.
-                //setCartVar("igvState", JSON.stringify(ucscSession), null, false);
-                if (igvBrowser) {
-                    ucscSession.igvSession = igvBrowser.compressedSession();
-                }
-                localStorage.setItem("ucscSession", JSON.stringify(ucscSession));
-            }
-        };
+        // document.onvisibilitychange = () => {
+        //     if (document.visibilityState === "hidden") {
+        //         if (igvBrowser) {
+        //             //setCartVar("igvState", igvSession, null, false);
+        //             //const igvSession = igvBrowser.compressedSession();
+        //             //localStorage.setItem("igvSession", igvSession);
+        //         }
+        //     }
+        // };
 
         // The "Add IGV track" button handler.  The button opens the file picker window, unless
         // it is already open in which case it brings that window to the front.  Tracks are added
@@ -465,6 +489,7 @@
                 if (allTracks.length === 0) {
                     igvRow.remove();
                     igvBrowser = null;
+                    delete window.igvBrowser;
                 }
                 updateTrackNames();
             });
@@ -485,17 +510,6 @@
                 }
             );
 
-            igvBrowser.on('zoom', (referenceFrameList) => {
-                // multi-locus not supported in UCSC browser, just use first which should be the only one.
-                const referenceFrame = referenceFrameList[0];
-                const position = {
-                    chr: referenceFrame.chr,
-                    start: Math.round(referenceFrame.start + 1),
-                    end: Math.round(referenceFrame.end)
-                }
-                igv.ucscUpdatePosition(position);
-            });
-
             window.igvBrowser = igvBrowser;
             return igvBrowser;
         }
@@ -513,7 +527,6 @@
                     console.log("Received selected files: ", event.data.files);
                     const configs = getTrackConfigurations(event.data.files);
                     loadIGVTracks(configs);
-                    // Convert file descriptor objects to igv.js track configuration objects.
 
                     break;
                 case MSG.LOAD_URL:
@@ -551,8 +564,8 @@
                 const newConfigs = [];
 
                 for (let config of configs) {
-                    const id = config.url.id;
-                    const matchingTracks = igvBrowser.findTracks(t => t.url && id === t.url.id);
+
+                    const matchingTracks = igvBrowser.findTracks(t => config.id === t.id);
                     if (matchingTracks.length > 0) {
                         // Just select the first matching track, there should only be one.  Restore its file reference(s).
                         matchingTracks[0].config.url.file = config.url.file;
@@ -565,7 +578,9 @@
                     }
                 }
 
-                igvBrowser.loadTrackList(newConfigs);
+                await igvBrowser.loadTrackList(newConfigs);
+                updateTrackNames();
+                updateSessionStorage();
             }
         }
 
@@ -595,6 +610,7 @@
             const responded = await waitForResponse;
             return responded;
         }
+
 
         /**
          * Return a minimal reference object for the given genomeID. We don't need or want default IGV tracks, only the
