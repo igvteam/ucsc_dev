@@ -552,7 +552,7 @@
                 // from the UCSC browser for genome and locus.
                 if (typeof (window.igvBrowser) === 'undefined' || window.igvBrowser === null) {
                     const defaultConfig = {
-                        reference: getMinimalReference(getDb()),
+                        reference: await getMinimalReference(getDb()),
                         // locus: genomePos.get()
                     };
                     igvBrowser = await createIGVBrowser(defaultConfig);
@@ -612,6 +612,27 @@
         }
 
 
+	/* get first line of text from URL */
+        async function getLine(url, { timeoutMs = 10000 } = {}) {
+	  const ctrl = new AbortController();
+	  const t = setTimeout(() => ctrl.abort(), timeoutMs);
+
+	  const res = await fetch(url, {
+	      headers: { Accept: "text/plain" },
+	      signal: ctrl.signal,
+	  }).catch(err => {
+	      // surface timeouts/aborts as regular errors
+	      throw new Error(`Request failed: ${err.message}`);
+	  });
+	  clearTimeout(t);
+
+	  if (!res.ok) throw new Error(`HTTP ${res.status} ${res.statusText}`);
+
+	  const text = await res.text();
+	  // Return a single line (trim and take first line)
+	  return text.trim().split(/\r?\n/, 1)[0];
+        }
+
         /**
          * Return a minimal reference object for the given genomeID. We don't need or want default IGV tracks, only the
          * reference sequence.
@@ -621,34 +642,22 @@
          * @param genomeID
          * @returns {{id: string, twoBitURL: string}}
          */
-        function getMinimalReference(genomeID) {
-
-            switch (genomeID) {
-                case "hg19":
-                    return {
-                        "id": "hg19",
-                        "twoBitURL": "https://hgdownload.soe.ucsc.edu/goldenPath/hg19/bigZips/hg19.2bit",
-                    };
-                case "hg38":
-                    return {
-                        "id": "hg38",
-                        "twoBitURL": "https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/hg38.2bit",
-                    };
-                case "mm10":
-                    return {
-                        "id": "mm10",
-                        "twoBitURL": "https://hgdownload.soe.ucsc.edu/goldenPath/mm10/bigZips/mm10.2bit",
-                    };
-                case "mm39": // GRCm39
-                    return {
-                        "id": "mm39",
-                        "twoBitURL": "https://hgdownload.soe.ucsc.edu/goldenPath/mm39/bigZips/mm39.2bit",
-                    };
-                default:
-                    throw new Error(`Unsupported genomeID: ${genomeID}`);
+        async function getMinimalReference(genomeID) {
+            const currentURL = window.location.href;
+            const upOneDirURL = currentURL.substring(0, currentURL.lastIndexOf('/'));
+            const apiUrl = upOneDirURL+`/hubApi?cmd=/list/files;genome=${genomeID};format=text;skipContext=1;fileType=2bit`;
+            try {
+                const twoBitURL = await getLine(apiUrl);
+                return {
+                    "id": genomeID,
+                    "twoBitURL": twoBitURL,
+                }
+            } catch (e) {
+                console.error(e);
+                alert("Internal Error: Cannot get 2bit file from "+ apiUrl);
+                return null;
             }
         }
-
 
         // Attach helper functions to the igv object
         igv.initIgvUcsc = initIgvUcsc;
